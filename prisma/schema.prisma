@@ -7,6 +7,12 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model hej {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+model Lead {  
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId // automatically created and linked to the "_id" field in the database.
+  email     String   @unique
+  phone     String
+  createdAt DateTime @default(now())
+
+  @@map("leads")  // Maps to your collection
+  @@index([createdAt])  // For better performance when sorting
 }
