@@ -1,6 +1,7 @@
 // Import necessary functions and types for API route
 import { createLead } from '@/server/actions/lead.actions'
 import { NextResponse } from 'next/server'
+import { ErrorMessages } from '@/types'
 
 // POST endpoint handler for creating new leads
 export async function POST(request: Request) {
@@ -17,10 +18,11 @@ export async function POST(request: Request) {
     return NextResponse.json(result.data, { status: 201 })
 
 
-  } catch (error) {
+  } catch (err) {
     // Handle unexpected errors
+    console.error(err)
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: ErrorMessages.INTERNAL_SERVER_ERROR },
       { status: 500 }
     )
   }

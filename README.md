@@ -1,6 +1,6 @@
-# Lead Submission Application
+# Offertu
 
-A modern web application built with Next.js for collecting and managing leads.
+A modern web application built with Next.js for collecting and managing leads. (for now)
 
 ## Project Architecture
 
@@ -41,7 +41,8 @@ src/
 │       └── lead.data.ts         # Database operations
 ├── types/
 │   ├── index.ts                 # Type exports
-│   ├── api.types.ts             # API response types
+│   ├── api.types.ts             # Generic API response types
+│   ├── error.types.ts           # Error handling types
 │   └── lead.types.ts            # Domain types
 └── lib/
     └── db/
@@ -56,6 +57,7 @@ The type system is organized in the `src/types` directory:
 src/types/
 ├── index.ts                     # Central export point
 ├── api.types.ts                 # Generic API response types
+├── error.types.ts               # Error handling types
 └── lead.types.ts                # Domain-specific types
 ```
 
@@ -64,23 +66,29 @@ src/types/
    - Generic response structures
    - Shared across all API endpoints
    - Example: `ApiResponse<T>`
+2. **Error Types** (`error.types.ts`)
 
-2. **Domain Types** (`lead.types.ts`)
+   - Centralized error handling
+   - Predefined error messages
+   - Consistent error responses
+   - Example: `ErrorMessages.INTERNAL_SERVER_ERROR`
+3. **Domain Types** (`lead.types.ts`)
 
    - Business domain specific types
    - Input/Output types for leads
    - Status types for UI states
+4. **Type Flow**
 
-3. **Type Flow**
-
-   ```mermaid
-   graph LR
-   A[Domain Types] --> B[API Types]
-   B --> C[Response Types]
-   style A fill:#e3f2fd
-   style B fill:#fff3e0
-   style C fill:#f3e5f5
-   ```
+```mermaid
+graph LR
+    A[Domain Types] --> B[API Types]
+    C[Error Types] --> B
+    B --> D[Response Types]
+    style A fill:#e3f2fd
+    style B fill:#fff3e0
+    style C fill:#ffcdd2
+    style D fill:#f3e5f5
+```
 
 ### Key Components Explained
 
@@ -88,18 +96,15 @@ src/types/
 
    - `LeadSubmissionForm`: A form component that collects email and phone information
    - Uses shadcn/ui components for consistent styling
-
 2. **API Layer**
 
    - Located in `app/api/leads/route.ts`
    - Handles HTTP requests and responses
    - Connects frontend to server actions
-
 3. **Server Layer**
 
    - **Actions**: Business logic and error handling
    - **Data**: Direct database operations using Prisma
-
 4. **Database**
 
    - MongoDB with Prisma as ORM
@@ -158,13 +163,11 @@ note over S,D: Prisma handles DB operation
   - Flexible schema
   - Perfect for lead data
   - Easy to scale
-
 - **Why Prisma?**
 
   - Type-safe database operations
   - Excellent developer experience
   - Automatic migrations
-
 - **Why Server Actions?**
 
   - Clean separation of concerns

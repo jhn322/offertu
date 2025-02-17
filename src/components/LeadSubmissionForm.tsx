@@ -38,8 +38,8 @@ export default function LeadSubmissionForm() {
       setStatus('success');
       setEmail('');
       setPhone('');
-    } catch (error) {
-      console.error('Error submitting form:', error);
+    } catch (err) {
+      console.error('Error submitting form:', err);
       setStatus('error');
     }
   };
