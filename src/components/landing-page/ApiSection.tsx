@@ -37,7 +37,10 @@ export default function ApiSection() {
                 tjänster i ditt system redan idag.
               </p>
               <Button asChild className="bg-[#FFAE00] hover:bg-primary/90">
-                <Link href="/api" className="inline-flex items-center gap-2">
+                <Link
+                  href="/api-docs"
+                  className="inline-flex items-center gap-2"
+                >
                   Kom igång med API
                   <ArrowRight className="h-4 w-4" />
                 </Link>

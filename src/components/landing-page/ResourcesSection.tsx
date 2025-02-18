@@ -28,7 +28,7 @@ export default function ResourcesSection() {
                 inom offerering och projektkalkylering.
               </p>
               <Button asChild variant="outline">
-                <Link href="#" className="inline-flex items-center gap-2">
+                <Link href="nyheter" className="inline-flex items-center gap-2">
                   Nyheter
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -49,7 +49,10 @@ export default function ResourcesSection() {
                 Snabba och enkla verktyg för grundläggande offertberäkningar.
               </p>
               <Button asChild variant="outline">
-                <Link href="#" className="inline-flex items-center gap-2">
+                <Link
+                  href="/verktyg-resurser"
+                  className="inline-flex items-center gap-2"
+                >
                   Verktyg (gratis)
                   <ArrowRight className="h-4 w-4" />
                 </Link>

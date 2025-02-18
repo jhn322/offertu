@@ -26,7 +26,7 @@ export function Navbar() {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-8">
           <Link
-            href="/api"
+            href="/api-docs"
             className="text-foreground/80 hover:text-foreground"
           >
             API
@@ -42,6 +42,12 @@ export function Navbar() {
             className="text-foreground/80 hover:text-foreground"
           >
             Mallar
+          </Link>
+          <Link
+            href="/nyheter"
+            className="text-foreground/80 hover:text-foreground"
+          >
+            Nyheter
           </Link>
         </div>
 
@@ -63,7 +69,7 @@ export function Navbar() {
             </SheetDescription>
             <div className="flex flex-col space-y-4 mb-80 items-center">
               <Link
-                href="/api"
+                href="/api-docs"
                 className="text-foreground/80 hover:text-foreground text-3xl"
                 onClick={() => setIsOpen(false)}
               >
@@ -82,6 +88,13 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
               >
                 Mallar
+              </Link>
+              <Link
+                href="/nyheter"
+                className="text-foreground/80 hover:text-foreground text-3xl"
+                onClick={() => setIsOpen(false)}
+              >
+                Nyheter
               </Link>
             </div>
           </SheetContent>
