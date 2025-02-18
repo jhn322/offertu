@@ -2,7 +2,7 @@
 import { prisma } from '@/lib/db/prisma'
 import type { Lead } from '@prisma/client'
 
-// Definiera en typ för input data
+// Define a type for input data
 type CreateLeadInput = Pick<Lead, 'email' | 'phone'>
 
 // Function to create a new lead in the database
@@ -11,18 +11,14 @@ export async function createLeadInDb(data: CreateLeadInput): Promise<Lead> {
   return await prisma.lead.create({ data })
 }
 
-
-
-
-
-//EXEMPLE on how this file can grow: 
-
-/* 
+// Function to find a lead by email
 export async function findLeadByEmail(email: string) {
-  return await prisma.lead.findUnique({ where: { email } })
-} 
-*/
+  return await prisma.lead.findUnique({
+    where: { email }
+  });
+}
 
+// Example of how this file can grow:
 /* 
 export async function updateLeadInDb(id: string, data: Partial<Lead>) {
   return await prisma.lead.update({ where: { id }, data })
