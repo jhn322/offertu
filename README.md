@@ -33,20 +33,30 @@ src/
 │       └── leads/
 │           └── route.ts         # API endpoint for leads
 ├── components/
-│   └── LeadSubmissionForm.tsx   # Main form component
+│   ├── LeadSubmissionForm.tsx   # Main form component
+│   ├── Hero.tsx                 # Hero section
+│   ├── ApiSection.tsx           # API section
+│   ├── CareerSection.tsx        # Career section
+│   ├── ResourcesSection.tsx     # Resources section
+│   ├── Navbar.tsx              # Navigation menu
+│   └── ui/                     # UI components
 ├── server/
 │   ├── actions/
-│   │   └── lead.actions.ts      # Business logic
+│   │   └── lead.actions.ts     # Business logic
 │   └── data/
-│       └── lead.data.ts         # Database operations
+│       └── lead.data.ts        # Database operations
 ├── types/
-│   ├── index.ts                 # Type exports
-│   ├── api.types.ts             # Generic API response types
-│   ├── error.types.ts           # Error handling types
-│   └── lead.types.ts            # Domain types
+│   ├── index.ts                # Type exports
+│   ├── api.types.ts            # API response types
+│   └── lead.types.ts           # Domain types
 └── lib/
-    └── db/
-        └── prisma.ts            # Database client
+    ├── db/
+    │   └── prisma.ts           # Database client
+    ├── errors/
+    │   └── app.errors.ts       # Error messages
+    ├── validations/
+    │   └── lead.validation.ts  # Validations
+    └── utils.ts                # Utility functions
 ```
 
 ### Type System
@@ -55,10 +65,9 @@ The type system is organized in the `src/types` directory:
 
 ```
 src/types/
-├── index.ts                     # Central export point
-├── api.types.ts                 # Generic API response types
-├── error.types.ts               # Error handling types
-└── lead.types.ts                # Domain-specific types
+   ├── index.ts                # Type exports
+   ├── api.types.ts            # API response types
+   └── lead.types.ts           # Domain types
 ```
 
 1. **API Types** (`api.types.ts`)
@@ -66,17 +75,20 @@ src/types/
    - Generic response structures
    - Shared across all API endpoints
    - Example: `ApiResponse<T>`
+
 2. **Error Types** (`error.types.ts`)
 
    - Centralized error handling
    - Predefined error messages
    - Consistent error responses
    - Example: `ErrorMessages.INTERNAL_SERVER_ERROR`
+
 3. **Domain Types** (`lead.types.ts`)
 
    - Business domain specific types
    - Input/Output types for leads
    - Status types for UI states
+
 4. **Type Flow**
 
 ```mermaid
@@ -96,15 +108,18 @@ graph LR
 
    - `LeadSubmissionForm`: A form component that collects email and phone information
    - Uses shadcn/ui components for consistent styling
+
 2. **API Layer**
 
    - Located in `app/api/leads/route.ts`
    - Handles HTTP requests and responses
    - Connects frontend to server actions
+
 3. **Server Layer**
 
    - **Actions**: Business logic and error handling
    - **Data**: Direct database operations using Prisma
+
 4. **Database**
 
    - MongoDB with Prisma as ORM
@@ -163,11 +178,13 @@ note over S,D: Prisma handles DB operation
   - Flexible schema
   - Perfect for lead data
   - Easy to scale
+
 - **Why Prisma?**
 
   - Type-safe database operations
   - Excellent developer experience
   - Automatic migrations
+
 - **Why Server Actions?**
 
   - Clean separation of concerns

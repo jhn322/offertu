@@ -1,12 +1,7 @@
 import type { Lead } from '@prisma/client'
 
-// * Status types
-export type SubmissionStatus = 'idle' | 'success' | 'error'
-
-// * Input types
+// Input types: Define the structure for creating a lead
 export type CreateLeadInput = Pick<Lead, 'email' | 'phone'>
-// export type UpdateLeadInput = Partial<Pick<Lead, 'email' | 'phone'>>
 
-// * Response types
+// Response types: Define the structure for the lead response
 export type LeadResponse = Pick<Lead, 'id' | 'email' | 'phone' | 'createdAt'>
-

@@ -13,34 +13,66 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import type { SubmissionStatus } from '@/types';
+import { ErrorMessages } from '@/lib/errors/app.errors';
+import {
+  validateEmail,
+  validatePhone,
+} from '@/lib/validations/lead.validation';
 
 export default function LeadSubmissionForm() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [status, setStatus] = useState<SubmissionStatus>('idle');
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus('idle');
+    setIsLoading(true);
+    setErrorMessage('');
+    setIsSuccess(false);
+
+    // Validate on the client side first
+    if (!validateEmail(email)) {
+      console.error('Validation error:', ErrorMessages.INVALID_EMAIL);
+      setErrorMessage(ErrorMessages.INVALID_EMAIL);
+      setIsLoading(false);
+      return;
+    }
+
+    if (!validatePhone(phone)) {
+      console.error('Validation error:', ErrorMessages.INVALID_PHONE);
+      setErrorMessage(ErrorMessages.INVALID_PHONE);
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch('/api/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, phone }),
+        body: JSON.stringify({ email: email.toLocaleLowerCase(), phone }),
       });
 
-      if (!response.ok) throw new Error('Failed to submit form');
+      const data = await response.json();
 
-      console.log('Lead creation succeeded:', await response.json());
-      setStatus('success');
+      if (!response.ok) {
+        console.error('Response error:', data.error);
+        setErrorMessage(data.error);
+        return;
+      }
+
+      console.log('Lead creation succeeded:', data);
+      setIsSuccess(true);
       setEmail('');
       setPhone('');
     } catch (err) {
-      console.error('Error submitting form:', err);
-      setStatus('error');
+      console.error('Unexpected error:', err);
+      setErrorMessage(ErrorMessages.INTERNAL_SERVER_ERROR);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -78,20 +110,21 @@ export default function LeadSubmissionForm() {
           <Button
             type='submit'
             className='w-full bg-primary text-primary-foreground hover:bg-primary/90'
+            disabled={isLoading}
           >
-            Submit
+            {isLoading ? 'Skickar...' : 'Skicka'}
           </Button>
         </form>
       </CardContent>
       <CardFooter>
-        {status === 'success' && (
+        {isSuccess && (
           <p className='text-secondary text-sm text-center'>
             Vi har mottagit din intresseanmälan!
           </p>
         )}
-        {status === 'error' && (
-          <p className='text-accent text-sm text-center'>
-            Något gick fel. Vänligen försök igen.
+        {errorMessage && (
+          <p className='text-red-600 text-sm text-center w-full'>
+            {errorMessage || 'Något gick fel. Vänligen försök igen.'}
           </p>
         )}
       </CardFooter>
