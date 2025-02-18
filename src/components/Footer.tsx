@@ -43,27 +43,18 @@ export default function Footer() {
                   Om Offertu
                 </CardTitle>
                 <div className="grid gap-2">
-                  <Link
-                    href="/karriarer"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <CardDescription className="text-sm">
+                  <Link href="/karriarer">
+                    <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       Karriär
                     </CardDescription>
                   </Link>
-                  <Link
-                    href="/nyheter"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <CardDescription className="text-sm">
+                  <Link href="/nyheter">
+                    <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       Nyheter
                     </CardDescription>
                   </Link>
-                  <Link
-                    href="#"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    <CardDescription className="text-sm">
+                  <Link href="#">
+                    <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       Verktyg & Resurser{" "}
                     </CardDescription>
                   </Link>
@@ -72,11 +63,10 @@ export default function Footer() {
               <div className="space-y-3">
                 <CardTitle className="font-semibold text-base">API</CardTitle>
                 <div className="grid gap-2">
-                  <Link
-                    href="#"
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    Dokumentation
+                  <Link href="#">
+                    <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
+                      Dokumentation
+                    </CardDescription>
                   </Link>
                 </div>
               </div>
@@ -96,11 +86,8 @@ export default function Footer() {
               Copyright {currentYear} | Offertu AB
             </CardDescription>
             <div className="flex gap-4 text-sm">
-              <Link
-                href="#"
-                className="text-muted-foreground hover:text-primary transition-colors"
-              >
-                <CardDescription className="text-sm">
+              <Link href="#">
+                <CardDescription className="text-sm  text-muted-foreground hover:text-primary transition-colors">
                   Integritetspolicy
                 </CardDescription>
               </Link>
