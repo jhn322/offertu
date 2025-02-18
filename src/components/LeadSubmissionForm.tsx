@@ -53,7 +53,7 @@ export default function LeadSubmissionForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, phone }),
+        body: JSON.stringify({ email: email.toLocaleLowerCase(), phone }),
       });
 
       const data = await response.json();

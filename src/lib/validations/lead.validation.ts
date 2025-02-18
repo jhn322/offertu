@@ -1,6 +1,6 @@
 // Function to validate email format
 export const validateEmail = (email: string): boolean => {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/ // Regular expression for email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/i // Regular expression for email validation, case-insensitive
   return emailRegex.test(email) // Test the email against the regex
 }
 
