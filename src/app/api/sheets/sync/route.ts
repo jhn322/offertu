@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { sheetsService } from '@/lib/services/sheets.service';
 import { dbSyncService } from '@/lib/services/db-sync.service';
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
     // Sync all existing leads first
     await sheetsService.syncAllLeads();

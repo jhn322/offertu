@@ -1,9 +1,9 @@
-import { MongoClient } from 'mongodb';
+import { ChangeStream, ChangeStreamDocument, MongoClient } from 'mongodb';
 import { sheetsService } from './sheets.service';
 
 // Service class for synchronizing database changes with Google Sheets
 export class DbSyncService {
-  private changeStream: any; // Variable to hold the change stream
+  private changeStream: ChangeStream | null = null; // Variable to hold the change stream
   private client: MongoClient; // MongoDB client instance
 
   constructor() {
@@ -27,7 +27,7 @@ export class DbSyncService {
       console.log('👀 Watching for changes in leads collection...');
 
       // Listen for change events in the collection
-      this.changeStream.on('change', async (change: any) => {
+      this.changeStream.on('change', async (change: ChangeStreamDocument<Document>) => {
         console.log('----------------------------------------');
         console.log(`🔄 Database change detected: ${change.operationType}`);
 
@@ -35,6 +35,8 @@ export class DbSyncService {
         switch (change.operationType) {
           case 'insert':
             console.log('➕ New lead added');
+            await sheetsService.syncAllLeads();
+            console.log('✅ Google Sheet updated');
             break;
 
           case 'update':
