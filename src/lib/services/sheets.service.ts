@@ -29,10 +29,10 @@ export async function appendLead(lead: Lead) {
       },
     });
 
-    console.log('Successfully added lead to Google Sheets');
+    console.info('✅ [SHEETS] Successfully added lead to Google Sheets'); // Log normal information
     return response.data;
   } catch (error) {
-    console.error('Error adding lead to Google Sheets:', error);
+    console.error('❌ [SHEETS] Error adding lead to Google Sheets:', error); // Log error
     throw error;
   }
 }
@@ -44,8 +44,9 @@ async function clearSheet() {
       spreadsheetId: process.env.GOOGLE_SHEET_ID,
       range: 'Blad1!A2:C',
     });
+    console.info('🧹 [SHEETS] Sheet content cleared'); // Log normal information
   } catch (error) {
-    console.error('Error clearing sheet:', error);
+    console.error('❌ [SHEETS] Error clearing sheet:', error); // Log error
     throw error;
   }
 }
@@ -56,6 +57,8 @@ export async function syncAllLeads() {
     const leads = await prisma.lead.findMany({
       orderBy: { createdAt: 'asc' }
     });
+
+    console.info(`📊 [SHEETS] Found ${leads.length} leads to sync`); // Log normal information
 
     await clearSheet();
 
@@ -72,10 +75,10 @@ export async function syncAllLeads() {
       requestBody: { values }
     });
 
-    console.log('Successfully synced all leads to Google Sheets');
+    console.info('✅ [SHEETS] Successfully synced all leads to Google Sheets'); // Log normal information
     return response.data;
   } catch (error) {
-    console.error('Error syncing leads to Google Sheets:', error);
+    console.error('❌ [SHEETS] Error syncing leads to Google Sheets:', error); // Log error
     throw error;
   }
 }
