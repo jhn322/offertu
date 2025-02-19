@@ -18,19 +18,21 @@ import {
   validateEmail,
   validatePhone,
 } from '@/lib/validations/lead.validation';
+import { useRouter } from 'next/navigation';
 
 export default function LeadSubmissionForm() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isSuccess, setIsSuccess] = useState(false);
+  // const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
-    setIsSuccess(false);
+    // setIsSuccess(false);
 
     // Validate on the client side first
     if (!validateEmail(email)) {
@@ -65,9 +67,12 @@ export default function LeadSubmissionForm() {
       }
 
       console.log('Lead creation succeeded:', data);
-      setIsSuccess(true);
+      // setIsSuccess(true);
       setEmail('');
       setPhone('');
+
+      // Navigate to thank you page after successful submission
+      router.push('/tack');
     } catch (err) {
       console.error('Unexpected error:', err);
       setErrorMessage(ErrorMessages.INTERNAL_SERVER_ERROR);
@@ -117,11 +122,6 @@ export default function LeadSubmissionForm() {
         </form>
       </CardContent>
       <CardFooter>
-        {isSuccess && (
-          <p className='text-secondary text-sm text-center'>
-            Vi har mottagit din intresseanmälan!
-          </p>
-        )}
         {errorMessage && (
           <p className='text-red-600 text-sm text-center w-full'>
             {errorMessage || 'Något gick fel. Vänligen försök igen.'}
