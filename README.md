@@ -33,40 +33,53 @@ style Storage fill:#f3e5f5,stroke:#6a1b9a
 ```
 src/
 ├── app/
-│   └── api/
-│       ├── leads/
-│       │   └── route.ts         # API endpoint for leads
-│       └── sheets/
-│            └── sync/
-│                └── route.ts     # Sync endpoint
+│   ├── anvandarvillkor/        # User terms
+│   ├── api/
+│   │   ├── leads/
+│   │   │   └── route.ts        # API endpoint for leads
+│   │   └── sheets/
+│   │       └── sync/
+│   │           └── route.ts    # Sync endpoint
+│   ├── api-docs/               # API documentation
+│   ├── integritetspolicy/      # Privacy policy
+│   ├── karriarer/              # Careers
+│   ├── mallar/                 # Templates
+│   ├── nyheter/                # News
+│   ├── tack/                   # Thank you
+│   ├── verktyg-resurser/       # Tools and resources
+│   ├── favicon.ico             # Favicon
+│   ├── globals.css             # Global styles
+│   ├── layout.tsx              # Root layout
+│   ├── not-found.tsx          # 404 page
+│   └── page.tsx               # Home page
 ├── components/
-│   ├── LeadSubmissionForm.tsx   # Main form component
-│   ├── Hero.tsx                 # Hero section
-│   ├── ApiSection.tsx           # API section
-│   ├── CareerSection.tsx        # Career section
-│   ├── ResourcesSection.tsx     # Resources section
-│   ├── Navbar.tsx              # Navigation menu
-│   └── ui/                     # UI components
+│   ├── LeadSubmissionForm.tsx  # Main form component
+│   ├── Hero.tsx               # Hero section
+│   ├── ApiSection.tsx         # API section
+│   ├── CareerSection.tsx      # Career section
+│   ├── ResourcesSection.tsx   # Resources section
+│   ├── Navbar.tsx            # Navigation menu
+│   └── ui/                   # UI components
+├── lib/
+│   ├── db/
+│   │   └── prisma.ts         # Database client
+│   ├── errors/
+│   │   └── app.errors.ts     # Error messages
+│   ├── validations/
+│   │   └── lead.validation.ts # Validations
+│   ├── utils.ts              # Utility functions
+│   └── services/
+│       ├── sheets.service.ts  # Google Sheets operations
+│       └── db-sync.service.ts # MongoDB change streams
 ├── server/
 │   ├── actions/
-│   │   └── lead.actions.ts     # Business logic
+│   │   └── lead.actions.ts   # Business logic
 │   └── data/
-│       └── lead.data.ts        # Database operations
-├── types/
-│   ├── index.ts                # Type exports
-│   ├── api.types.ts            # API response types
-│   └── lead.types.ts           # Domain types
-└── lib/
-    ├── db/
-    │   └── prisma.ts           # Database client
-    ├── errors/
-    │   └── app.errors.ts       # Error messages
-    ├── validations/
-    │   └── lead.validation.ts  # Validations
-    ├── utils.ts                # Utility functions
-    └── services/
-        ├── sheets.service.ts    # Google Sheets operations
-        └── db-sync.service.ts   # MongoDB change streams
+│       └── lead.data.ts      # Database operations
+└── types/
+├── index.ts              # Type exports
+├── api.types.ts          # API response types
+└── lead.types.ts         # Domain types
 ```
 
 ### Type System
