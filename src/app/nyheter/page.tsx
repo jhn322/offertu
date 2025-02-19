@@ -75,7 +75,11 @@ export default function NewsPage() {
                   <p className="text-muted-foreground">{item.excerpt}</p>
                 </CardContent>
                 <CardFooter className="mt-auto pt-4">
-                  <Button asChild variant="ghost" className="ml-auto">
+                  <Button
+                    asChild
+                    variant="ghost"
+                    className="ml-auto text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+                  >
                     <Link href="#">
                       Läs mer <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>

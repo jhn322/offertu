@@ -40,7 +40,7 @@ export default function Career() {
     <>
       <Navbar />
       <div className="container py-12">
-        <div className="mx-auto max-w-[800px] space-y-8 text-center">
+        <article className="mx-auto max-w-[800px] space-y-8 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             Karriär hos oss
           </h1>
@@ -48,7 +48,7 @@ export default function Career() {
             Vi söker talanger som vill vara med och forma framtidens
             offerthantering
           </p>
-        </div>
+        </article>
 
         <div className="mt-16 grid gap-6">
           {jobs.map((job) => {
@@ -57,7 +57,7 @@ export default function Career() {
               <Card key={job.title} className="group relative overflow-hidden">
                 <CardHeader className="flex flex-row items-center gap-4">
                   <div className="rounded-lg bg-primary/10 p-2">
-                    <Icon className="h-6 w-6 text-primary" />
+                    <Icon className="h-6 w-6 text-[#4683FF]" />
                   </div>
                   <div>
                     <CardTitle>{job.title}</CardTitle>
@@ -74,7 +74,7 @@ export default function Career() {
                 <CardFooter>
                   <Button
                     variant="ghost"
-                    className="group-hover:translate-x-1 transition-transform"
+                    className="group-hover:translate-x-1 transition-transform hover:bg-[#4683FF] hover:text-white"
                   >
                     Läs mer och ansök <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>

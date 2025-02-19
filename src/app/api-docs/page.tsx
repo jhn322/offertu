@@ -14,10 +14,10 @@ export default function ApiDocumentation() {
   return (
     <>
       <Navbar />
-      <div className="container py-12">
+      <main className="container py-12">
         <div className="mx-auto max-w-[800px] space-y-8 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-            API Documentation
+            API Dokumentation
           </h1>
           <p className="text-xl text-muted-foreground">
             Effektivisera din verksamhet ytterligare genom att integrera våra
@@ -78,7 +78,7 @@ export default function ApiDocumentation() {
             </CardContent>
           </Card>
         </div>
-      </div>
+      </main>
       <Footer />
     </>
   );

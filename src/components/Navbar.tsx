@@ -49,12 +49,22 @@ export function Navbar() {
           >
             Nyheter
           </Link>
+          <Link
+            href="/verktyg-resurser"
+            className="text-foreground/80 hover:text-foreground"
+          >
+            Verktyg
+          </Link>
         </div>
 
         {/* Mobile Nav */}
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-primary/90 hover:text-primary-foreground"
+            >
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle menu</span>
             </Button>
@@ -95,6 +105,13 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
               >
                 Nyheter
+              </Link>
+              <Link
+                href="/verktyg-resurser"
+                className="text-foreground/80 hover:text-foreground text-3xl"
+                onClick={() => setIsOpen(false)}
+              >
+                Verktyg
               </Link>
             </div>
           </SheetContent>

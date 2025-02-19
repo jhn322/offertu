@@ -5,29 +5,29 @@ import Footer from "../../components/Footer";
 export default function IntegrityPolicy() {
   const policyPoints = [
     {
-      title: "Honesty and Transparency",
+      title: "Ärlighet och Transparens",
       content:
-        "We commit to being honest and transparent in all our business dealings and communications.",
+        "Vi förbinder oss att vara ärliga och transparenta i alla våra affärstransaktioner och kommunikationer.",
     },
     {
-      title: "Ethical Business Practices",
+      title: "Etiska Affärsmetoder",
       content:
-        "We adhere to the highest ethical standards in our business practices and decision-making processes.",
+        "Vi följer de högsta etiska standarderna i våra affärsmetoder och beslutsprocesser.",
     },
     {
-      title: "Confidentiality",
+      title: "Konfidentialitet",
       content:
-        "We respect and protect the confidentiality of our clients, employees, and business partners.",
+        "Vi respekterar och skyddar konfidentialiteten för våra kunder, anställda och affärspartners.",
     },
     {
-      title: "Fair Treatment",
+      title: "Rättvis Behandling",
       content:
-        "We treat all individuals with respect and fairness, regardless of their position or background.",
+        "Vi behandlar alla individer med respekt och rättvisa, oavsett deras position eller bakgrund.",
     },
     {
-      title: "Environmental Responsibility",
+      title: "Miljöansvar",
       content:
-        "We strive to minimize our environmental impact and promote sustainable practices.",
+        "Vi strävar efter att minimera vår miljöpåverkan och främja hållbara metoder.",
     },
   ];
 
@@ -36,17 +36,18 @@ export default function IntegrityPolicy() {
       <Navbar />
       <div className="container mx-auto py-12">
         <h1 className="text-4xl font-bold mb-8 text-center">
-          Integrity Policy
+          Integritetspolicy
         </h1>
         <Card>
           <CardHeader>
-            <CardTitle>Our Commitment to Integrity</CardTitle>
+            <CardTitle>Vårt åtagande för integritet</CardTitle>
           </CardHeader>
           <CardContent>
             <p className="mb-6">
-              At [Your Company Name], we are committed to upholding the highest
-              standards of integrity in all aspects of our business. This policy
-              outlines our core principles and expectations for ethical conduct.
+              På Offertu är vi engagerade i att upprätthålla de högsta
+              standarderna för integritet i alla aspekter av vår verksamhet.
+              Denna policy beskriver våra kärnprinciper och förväntningar på
+              etiskt uppförande.
             </p>
             <div className="space-y-6">
               {policyPoints.map((point, index) => (

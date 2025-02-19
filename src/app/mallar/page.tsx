@@ -44,7 +44,7 @@ export default function Templates() {
   return (
     <>
       <Navbar />
-      <div className="container py-12">
+      <section className="container py-12">
         <div className="mx-auto max-w-[800px] space-y-8 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
             Offertmallar
@@ -81,7 +81,7 @@ export default function Templates() {
             );
           })}
         </div>
-      </div>
+      </section>
       <Footer />
     </>
   );
