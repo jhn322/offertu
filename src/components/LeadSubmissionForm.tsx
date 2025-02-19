@@ -26,13 +26,13 @@ export default function LeadSubmissionForm() {
   const [phone, setPhone] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
-  const [isSuccess, setIsSuccess] = useState(false);
+  // const [isSuccess, setIsSuccess] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setErrorMessage('');
-    setIsSuccess(false);
+    // setIsSuccess(false);
 
     // Validate on the client side first
     if (!validateEmail(email)) {
@@ -67,7 +67,7 @@ export default function LeadSubmissionForm() {
       }
 
       console.log('Lead creation succeeded:', data);
-      setIsSuccess(true);
+      // setIsSuccess(true);
       setEmail('');
       setPhone('');
 
