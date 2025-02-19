@@ -26,7 +26,7 @@ export function Navbar() {
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center space-x-8">
           <Link
-            href="/api"
+            href="/api-docs"
             className="text-foreground/80 hover:text-foreground"
           >
             API
@@ -43,12 +43,28 @@ export function Navbar() {
           >
             Mallar
           </Link>
+          <Link
+            href="/nyheter"
+            className="text-foreground/80 hover:text-foreground"
+          >
+            Nyheter
+          </Link>
+          <Link
+            href="/verktyg-resurser"
+            className="text-foreground/80 hover:text-foreground"
+          >
+            Verktyg
+          </Link>
         </div>
 
         {/* Mobile Nav */}
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
           <SheetTrigger asChild className="md:hidden">
-            <Button variant="ghost" size="icon">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-primary/90 hover:text-primary-foreground"
+            >
               <Menu className="h-6 w-6" />
               <span className="sr-only">Toggle menu</span>
             </Button>
@@ -63,7 +79,7 @@ export function Navbar() {
             </SheetDescription>
             <div className="flex flex-col space-y-4 mb-80 items-center">
               <Link
-                href="/api"
+                href="/api-docs"
                 className="text-foreground/80 hover:text-foreground text-3xl"
                 onClick={() => setIsOpen(false)}
               >
@@ -82,6 +98,20 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
               >
                 Mallar
+              </Link>
+              <Link
+                href="/nyheter"
+                className="text-foreground/80 hover:text-foreground text-3xl"
+                onClick={() => setIsOpen(false)}
+              >
+                Nyheter
+              </Link>
+              <Link
+                href="/verktyg-resurser"
+                className="text-foreground/80 hover:text-foreground text-3xl"
+                onClick={() => setIsOpen(false)}
+              >
+                Verktyg
               </Link>
             </div>
           </SheetContent>

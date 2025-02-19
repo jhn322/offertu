@@ -27,8 +27,12 @@ export default function ResourcesSection() {
                 Ta del av de senaste trenderna, expertråden och branschnyheterna
                 inom offerering och projektkalkylering.
               </p>
-              <Button asChild variant="outline">
-                <Link href="#" className="inline-flex items-center gap-2">
+              <Button
+                asChild
+                variant="outline"
+                className="text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+              >
+                <Link href="nyheter" className="inline-flex items-center gap-2">
                   Nyheter
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -48,8 +52,15 @@ export default function ResourcesSection() {
               <p className="text-gray-500">
                 Snabba och enkla verktyg för grundläggande offertberäkningar.
               </p>
-              <Button asChild variant="outline">
-                <Link href="#" className="inline-flex items-center gap-2">
+              <Button
+                asChild
+                variant="outline"
+                className="text-primary-foreground hover:bg-primary/90 hover:text-primary-foreground"
+              >
+                <Link
+                  href="/verktyg-resurser"
+                  className="inline-flex items-center gap-2"
+                >
                   Verktyg (gratis)
                   <ArrowRight className="h-4 w-4" />
                 </Link>

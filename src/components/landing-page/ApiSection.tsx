@@ -37,7 +37,10 @@ export default function ApiSection() {
                 tjänster i ditt system redan idag.
               </p>
               <Button asChild className="bg-[#FFAE00] hover:bg-primary/90">
-                <Link href="/api" className="inline-flex items-center gap-2">
+                <Link
+                  href="/api-docs"
+                  className="inline-flex items-center gap-2"
+                >
                   Kom igång med API
                   <ArrowRight className="h-4 w-4" />
                 </Link>
@@ -45,7 +48,7 @@ export default function ApiSection() {
             </CardContent>
           </Card>
           <div className="relative hidden md:block">
-            <div className="absolute -left-12 top-1/2 h-px w-[calc(100%+6rem)] -translate-y-1/2 bg-gradient-to-r from-[#E4E4E4] via-[#555555] to-transparent" />
+            <div className="absolute left-0 right-0 top-1/2 h-px max-w-full -translate-y-1/2 bg-gradient-to-r from-[#E4E4E4] via-[#555555] to-transparent" />
           </div>
         </div>
       </div>

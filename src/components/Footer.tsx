@@ -53,7 +53,7 @@ export default function Footer() {
                       Nyheter
                     </CardDescription>
                   </Link>
-                  <Link href="#">
+                  <Link href="/verktyg-resurser">
                     <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       Verktyg & Resurser{" "}
                     </CardDescription>
@@ -63,7 +63,7 @@ export default function Footer() {
               <div className="space-y-3">
                 <CardTitle className="font-semibold text-base">API</CardTitle>
                 <div className="grid gap-2">
-                  <Link href="#">
+                  <Link href="/api-docs">
                     <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       Dokumentation
                     </CardDescription>
@@ -86,12 +86,12 @@ export default function Footer() {
               Copyright {currentYear} | Offertu AB
             </CardDescription>
             <div className="flex gap-4 text-sm">
-              <Link href="#">
+              <Link href="/integritetspolicy">
                 <CardDescription className="text-sm  text-muted-foreground hover:text-primary transition-colors">
                   Integritetspolicy
                 </CardDescription>
               </Link>
-              <Link href="#">
+              <Link href="/anvandarvillkor">
                 <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   Användarvillkor
                 </CardDescription>
