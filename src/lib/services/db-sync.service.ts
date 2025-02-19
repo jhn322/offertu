@@ -21,10 +21,22 @@ export async function startSync() {
 
       switch (change.operationType) {
         case 'insert':
-        case 'update':
-        case 'delete':
+          // Handle insert operation
+          console.info('📝 [DB-SYNC] Insert operation detected');
           await syncAllLeads();
-          console.info('✅ [DB-SYNC] Google Sheet updated');
+          console.info('✅ [DB-SYNC] Google Sheet updated after insert new lead');
+          break;
+        case 'update':
+          // Handle update operation
+          console.info('🔄 [DB-SYNC] Update operation detected');
+          await syncAllLeads();
+          console.info('✅ [DB-SYNC] Google Sheet updated after update lead');
+          break;
+        case 'delete':
+          // Handle delete operation
+          console.info('🗑️ [DB-SYNC] Delete operation detected');
+          await syncAllLeads();
+          console.info('✅ [DB-SYNC] Google Sheet updated after delete lead');
           break;
         default:
           console.warn(`⚠️ [DB-SYNC] Unhandled operation type: ${change.operationType}`);
