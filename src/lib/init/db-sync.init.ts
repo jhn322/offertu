@@ -1,5 +1,5 @@
-import { dbSyncService } from '../services/db-sync.service';
-import { sheetsService } from '../services/sheets.service';
+import { syncAllLeads } from '../services/sheets.service';
+import { startSync } from '../services/db-sync.service';
 
 let isInitialized = false;
 
@@ -8,11 +8,11 @@ export async function initializeSync() {
 
   try {
     // Sync all existing leads first
-    await sheetsService.syncAllLeads();
+    await syncAllLeads(); // Call the imported function directly
     console.log('✅ Initial sync completed');
 
     // Start monitoring for changes
-    await dbSyncService.startSync();
+    await startSync(); // Call the imported function directly
     console.log('✅ Change stream started');
 
     isInitialized = true;

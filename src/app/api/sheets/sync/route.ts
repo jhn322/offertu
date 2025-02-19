@@ -1,16 +1,18 @@
 import { NextResponse } from 'next/server';
-import { sheetsService } from '@/lib/services/sheets.service';
-import { dbSyncService } from '@/lib/services/db-sync.service';
+// Import the necessary functions directly from their respective modules
+import { syncAllLeads } from '@/lib/services/sheets.service';
+import { startSync } from '@/lib/services/db-sync.service';
 
 export async function POST() {
   try {
     // Sync all existing leads first
-    await sheetsService.syncAllLeads();
+    // Call the syncAllLeads function directly from the imported module
+    await syncAllLeads();
     console.log('Initial sync completed');
 
     try {
-      // Attempt to start change stream for future changes
-      await dbSyncService.startSync();
+      // Call the startSync function directly from the imported module
+      await startSync();
       console.log('Change stream started');
     } catch (streamError) {
       console.error('Failed to start change stream:', streamError);
