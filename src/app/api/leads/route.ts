@@ -7,9 +7,9 @@ import { ErrorMessages } from '@/lib/errors/app.errors'
 export async function POST(request: Request) {
   try {
     // Parse the request body to extract email and phone
-    const { email, phone } = await request.json()
+    const { email, phone = await request.json()
     // Call the createLead function with the extracted data
-    const result = await createLead({ email, phone })
+    const result = await createLead({ email, phone  })
 
     // Check if the lead creation was unsuccessful
     if (!result.success) {
