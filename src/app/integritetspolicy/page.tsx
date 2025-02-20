@@ -44,7 +44,12 @@ export default function IntegrityPolicy() {
             <p>
               Om du har några frågor om dina data eller vill ändra eller radera
               dina uppgifter, vänligen kontakta oss på{' '}
-              <a href="mailto:info@offertu.fi">info@offertu.fi</a>
+              <a
+                href="mailto:info@offertu.fi"
+                className="text-secondary underline"
+              >
+                info@offertu.fi
+              </a>
             </p>
 
             <h2 className="text-2xl font-bold mt-8 mb-4">
@@ -90,17 +95,26 @@ export default function IntegrityPolicy() {
               <li>Alphabet (Google Analytics, Google Ads, Google reCAPTCHA)</li>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <a href="https://policies.google.com/privacy?hl=sv">
+                  <a
+                    href="https://policies.google.com/privacy?hl=sv"
+                    className="text-secondary"
+                  >
                     Googles integritetspolicy
                   </a>
                 </li>
                 <li>
-                  <a href="https://policies.google.com/terms?hl=sv">
+                  <a
+                    href="https://policies.google.com/terms?hl=sv"
+                    className="text-secondary"
+                  >
                     Googles användarvillkor
                   </a>
                 </li>
                 <li>
-                  <a href="https://business.safety.google/intl/sv/privacy/">
+                  <a
+                    href="https://business.safety.google/intl/sv/privacy/"
+                    className="text-secondary"
+                  >
                     Googles ansvar för företagsinformation
                   </a>
                 </li>
@@ -108,7 +122,10 @@ export default function IntegrityPolicy() {
               <li>Meta (Facebook, Instagram, etc.)</li>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <a href="https://www.facebook.com/privacy/policy/">
+                  <a
+                    href="https://www.facebook.com/privacy/policy/"
+                    className="text-secondary"
+                  >
                     Metas Integritetspolicy
                   </a>
                 </li>
@@ -116,7 +133,10 @@ export default function IntegrityPolicy() {
               <li>Microsoft Advertising</li>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <a href="https://privacy.microsoft.com/sv-se/privacystatement">
+                  <a
+                    href="https://privacy.microsoft.com/sv-se/privacystatement"
+                    className="text-secondary"
+                  >
                     Microsofts Integritetspolicy
                   </a>
                 </li>
@@ -124,7 +144,10 @@ export default function IntegrityPolicy() {
               <li>Pinterest</li>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <a href="https://policy.pinterest.com/sv/privacy-policy">
+                  <a
+                    href="https://policy.pinterest.com/sv/privacy-policy"
+                    className="text-secondary"
+                  >
                     Pinterests Integritetspolicy
                   </a>
                 </li>
@@ -132,7 +155,10 @@ export default function IntegrityPolicy() {
               <li>TikTok</li>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <a href="https://www.tiktok.com/legal/privacy-policy-eea">
+                  <a
+                    href="https://www.tiktok.com/legal/privacy-policy-eea"
+                    className="text-secondary"
+                  >
                     TikToks Integritetspolicy
                   </a>
                 </li>
@@ -140,7 +166,10 @@ export default function IntegrityPolicy() {
               <li>Klarna</li>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <a href="https://www.klarna.com/se/dataskydd/">
+                  <a
+                    href="https://www.klarna.com/se/dataskydd/"
+                    className="text-secondary"
+                  >
                     Klarnas Integritetspolicy
                   </a>
                 </li>
@@ -153,7 +182,10 @@ export default function IntegrityPolicy() {
             <p>
               Offertu är engagerade i att skydda och respektera din integritet.
               Vi följer{' '}
-              <a href="https://commission.europa.eu/law/law-topic/data-protection/data-protection-eu_en">
+              <a
+                href="https://commission.europa.eu/law/law-topic/data-protection/data-protection-eu_en"
+                className="text-secondary"
+              >
                 General Data Protection Regulation, GDPR
               </a>{' '}
               genom att implementera lämpliga tekniska och organisatoriska
@@ -229,7 +261,12 @@ export default function IntegrityPolicy() {
             </ul>
             <p>
               För att utöva någon av dessa rättigheter, vänligen kontakta oss på{' '}
-              <a href="mailto:info@offertu.fi">info@offertu.fi</a>
+              <a
+                href="mailto:info@offertu.fi"
+                className="text-secondary underline"
+              >
+                info@offertu.fi
+              </a>
             </p>
 
             <h2 className="text-2xl font-bold mt-8 mb-4">
@@ -267,7 +304,12 @@ export default function IntegrityPolicy() {
             </ul>
             <p>
               För frågor eller för att utöva dina rättigheter, kontakta oss på{' '}
-              <a href="mailto:info@offertu.fi">info@offertu.fi</a>
+              <a
+                href="mailto:info@offertu.fi"
+                className="text-secondary underline"
+              >
+                info@offertu.fi
+              </a>
             </p>
 
             <h2 className="text-2xl font-bold mt-8 mb-4">Mer information</h2>
@@ -279,7 +321,7 @@ export default function IntegrityPolicy() {
               <li>
                 <a
                   href="https://www.imy.se/privatperson/"
-                  className="text-secondary underline"
+                  className="text-secondary"
                 >
                   "Little Book of Privacy"
                 </a>
