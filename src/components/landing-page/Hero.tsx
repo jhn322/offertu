@@ -54,8 +54,7 @@ export default function Header() {
             </CardContent>
 
             <div>
-              {/* <LeadSubmissionForm /> */}
-              <LeadForm category="news" showEmail={true} showPhone={true} />
+              <LeadForm />
             </div>
           </CardHeader>
 

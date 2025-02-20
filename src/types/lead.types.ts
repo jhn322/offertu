@@ -1,20 +1,35 @@
-// import type { Lead } from '@prisma/client'
+import { z } from 'zod'
+import { leadSchema } from '@/lib/validations/lead.schema'
 
-export interface CreateLeadInput {
-  email: string;
-  phone: string;
-  category: string;
+// Define categories as a constant for reuse
+export const LEAD_CATEGORIES = ['service', 'careers', 'news', 'templates', 'api'] as const
+
+// Derive the category type from the constant
+export type LeadCategory = (typeof LEAD_CATEGORIES)[number]
+
+
+// Form related types
+export type CreateLeadInput = z.infer<typeof leadSchema>
+
+export interface LeadFormProps {
+  category?: LeadCategory
+  referenceId?: string
+  showEmail?: boolean
+  showPhone?: boolean
+  cardTitle?: string;
 }
 
 export interface LeadResponse {
-  id: string;
-  email: string;
-  phone: string;
-  category: string;
-  createdAt: Date;
+  id: string
+  email: string
+  phone?: string
+  category: string
+  referenceId?: string
+  createdAt: Date
 }
-// // Input types: Define the structure for creating a lead
-// export type CreateLeadInput = Pick<Lead, 'email' | 'phone'>
 
-// // Response types: Define the structure for the lead response
-// export type LeadResponse = Pick<Lead, 'id' | 'email' | 'phone' | 'createdAt'>
+export interface ApiResponse<T> {
+  success: boolean
+  data?: T
+  error?: string
+}
