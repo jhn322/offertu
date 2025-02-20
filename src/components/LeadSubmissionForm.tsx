@@ -24,6 +24,8 @@ export default function LeadSubmissionForm() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [category, setCategory] = useState('');
+  const [referenceId, setReferenceId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
   // const [isSuccess, setIsSuccess] = useState(false);
@@ -55,7 +57,11 @@ export default function LeadSubmissionForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email.toLocaleLowerCase(), phone }),
+        body: JSON.stringify({
+          email: email.toLocaleLowerCase(),
+          phone,
+          category,
+        }),
       });
 
       const data = await response.json();
@@ -82,39 +88,39 @@ export default function LeadSubmissionForm() {
   };
 
   return (
-    <Card className='bg-card p-6 rounded-lg'>
-      <CardHeader className='text-lg font-semibold mb-6'>
-        <CardTitle>Anmäl intresse</CardTitle>
+    <Card className="bg-card p-6 rounded-lg">
+      <CardHeader className="text-lg font-semibold mb-6">
+        <CardTitle>Anmäl intresse LeadSubmissionForm</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className='space-y-4'>
-          <div className='space-y-2'>
-            <Label htmlFor='email'>Email</Label>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
             <Input
-              id='email'
-              type='email'
-              placeholder='Skriv in din email'
+              id="email"
+              type="email"
+              placeholder="Skriv in din email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className='bg-background'
+              className="bg-background"
             />
           </div>
-          <div className='space-y-2'>
-            <Label htmlFor='phone'>Telefon</Label>
+          <div className="space-y-2">
+            <Label htmlFor="phone">Telefon</Label>
             <Input
-              id='phone'
-              type='tel'
-              placeholder='Skriv in ditt telefonnummer'
+              id="phone"
+              type="tel"
+              placeholder="Skriv in ditt telefonnummer"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               required
-              className='bg-background'
+              className="bg-background"
             />
           </div>
           <Button
-            type='submit'
-            className='w-full bg-primary text-primary-foreground hover:bg-primary/90'
+            type="submit"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
             disabled={isLoading}
           >
             {isLoading ? 'Skickar...' : 'Skicka'}
@@ -123,7 +129,7 @@ export default function LeadSubmissionForm() {
       </CardContent>
       <CardFooter>
         {errorMessage && (
-          <p className='text-red-600 text-sm text-center w-full'>
+          <p className="text-red-600 text-sm text-center w-full">
             {errorMessage || 'Något gick fel. Vänligen försök igen.'}
           </p>
         )}

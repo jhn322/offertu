@@ -8,11 +8,13 @@ datasource db {
 }
 
 model Lead {  
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId // automatically created and linked to the "_id" field in the database.
-  email     String   @unique
-  phone     String
-  createdAt DateTime @default(now())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  email       String   
+  phone       String?  // Optional since not all forms might need phone
+  category    String   // 'api', 'templates', 'careers', etc
+  referenceId String?  // Optional ID reference to specific template/career/etc
+  createdAt   DateTime @default(now())
 
-  @@map("leads")  // Maps to your collection
-  @@index([createdAt])  // For better performance when sorting
+  @@map("leads") // Maps your collection
+  @@index([category, createdAt]) // For better querying by category
 }

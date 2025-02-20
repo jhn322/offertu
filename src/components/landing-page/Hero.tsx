@@ -1,5 +1,6 @@
-import LeadSubmissionForm from "../LeadSubmissionForm";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import LeadForm from '../LeadForm';
+// import LeadSubmissionForm from '../LeadSubmissionForm';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Header() {
   return (
@@ -28,10 +29,10 @@ export default function Header() {
                   </CardTitle>
                   <ol className="relative space-y-6">
                     {[
-                      "Lämna dina kontaktuppgifter",
-                      "Vi återkommer inom 24 timmar",
-                      "Genomför ett personligt videomöte",
-                      "Få experthjälp med din offertberäkning",
+                      'Lämna dina kontaktuppgifter',
+                      'Vi återkommer inom 24 timmar',
+                      'Genomför ett personligt videomöte',
+                      'Få experthjälp med din offertberäkning',
                     ].map((step, index) => (
                       <li key={index} className="flex items-start gap-4">
                         <div className="flex-none">
@@ -53,7 +54,8 @@ export default function Header() {
             </CardContent>
 
             <div>
-              <LeadSubmissionForm />
+              {/* <LeadSubmissionForm /> */}
+              <LeadForm category="news" showEmail={true} showPhone={true} />
             </div>
           </CardHeader>
 
