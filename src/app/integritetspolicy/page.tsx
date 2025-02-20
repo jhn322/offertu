@@ -61,11 +61,12 @@ export default function IntegrityPolicy() {
                 Vår integritetspolicy
               </h2>
               <p>
-                Denna integritetspolicy ("Policy") beskriver hur Offertu ("vi",
-                "oss" eller "vårt") samlar in, skyddar och använder
-                personuppgifter ("Personuppgifter") du ("Användare", "du" eller
-                "din") kan tillhandahålla via Offertus webbplats (offertu.fi)
-                och våra tjänster.
+                Denna integritetspolicy (&quot;Policy&quot;) beskriver hur
+                Offertu (&quot;vi&quot;, &quot;oss&quot; eller &quot;vårt&quot;)
+                samlar in, skyddar och använder personuppgifter
+                (&quot;Personuppgifter&quot;) du (&quot;Användare&quot;,
+                &quot;du&quot; eller &quot;din&quot;) kan tillhandahålla via
+                Offertus webbplats (offertu.fi) och våra tjänster.
               </p>
               <p>
                 Det är Offertus policy att respektera din integritet när det
@@ -293,12 +294,13 @@ export default function IntegrityPolicy() {
               <ul className="list-disc pl-5 space-y-2">
                 <li>
                   <a href="https://www.imy.se/privatperson/">
-                    "Little Book of Privacy"
+                    &quot;Little Book of Privacy&quot;
                   </a>
                 </li>
                 <li>
                   <a href="https://www.edpb.europa.eu/sme-data-protection-guide/home_sv">
-                    "The EDPB data protection guide for small business"
+                    &quot;The EDPB data protection guide for small
+                    business&quot;
                   </a>
                 </li>
               </ul>
