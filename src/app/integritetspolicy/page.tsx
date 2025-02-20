@@ -13,9 +13,7 @@ export default function IntegrityPolicy() {
           </h1>
           <Card className="">
             <CardHeader>
-              <CardTitle className="prose prose-lg max-w-none">
-                Vårt åtagande för integritet
-              </CardTitle>
+              <CardTitle>Vårt åtagande för integritet</CardTitle>
             </CardHeader>
             <CardContent
               className="prose prose-lg max-w-none
@@ -23,7 +21,7 @@ export default function IntegrityPolicy() {
   prose-a:underline 
   prose-a:underline-offset-2
   hover:prose-a:text-[#4683FF]/80
-  prose-li:marker:text-gray-600     /* Subtle dark gray for markers */
+  prose-li:marker:text-gray-600     
   prose-ul:list-disc
 "
             >
@@ -36,7 +34,7 @@ export default function IntegrityPolicy() {
                 dataskyddsförordningen (GDPR).
               </p>
 
-              <h2 className="text-2xl font-bold mt-8 mb-4 not-prose">
+              <h2 className="text-2xl font-bold mt-8 mb-4">
                 Kortfattad översikt
               </h2>
               <p>
@@ -59,7 +57,7 @@ export default function IntegrityPolicy() {
                 <a href="mailto:info@offertu.fi">info@offertu.fi</a>
               </p>
 
-              <h2 className="text-2xl font-bold mt-8 mb-4 not-prose">
+              <h2 className="text-2xl font-bold mt-8 mb-4">
                 Vår integritetspolicy
               </h2>
               <p>
@@ -93,9 +91,7 @@ export default function IntegrityPolicy() {
                 enlighet med denna policy.
               </p>
 
-              <h3 className="text-xl font-semibold mt-8 mb-4 not-prose">
-                Tredje part
-              </h3>
+              <h3 className="text-xl font-semibold mt-8 mb-4">Tredje part</h3>
               <p>
                 Vi kan dela data som klassas som personuppgifter med följande
                 tredje parter, endast med ditt uttryckliga samtycke:
@@ -163,7 +159,7 @@ export default function IntegrityPolicy() {
                 </ul>
               </ul>
 
-              <h3 className="text-xl font-semibold mt-8 mb-4 not-prose">
+              <h3 className="text-xl font-semibold mt-8 mb-4">
                 Vi efterföljer GDPR
               </h3>
               <p>
@@ -205,7 +201,7 @@ export default function IntegrityPolicy() {
                 personuppgifter behandlas, och inhämtar samtycke där så krävs.
               </p>
 
-              <h3 className="text-xl font-semibold mt-8 mb-4 not-prose">
+              <h3 className="text-xl font-semibold mt-8 mb-4">
                 Du har rätten att bestämma över din data
               </h3>
               <p>Som EU-medborgare har du följande rättigheter enligt GDPR:</p>
@@ -249,7 +245,7 @@ export default function IntegrityPolicy() {
                 på <a href="mailto:info@offertu.fi">info@offertu.fi</a>
               </p>
 
-              <h2 className="text-2xl font-bold mt-8 mb-4 not-prose">
+              <h2 className="text-2xl font-bold mt-8 mb-4">
                 Integritetsskyddsmyndigheten
               </h2>
               <p>
@@ -271,7 +267,7 @@ export default function IntegrityPolicy() {
                 För mer information, besök dataskyddsmyndighetens webbplats.
               </p>
 
-              <h2 className="text-2xl font-bold mt-8 mb-4 not-prose">
+              <h2 className="text-2xl font-bold mt-8 mb-4">
                 Slutord och Sammanfattning
               </h2>
               <p>
@@ -289,9 +285,7 @@ export default function IntegrityPolicy() {
                 <a href="mailto:info@offertu.fi">info@offertu.fi</a>
               </p>
 
-              <h2 className="text-2xl font-bold mt-8 mb-4 not-prose">
-                Mer information
-              </h2>
+              <h2 className="text-2xl font-bold mt-8 mb-4">Mer information</h2>
               <p>
                 Vi rekommenderar följande resurser för ytterligare information
                 om dataskydd:
