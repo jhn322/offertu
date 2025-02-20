@@ -1,8 +1,8 @@
-import Link from "next/link";
-import Image from "next/image";
-import { Separator } from "@/components/ui/separator";
-import { CardContent, CardTitle, CardDescription } from "@/components/ui/card";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import Link from 'next/link';
+import Image from 'next/image';
+import { Separator } from '@/components/ui/separator';
+import { CardContent, CardTitle, CardDescription } from '@/components/ui/card';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -55,7 +55,7 @@ export default function Footer() {
                   </Link>
                   <Link href="/verktyg-resurser">
                     <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                      Verktyg & Resurser{" "}
+                      Verktyg & Resurser{' '}
                     </CardDescription>
                   </Link>
                 </div>
@@ -89,11 +89,6 @@ export default function Footer() {
               <Link href="/integritetspolicy">
                 <CardDescription className="text-sm  text-muted-foreground hover:text-primary transition-colors">
                   Integritetspolicy
-                </CardDescription>
-              </Link>
-              <Link href="/anvandarvillkor">
-                <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                  Användarvillkor
                 </CardDescription>
               </Link>
             </div>
