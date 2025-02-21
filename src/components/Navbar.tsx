@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import * as React from "react";
-import Link from "next/link";
-import { Menu } from "lucide-react";
+import * as React from 'react';
+import Link from 'next/link';
+import { Menu } from 'lucide-react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
   SheetTitle,
   SheetDescription,
-} from "@/components/ui/sheet";
+} from '@/components/ui/sheet';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -30,6 +30,12 @@ export function Navbar() {
             className="text-foreground/80 hover:text-foreground"
           >
             API
+          </Link>
+          <Link
+            href="/dashboard"
+            className="text-foreground/80 hover:text-foreground"
+          >
+            Dashboard
           </Link>
           <Link
             href="/karriarer"
@@ -84,6 +90,13 @@ export function Navbar() {
                 onClick={() => setIsOpen(false)}
               >
                 API
+              </Link>
+              <Link
+                href="/dashboard"
+                className="text-foreground/80 hover:text-foreground text-3xl"
+                onClick={() => setIsOpen(false)}
+              >
+                Dashboard
               </Link>
               <Link
                 href="/karriarer"
