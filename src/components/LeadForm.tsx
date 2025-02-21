@@ -64,8 +64,8 @@ export default function LeadForm({
       // Clear form after successful submission
       form.reset();
 
-      // Redirect to thank you page
-      router.push('/tack');
+      // Redirect to thank you page with lead ID
+      router.push(`/tack?id=${responseData.id}`);
     } catch (err) {
       console.error('Form submission error:', err);
     } finally {
