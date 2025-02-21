@@ -10,6 +10,7 @@ export type LeadCategory = (typeof LEAD_CATEGORIES)[number]
 
 // Form related types
 export type CreateLeadInput = z.infer<typeof leadSchema>
+export type UpdateLeadInput = Partial<CreateLeadInput>;
 
 export interface LeadFormProps {
   category?: LeadCategory
