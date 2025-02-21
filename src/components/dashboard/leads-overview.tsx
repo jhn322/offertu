@@ -1,10 +1,40 @@
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { leadData } from '@/server/data/lead.data';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { useEffect, useState } from 'react';
+import { LeadResponse } from '@/types';
 
-export async function LeadsOverview() {
-  const leads = await leadData.getAll();
+export function LeadsOverview() {
+  const [leads, setLeads] = useState<LeadResponse[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchLeadData() {
+      try {
+        const response = await fetch('/api/leads');
+        if (!response.ok) throw new Error('Failed to fetch leads');
+
+        const data = await response.json();
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to fetch leads');
+        }
+        setLeads(data.data);
+      } catch (error) {
+        console.error('Error fetching leads:', error);
+        setError('Could not load leads data');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchLeadData();
+  }, []);
+
+  if (isLoading) return <div>Laddar...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   // Get total number of leads
   const totalLeads = leads.length;

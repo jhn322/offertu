@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { useEffect, useState } from 'react';
 import {
   Card,
   CardContent,
@@ -24,11 +25,10 @@ import { LeadsPagination } from './leads-pagination';
 
 const ITEMS_PER_PAGE = 10;
 
-interface LeadsTableProps {
-  leads: LeadResponse[];
-}
-
-export function LeadsTable({ leads }: LeadsTableProps) {
+export function LeadsTable() {
+  const [leads, setLeads] = useState<LeadResponse[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = React.useState('');
   const [categoryFilter, setCategoryFilter] = React.useState('all');
   const [currentPage, setCurrentPage] = React.useState(1);
@@ -86,6 +86,31 @@ export function LeadsTable({ leads }: LeadsTableProps) {
     },
     []
   );
+
+  useEffect(() => {
+    async function fetchLeadData() {
+      try {
+        const response = await fetch('/api/leads');
+        if (!response.ok) throw new Error('Failed to fetch leads');
+
+        const data = await response.json();
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to fetch leads');
+        }
+        setLeads(data.data);
+      } catch (error) {
+        console.error('Error fetching leads:', error);
+        setError('Could not load leads data');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchLeadData();
+  }, []);
+
+  if (isLoading) return <div>Laddar...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <Card>
