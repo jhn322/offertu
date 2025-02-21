@@ -1,19 +1,25 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { leadData } from '@/server/data/lead.data';
 import { formatDistanceToNow } from 'date-fns';
+import { sv } from 'date-fns/locale';
 
 export async function LeadsOverview() {
   const leads = await leadData.getAll();
 
+  // Get total number of leads
   const totalLeads = leads.length;
   const categoryCounts = leads.reduce((acc, lead) => {
     acc[lead.category] = (acc[lead.category] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
 
+  // Get the latest lead
   const latestLead = leads[0];
   const latestLeadTime = latestLead
-    ? formatDistanceToNow(new Date(latestLead.createdAt), { addSuffix: true })
+    ? formatDistanceToNow(new Date(latestLead.createdAt), {
+        addSuffix: true,
+        locale: sv,
+      })
     : 'N/A';
 
   return (
