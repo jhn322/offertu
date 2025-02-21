@@ -2,7 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+import { leadSchema, type LeadFormData } from '@/lib/validations/lead.schema';
+import { LeadFormProps } from '@/types';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react'; // Import useState for managing loading state
 
 import { Button } from '@/components/ui/button';
 import {
@@ -14,78 +17,39 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from '@/components/ui/card';
-
-interface SignupFormProps {
-  category: 'career' | 'news' | 'template' | 'api';
-  showEmail?: boolean;
-  showPhone?: boolean;
-  // onSubmit?: (data: SignupFormData) => void;
-}
-
-interface SignupFormData {
-  email?: string;
-  phone?: string;
-  category: string;
-}
-
-const createFormSchema = (showEmail: boolean, showPhone: boolean) => {
-  const schemaFields: Record<string, z.ZodTypeAny> = {
-    category: z.string(),
-  };
-
-  if (showEmail) {
-    schemaFields.email = z.string().email('Please enter a valid email address');
-  }
-
-  if (showPhone) {
-    schemaFields.phone = z
-      .string()
-      .min(10, 'Phone number must be at least 10 digits');
-  }
-
-  return z.object(schemaFields);
-};
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function LeadForm({
-  category,
+  category = 'service',
+  referenceId,
   showEmail = true,
   showPhone = true,
-}: // onSubmit,
-SignupFormProps) {
-  const formSchema = createFormSchema(showEmail, showPhone);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  cardTitle = 'Anmäl intresse',
+}: LeadFormProps) {
+  // Initialize form with Zod validation
+  const form = useForm<LeadFormData>({
+    resolver: zodResolver(leadSchema),
     defaultValues: {
       category,
+      referenceId,
       email: '',
       phone: '',
     },
   });
 
-  const handleSubmit = async (formData: z.infer<typeof formSchema>) => {
-    try {
-      // Log the data we're about to send
-      console.log('Sending form data:', formData);
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false); // State to track loading status
 
-      // Send a POST request to the server with the form data
+  // Handle form submission
+  const handleSubmit = async (formData: LeadFormData) => {
+    setIsLoading(true); // Set loading to true when submission starts
+    try {
       const response = await fetch('/api/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: formData.email, // Use the email from formData
-          phone: formData.phone, // Use the phone from formData
-          category: formData.category, // Use the category from formData
-        }),
+        body: JSON.stringify(formData),
       });
 
       if (!response.ok) {
@@ -96,24 +60,33 @@ SignupFormProps) {
 
       const responseData = await response.json();
       console.log('Success:', responseData);
+
+      // Clear form after successful submission
+      form.reset();
+
+      // Redirect to thank you page
+      router.push('/tack');
     } catch (err) {
       console.error('Form submission error:', err);
+    } finally {
+      setIsLoading(false); // Reset loading state after submission attempt
     }
   };
 
   return (
     <Card className="bg-card p-6 rounded-lg">
       <CardHeader className="text-lg font-semibold mb-6">
-        <CardTitle>Anmäl intresse</CardTitle>
+        <CardTitle>{cardTitle}</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-4"
-            // Important: Add this to prevent default form submission
             method="POST"
+            autoComplete="on"
           >
+            {/* Email Field */}
             {showEmail && (
               <FormField
                 control={form.control}
@@ -123,8 +96,10 @@ SignupFormProps) {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
+                        id="email"
                         placeholder="Skriv in din email"
                         type="email"
+                        autoComplete="email"
                         {...field}
                       />
                     </FormControl>
@@ -134,6 +109,7 @@ SignupFormProps) {
               />
             )}
 
+            {/* Phone Field */}
             {showPhone && (
               <FormField
                 control={form.control}
@@ -143,8 +119,10 @@ SignupFormProps) {
                     <FormLabel>Telefon</FormLabel>
                     <FormControl>
                       <Input
+                        id="tel"
                         placeholder="Skriv in ditt telefonnummer"
                         type="tel"
+                        autoComplete="tel"
                         {...field}
                       />
                     </FormControl>
@@ -154,8 +132,14 @@ SignupFormProps) {
               />
             )}
 
-            <Button type="submit" className="w-full">
-              Skicka
+            {/* Hidden fields for category and referenceId */}
+            <input type="hidden" {...form.register('category')} />
+            {referenceId && (
+              <input type="hidden" {...form.register('referenceId')} />
+            )}
+
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? 'Skickar...' : 'Skicka'}
             </Button>
           </form>
         </Form>
