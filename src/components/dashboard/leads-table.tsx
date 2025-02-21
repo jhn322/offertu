@@ -32,6 +32,9 @@ export function LeadsTable({ leads }: LeadsTableProps) {
   const [searchQuery, setSearchQuery] = React.useState('');
   const [categoryFilter, setCategoryFilter] = React.useState('all');
   const [currentPage, setCurrentPage] = React.useState(1);
+  const [selectedLeads, setSelectedLeads] = React.useState<Set<string>>(
+    new Set()
+  );
 
   const categories = React.useMemo(
     () => Array.from(new Set(leads.map((lead) => lead.category))),
@@ -56,6 +59,34 @@ export function LeadsTable({ leads }: LeadsTableProps) {
 
   const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
 
+  // Handler for selecting all leads on current page
+  const handleSelectAll = React.useCallback(
+    (checked: boolean) => {
+      if (checked) {
+        setSelectedLeads(new Set(paginatedLeads.map((lead) => lead.id)));
+      } else {
+        setSelectedLeads(new Set());
+      }
+    },
+    [paginatedLeads]
+  );
+
+  // Handler for selecting individual lead
+  const handleSelectLead = React.useCallback(
+    (checked: boolean, leadId: string) => {
+      setSelectedLeads((prev) => {
+        const next = new Set(prev);
+        if (checked) {
+          next.add(leadId);
+        } else {
+          next.delete(leadId);
+        }
+        return next;
+      });
+    },
+    []
+  );
+
   return (
     <Card>
       <CardHeader>
@@ -76,12 +107,17 @@ export function LeadsTable({ leads }: LeadsTableProps) {
               <TableRow>
                 {columns.map((column) => (
                   <TableHead key={column.id}>
-                    {typeof column.header === 'function'
-                      ? column.header({
-                          checked: false,
-                          onCheckedChange: () => {},
-                        })
-                      : column.header}
+                    {column.id === 'select' &&
+                    typeof column.header === 'function'
+                      ? (column.header({
+                          checked:
+                            paginatedLeads.length > 0 &&
+                            paginatedLeads.every((lead) =>
+                              selectedLeads.has(lead.id)
+                            ),
+                          onCheckedChange: handleSelectAll,
+                        }) as React.ReactNode)
+                      : (column.header as React.ReactNode)}
                   </TableHead>
                 ))}
               </TableRow>
@@ -93,17 +129,11 @@ export function LeadsTable({ leads }: LeadsTableProps) {
                     <TableCell key={`${lead.id}-${column.id}`}>
                       {column.id === 'select'
                         ? column.cell({
-                            ...lead,
-                            checked: false,
-                            onCheckedChange: () => {},
+                            checked: selectedLeads.has(lead.id),
+                            onCheckedChange: (checked) =>
+                              handleSelectLead(checked, lead.id),
                           })
-                        : typeof column.cell === 'function'
-                        ? column.cell({
-                            ...lead,
-                            checked: false,
-                            onCheckedChange: () => {},
-                          })
-                        : column.cell}
+                        : column.cell(lead)}
                     </TableCell>
                   ))}
                 </TableRow>

@@ -16,7 +16,33 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LeadResponse } from '@/types';
 
-export const columns = [
+type CellProps =
+  | LeadResponse
+  | {
+      checked: boolean;
+      onCheckedChange: (checked: boolean) => void;
+    };
+
+interface Column {
+  id: string;
+  header:
+    | string
+    | React.ReactNode
+    | ((props: {
+        checked: boolean;
+        onCheckedChange: (checked: boolean) => void;
+      }) => React.ReactNode);
+  cell: (
+    props:
+      | LeadResponse
+      | {
+          checked: boolean;
+          onCheckedChange: (checked: boolean) => void;
+        }
+  ) => React.ReactNode;
+}
+
+export const columns: Column[] = [
   {
     id: 'select',
     header: ({
@@ -32,66 +58,89 @@ export const columns = [
         aria-label="Select all"
       />
     ),
-    cell: ({
-      checked,
-      onCheckedChange,
-    }: {
-      checked: boolean;
-      onCheckedChange: (checked: boolean) => void;
-    }) => (
-      <Checkbox
-        checked={checked}
-        onCheckedChange={onCheckedChange}
-        aria-label="Select row"
-      />
-    ),
+    cell: (props: CellProps) => {
+      if ('checked' in props) {
+        return (
+          <Checkbox
+            checked={props.checked}
+            onCheckedChange={props.onCheckedChange}
+            aria-label="Select row"
+          />
+        );
+      }
+      return null;
+    },
   },
   {
     id: 'email',
     header: 'Email',
-    cell: (lead: LeadResponse) => lead.email,
+    cell: (props: CellProps) => {
+      if ('email' in props) {
+        return props.email;
+      }
+      return null;
+    },
   },
   {
     id: 'phone',
     header: 'Telefon',
-    cell: (lead: LeadResponse) => lead.phone || 'N/A',
+    cell: (props: CellProps) => {
+      if ('phone' in props) {
+        return props.phone || 'N/A';
+      }
+      return null;
+    },
   },
   {
     id: 'category',
     header: 'Kategori',
-    cell: (lead: LeadResponse) => (
-      <Badge variant="outline">{lead.category}</Badge>
-    ),
+    cell: (props: CellProps) => {
+      if ('category' in props) {
+        return <Badge variant="outline">{props.category}</Badge>;
+      }
+      return null;
+    },
   },
   {
     id: 'createdAt',
     header: 'Datum',
-    cell: (lead: LeadResponse) => format(new Date(lead.createdAt), 'PPP'),
+    cell: (props: CellProps) => {
+      if ('createdAt' in props) {
+        return format(new Date(props.createdAt), 'PPP');
+      }
+      return null;
+    },
   },
   {
     id: 'actions',
-    cell: (lead: LeadResponse) => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="h-8 w-8 p-0">
-            <span className="sr-only">Öppna meny</span>
-            <DotsHorizontalIcon className="h-4 w-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="bg-white">
-          <DropdownMenuLabel>Åtgärder</DropdownMenuLabel>
-          <DropdownMenuItem
-            className="cursor-pointer"
-            onClick={() => navigator.clipboard.writeText(lead.email)}
-          >
-            Kopiera email
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem className="focus:bg-accent focus:text-accent-foreground cursor-pointer">
-            Ta bort
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    header: '',
+    cell: (props: CellProps) => {
+      if ('email' in props) {
+        return (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="h-8 w-8 p-0">
+                <span className="sr-only">Öppna meny</span>
+                <DotsHorizontalIcon className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="bg-white">
+              <DropdownMenuLabel>Åtgärder</DropdownMenuLabel>
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => navigator.clipboard.writeText(props.email)}
+              >
+                Kopiera email
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem className="focus:bg-accent focus:text-accent-foreground cursor-pointer">
+                Ta bort
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      }
+      return null;
+    },
   },
 ];
