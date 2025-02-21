@@ -11,8 +11,13 @@ import {
 } from '@/components/ui/card';
 import LeadForm from '@/components/LeadForm';
 
-export default function JobDetail({ params }: { params: { slug: string } }) {
-  const job = jobs.find((job) => job.slug === params.slug);
+export default async function JobDetail({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const resolvedParams = await params;
+  const job = jobs.find((job) => job.slug === resolvedParams.slug);
 
   if (!job) {
     notFound();
