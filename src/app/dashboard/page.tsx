@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { LeadsTable } from '@/components/dashboard/leads-table';
 import { LeadsOverview } from '@/components/dashboard/leads-overview';
 import { DashboardShell } from '@/components/dashboard/shell';
-import { getLeads } from '@/server/data/lead.data';
+import { leadData } from '@/server/data/lead.data';
 import { Navbar } from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  const leads = await getLeads();
+  const leads = await leadData.getAll();
 
   return (
     <main>

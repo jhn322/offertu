@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { getLeads } from '@/server/data/lead.data';
+import { leadData } from '@/server/data/lead.data';
 import { formatDistanceToNow } from 'date-fns';
 
 export async function LeadsOverview() {
-  const leads = await getLeads();
+  const leads = await leadData.getAll();
 
   const totalLeads = leads.length;
   const categoryCounts = leads.reduce((acc, lead) => {
