@@ -1,4 +1,5 @@
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -6,34 +7,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { ArrowRight, Building2, Code2, Users } from "lucide-react";
-import { Navbar } from "../../components/Navbar";
-import Footer from "../../components/Footer";
-
-const jobs = [
-  {
-    title: "Projektledare",
-    department: "Project Management",
-    location: "Stockholm",
-    type: "Heltid",
-    icon: Users,
-  },
-  {
-    title: "Back-end utvecklare",
-    department: "Engineering",
-    location: "Stockholm/Remote",
-    type: "Heltid",
-    icon: Code2,
-  },
-  {
-    title: "Account Manager",
-    department: "Sales",
-    location: "Göteborg",
-    type: "Heltid",
-    icon: Building2,
-  },
-];
+} from '@/components/ui/card';
+import { ArrowRight } from 'lucide-react';
+import { Navbar } from '../../components/Navbar';
+import Footer from '../../components/Footer';
+import { jobs } from './data';
 
 export default function Career() {
   return (
@@ -54,10 +32,10 @@ export default function Career() {
           {jobs.map((job) => {
             const Icon = job.icon;
             return (
-              <Card key={job.title} className="group relative overflow-hidden">
+              <Card key={job.id} className="group relative overflow-hidden">
                 <CardHeader className="flex flex-row items-center gap-4">
                   <div className="rounded-lg bg-primary/10 p-2">
-                    <Icon className="h-6 w-6 text-[#4683FF]" />
+                    <Icon className="h-6 w-6 text-primary" />
                   </div>
                   <div>
                     <CardTitle>{job.title}</CardTitle>
@@ -73,10 +51,13 @@ export default function Career() {
                 </CardContent>
                 <CardFooter>
                   <Button
+                    asChild
                     variant="ghost"
-                    className="group-hover:translate-x-1 transition-transform hover:bg-[#4683FF] hover:text-white"
+                    className="group-hover:translate-x-1 transition-transform duration-300 hover:bg-secondary hover:text-primary-foreground"
                   >
-                    Läs mer och ansök <ArrowRight className="ml-2 h-4 w-4" />
+                    <Link href={`/karriarer/${job.slug}`}>
+                      Läs mer och ansök <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                   </Button>
                 </CardFooter>
               </Card>
