@@ -9,7 +9,7 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { CheckCircle, ArrowLeft } from 'lucide-react';
+import { CheckCircle, ArrowLeft, Phone, Mail } from 'lucide-react';
 import Link from 'next/link';
 import { Navbar } from '../../components/Navbar';
 import Footer from '../../components/Footer';
@@ -72,31 +72,58 @@ function ThanksContent() {
                 <p className="text-destructive">{error}</p>
               ) : leadData ? (
                 <>
-                  <p>
-                    Kontrollera gärna dina uppgifter: Vi kommer att{' '}
-                    {leadData.email && (
-                      <>
-                        skicka mer information till den e-post:{' '}
-                        <span className="font-medium">{leadData.email}</span>
-                        {leadData.phone && ' samt '}
-                      </>
-                    )}
-                    {leadData.phone && (
-                      <>
-                        en bekräftelse av att vi mottagit dina kontaktuppgifter
-                        till{' '}
-                        <span className="font-medium">{leadData.phone}</span>
-                      </>
-                    )}
-                  </p>
-                  <p>
-                    Vi återkommer till dig inom 24 timmar för att boka ett
-                    personligt videomöte.
-                  </p>
-                  <p>
-                    Under tiden är du välkommen att utforska våra resurser och
-                    verktyg.
-                  </p>
+                  {/* Contact Information Section */}
+                  <div className="rounded-lg  p-6 space-y-4">
+                    <div className="space-y-3 text-muted-foreground">
+                      {leadData.email && (
+                        <>
+                          <p>
+                            Vi kommer att skicka mer information till din
+                            e-post:
+                          </p>
+                          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                            <div className="flex items-center gap-2">
+                              <Mail className="h-5 w-5" />
+                              <span className="ec-email font-medium">
+                                {leadData.email}
+                              </span>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                      {leadData.phone && (
+                        <>
+                          <p>
+                            samt en bekräftelse av att vi mottagit dina
+                            kontaktuppgifter till:
+                          </p>
+                          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                            <div className="flex items-center gap-2">
+                              <Phone className="h-5 w-5" />
+                              <span className="ec-phone font-medium">
+                                {leadData.phone}
+                              </span>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground text-right italic mt-2">
+                      Kontrollera gärna att dina uppgifter är korrekta
+                    </p>
+                  </div>
+
+                  {/* Next Steps Section */}
+                  <div className="space-y-4 text-muted-foreground">
+                    <p className="text-lg">
+                      Vi återkommer till dig inom 24 timmar för att boka ett
+                      personligt videomöte.
+                    </p>
+                    <p>
+                      Under tiden är du välkommen att utforska våra resurser och
+                      verktyg.
+                    </p>
+                  </div>
                 </>
               ) : null}
             </div>
