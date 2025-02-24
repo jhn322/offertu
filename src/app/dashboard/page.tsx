@@ -6,10 +6,12 @@ import { DashboardShell } from '@/components/dashboard/shell';
 import { Navbar } from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Suspense } from 'react';
+import { Toaster } from 'sonner';
 
 export default function DashboardPage() {
   return (
     <main>
+      <Toaster richColors />
       <Navbar />
       <DashboardShell>
         <div className="flex flex-col gap-8">
