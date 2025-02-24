@@ -8,6 +8,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { TrashIcon } from '@radix-ui/react-icons';
 
 interface LeadsToolbarProps {
   searchQuery: string;
@@ -15,6 +17,8 @@ interface LeadsToolbarProps {
   categoryFilter: string;
   onCategoryChange: (value: string) => void;
   categories: string[];
+  selectedCount: number;
+  onDeleteSelected: () => void;
 }
 
 export function LeadsToolbar({
@@ -23,6 +27,8 @@ export function LeadsToolbar({
   categoryFilter,
   onCategoryChange,
   categories,
+  selectedCount,
+  onDeleteSelected,
 }: LeadsToolbarProps) {
   return (
     <div className="flex items-center justify-between">
@@ -52,6 +58,21 @@ export function LeadsToolbar({
             ))}
           </SelectContent>
         </Select>
+      </div>
+      <div className="ml-2 mb-1 h-8 flex items-center">
+        {selectedCount > 0 ? (
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={onDeleteSelected}
+            className="flex items-center"
+          >
+            <TrashIcon className="h-4 w-4" />
+            Ta bort ({selectedCount})
+          </Button>
+        ) : (
+          <div className="w-[100px]" />
+        )}
       </div>
     </div>
   );

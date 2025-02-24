@@ -5,6 +5,7 @@ import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
+import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
 
 export function LeadsOverview() {
   const [leads, setLeads] = useState<LeadResponse[]>([]);
@@ -33,7 +34,7 @@ export function LeadsOverview() {
     fetchLeadData();
   }, []);
 
-  if (isLoading) return <div>Laddar...</div>;
+  if (isLoading) return <LeadsOverviewSkeleton />;
   if (error) return <div>Error: {error}</div>;
 
   // Get total number of leads
