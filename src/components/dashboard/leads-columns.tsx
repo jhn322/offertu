@@ -42,7 +42,15 @@ interface Column {
   ) => React.ReactNode;
 }
 
-export const columns: Column[] = [
+interface ColumnProps extends Column {
+  onDelete?: (ids: string[]) => void;
+}
+
+export const columns = ({
+  onDelete,
+}: {
+  onDelete: (id: string[]) => void;
+}): ColumnProps[] => [
   {
     id: 'select',
     header: ({
@@ -133,7 +141,10 @@ export const columns: Column[] = [
                 Kopiera email
               </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem className="focus:bg-accent focus:text-accent-foreground cursor-pointer">
+              <DropdownMenuItem
+                className="cursor-pointer text-red-500 focus:bg-accent focus:text-accent-foreground"
+                onClick={() => onDelete([props.id])}
+              >
                 Ta bort
               </DropdownMenuItem>
             </DropdownMenuContent>
