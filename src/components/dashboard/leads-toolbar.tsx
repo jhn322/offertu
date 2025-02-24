@@ -59,17 +59,21 @@ export function LeadsToolbar({
           </SelectContent>
         </Select>
       </div>
-      {selectedCount > 0 && (
-        <Button
-          variant="destructive"
-          size="sm"
-          onClick={onDeleteSelected}
-          className="ml-2 mb-1"
-        >
-          <TrashIcon className=" h-4 w-4" />
-          Ta bort ({selectedCount})
-        </Button>
-      )}
+      <div className="ml-2 mb-1 h-8 flex items-center">
+        {selectedCount > 0 ? (
+          <Button
+            variant="destructive"
+            size="sm"
+            onClick={onDeleteSelected}
+            className="flex items-center"
+          >
+            <TrashIcon className="h-4 w-4" />
+            Ta bort ({selectedCount})
+          </Button>
+        ) : (
+          <div className="w-[100px]" />
+        )}
+      </div>
     </div>
   );
 }
