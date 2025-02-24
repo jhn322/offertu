@@ -22,6 +22,7 @@ import { LeadResponse } from '@/types';
 import { columns } from './leads-columns';
 import { LeadsToolbar } from './leads-toolbar';
 import { LeadsPagination } from './leads-pagination';
+import { LeadsTableSkeleton } from './leads-table-skeleton';
 import { toast } from 'sonner';
 
 const ITEMS_PER_PAGE = 15;
@@ -239,7 +240,7 @@ export function LeadsTable() {
     fetchLeadData();
   }, []);
 
-  if (isLoading) return <div>Laddar...</div>;
+  if (isLoading) return <LeadsTableSkeleton />;
   if (error) return <div>Error: {error}</div>;
 
   return (
