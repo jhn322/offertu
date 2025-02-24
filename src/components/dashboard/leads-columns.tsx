@@ -1,6 +1,7 @@
 'use client';
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
+import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
 import { format } from 'date-fns';
 
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LeadResponse } from '@/types';
 
+// Column types
 type CellProps =
   | LeadResponse
   | {
@@ -25,13 +27,7 @@ type CellProps =
 
 interface Column {
   id: string;
-  header:
-    | string
-    | React.ReactNode
-    | ((props: {
-        checked: boolean;
-        onCheckedChange: (checked: boolean) => void;
-      }) => React.ReactNode);
+  header: string | React.ReactNode | ((props: any) => React.ReactNode);
   cell: (
     props:
       | LeadResponse
@@ -41,15 +37,51 @@ interface Column {
         }
   ) => React.ReactNode;
 }
-
 interface ColumnProps extends Column {
   onDelete?: (ids: string[]) => void;
 }
 
+interface SortableHeaderProps {
+  children: React.ReactNode;
+  isSorted: boolean;
+  isDesc: boolean;
+  onSort: () => void;
+}
+
+// Sort by desc/asc
+const SortableHeader = ({
+  children,
+  isSorted,
+  isDesc,
+  onSort,
+}: SortableHeaderProps) => (
+  <Button
+    variant="ghost"
+    size="sm"
+    className="-ml-3 h-8 data-[state=open]:bg-accent"
+    onClick={onSort}
+  >
+    <span>{children}</span>
+    {isSorted && (
+      <span className="ml-2">
+        {isDesc ? (
+          <ArrowDownIcon className="h-4 w-4" />
+        ) : (
+          <ArrowUpIcon className="h-4 w-4" />
+        )}
+      </span>
+    )}
+  </Button>
+);
+
 export const columns = ({
   onDelete,
+  sort,
+  onSort,
 }: {
   onDelete: (id: string[]) => void;
+  sort: { column: string; direction: 'asc' | 'desc' };
+  onSort: (column: string) => void;
 }): ColumnProps[] => [
   {
     id: 'select',
@@ -81,7 +113,15 @@ export const columns = ({
   },
   {
     id: 'email',
-    header: 'Email',
+    header: () => (
+      <SortableHeader
+        isSorted={sort.column === 'email'}
+        isDesc={sort.direction === 'desc'}
+        onSort={() => onSort('email')}
+      >
+        Email
+      </SortableHeader>
+    ),
     cell: (props: CellProps) => {
       if ('email' in props) {
         return props.email;
@@ -91,7 +131,15 @@ export const columns = ({
   },
   {
     id: 'phone',
-    header: 'Telefon',
+    header: () => (
+      <SortableHeader
+        isSorted={sort.column === 'phone'}
+        isDesc={sort.direction === 'desc'}
+        onSort={() => onSort('phone')}
+      >
+        Telefon
+      </SortableHeader>
+    ),
     cell: (props: CellProps) => {
       if ('phone' in props) {
         return props.phone || 'N/A';
@@ -101,7 +149,15 @@ export const columns = ({
   },
   {
     id: 'category',
-    header: 'Kategori',
+    header: () => (
+      <SortableHeader
+        isSorted={sort.column === 'category'}
+        isDesc={sort.direction === 'desc'}
+        onSort={() => onSort('category')}
+      >
+        Kategori
+      </SortableHeader>
+    ),
     cell: (props: CellProps) => {
       if ('category' in props) {
         return <Badge variant="outline">{props.category}</Badge>;
@@ -111,7 +167,15 @@ export const columns = ({
   },
   {
     id: 'createdAt',
-    header: 'Datum',
+    header: () => (
+      <SortableHeader
+        isSorted={sort.column === 'createdAt'}
+        isDesc={sort.direction === 'desc'}
+        onSort={() => onSort('createdAt')}
+      >
+        Datum
+      </SortableHeader>
+    ),
     cell: (props: CellProps) => {
       if ('createdAt' in props) {
         return format(new Date(props.createdAt), 'PPP');

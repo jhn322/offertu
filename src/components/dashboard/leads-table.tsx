@@ -24,7 +24,7 @@ import { LeadsToolbar } from './leads-toolbar';
 import { LeadsPagination } from './leads-pagination';
 import { toast } from 'sonner';
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 15;
 
 export function LeadsTable() {
   const [leads, setLeads] = useState<LeadResponse[]>([]);
@@ -43,6 +43,21 @@ export function LeadsTable() {
     isOpen: false,
     leadIds: [],
   });
+  const [sort, setSort] = useState<{
+    column: string;
+    direction: 'asc' | 'desc';
+  }>({
+    column: 'createdAt',
+    direction: 'desc',
+  });
+
+  const handleSort = (column: string) => {
+    setSort((prev) => ({
+      column,
+      direction:
+        prev.column === column && prev.direction === 'desc' ? 'asc' : 'desc',
+    }));
+  };
 
   const categories = React.useMemo(
     () => Array.from(new Set(leads.map((lead) => lead.category))),
@@ -60,10 +75,32 @@ export function LeadsTable() {
     });
   }, [leads, searchQuery, categoryFilter]);
 
+  const sortedAndFilteredLeads = React.useMemo(() => {
+    return [...filteredLeads].sort((a, b) => {
+      const modifier = sort.direction === 'desc' ? -1 : 1;
+
+      switch (sort.column) {
+        case 'email':
+          return modifier * a.email.localeCompare(b.email);
+        case 'phone':
+          return modifier * (a.phone || '').localeCompare(b.phone || '');
+        case 'category':
+          return modifier * a.category.localeCompare(b.category);
+        case 'createdAt':
+          return (
+            modifier *
+            (new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+          );
+        default:
+          return 0;
+      }
+    });
+  }, [filteredLeads, sort]);
+
   const paginatedLeads = React.useMemo(() => {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    return filteredLeads.slice(start, start + ITEMS_PER_PAGE);
-  }, [filteredLeads, currentPage]);
+    return sortedAndFilteredLeads.slice(start, start + ITEMS_PER_PAGE);
+  }, [sortedAndFilteredLeads, currentPage]);
 
   const totalPages = Math.ceil(filteredLeads.length / ITEMS_PER_PAGE);
 
@@ -213,41 +250,51 @@ export function LeadsTable() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  {columns({ onDelete: (ids) => openDeleteDialog(ids) }).map(
-                    (column) => (
-                      <TableHead key={column.id}>
-                        {column.id === 'select' &&
-                        typeof column.header === 'function'
-                          ? (column.header({
-                              checked:
-                                paginatedLeads.length > 0 &&
-                                paginatedLeads.every((lead) =>
-                                  selectedLeads.has(lead.id)
-                                ),
-                              onCheckedChange: handleSelectAll,
-                            }) as React.ReactNode)
-                          : (column.header as React.ReactNode)}
-                      </TableHead>
-                    )
-                  )}
+                  {columns({
+                    onDelete: (ids) => openDeleteDialog(ids),
+                    sort,
+                    onSort: handleSort,
+                  }).map((column) => (
+                    <TableHead key={column.id}>
+                      {column.id === 'select' &&
+                      typeof column.header === 'function'
+                        ? column.header({
+                            checked:
+                              paginatedLeads.length > 0 &&
+                              paginatedLeads.every((lead) =>
+                                selectedLeads.has(lead.id)
+                              ),
+                            onCheckedChange: handleSelectAll,
+                          })
+                        : typeof column.header === 'function'
+                        ? column.header({
+                            isSorted: sort.column === column.id,
+                            isDesc: sort.direction === 'desc',
+                            onSort: () => handleSort(column.id),
+                          })
+                        : column.header}
+                    </TableHead>
+                  ))}
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {paginatedLeads.map((lead) => (
                   <TableRow key={lead.id}>
-                    {columns({ onDelete: (ids) => openDeleteDialog(ids) }).map(
-                      (column) => (
-                        <TableCell key={`${lead.id}-${column.id}`}>
-                          {column.id === 'select'
-                            ? column.cell({
-                                checked: selectedLeads.has(lead.id),
-                                onCheckedChange: (checked) =>
-                                  handleSelectLead(checked, lead.id),
-                              })
-                            : column.cell(lead)}
-                        </TableCell>
-                      )
-                    )}
+                    {columns({
+                      onDelete: (ids) => openDeleteDialog(ids),
+                      sort,
+                      onSort: handleSort,
+                    }).map((column) => (
+                      <TableCell key={`${lead.id}-${column.id}`}>
+                        {column.id === 'select'
+                          ? column.cell({
+                              checked: selectedLeads.has(lead.id),
+                              onCheckedChange: (checked) =>
+                                handleSelectLead(checked, lead.id),
+                            })
+                          : column.cell(lead)}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 ))}
                 {paginatedLeads.length === 0 && (
