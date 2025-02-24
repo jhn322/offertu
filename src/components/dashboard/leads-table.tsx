@@ -51,6 +51,7 @@ export function LeadsTable() {
     direction: 'desc',
   });
 
+  // Handler for sorting
   const handleSort = (column: string) => {
     setSort((prev) => ({
       column,
@@ -59,22 +60,42 @@ export function LeadsTable() {
     }));
   };
 
+  // Get all categories
   const categories = React.useMemo(
     () => Array.from(new Set(leads.map((lead) => lead.category))),
     [leads]
   );
 
   const filteredLeads = React.useMemo(() => {
+    if (!searchQuery && categoryFilter === 'all') {
+      return leads;
+    }
     return leads.filter((lead) => {
-      const matchesSearch = lead.email
-        .toLowerCase()
-        .includes(searchQuery.toLowerCase());
-      const matchesCategory =
-        categoryFilter === 'all' || lead.category === categoryFilter;
-      return matchesSearch && matchesCategory;
+      const searchLower = searchQuery.toLowerCase().trim();
+      if (searchLower) {
+        // Email search
+        const matchesEmail = lead.email.toLowerCase().includes(searchLower);
+
+        // Phone search - handle null/undefined cases
+        const matchesPhone = lead.phone
+          ? lead.phone.toLowerCase().includes(searchLower)
+          : false;
+
+        // Check if either email or phone matches
+        const matchesSearch = matchesEmail || matchesPhone;
+        if (categoryFilter !== 'all') {
+          return matchesSearch && lead.category === categoryFilter;
+        }
+        return matchesSearch;
+      }
+      if (categoryFilter !== 'all') {
+        return lead.category === categoryFilter;
+      }
+      return true;
     });
   }, [leads, searchQuery, categoryFilter]);
 
+  // Sort and filter leads
   const sortedAndFilteredLeads = React.useMemo(() => {
     return [...filteredLeads].sort((a, b) => {
       const modifier = sort.direction === 'desc' ? -1 : 1;
