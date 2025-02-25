@@ -17,6 +17,36 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LeadResponse } from '@/types';
 
+// Specific interfaces for the header props
+interface CheckboxHeaderProps {
+  checked: boolean;
+  onCheckedChange: (checked: boolean) => void;
+}
+
+interface SortHeaderProps {
+  isSorted: boolean;
+  isDesc: boolean;
+  onSort: () => void;
+  children: React.ReactNode;
+}
+
+// Update the Column interface to use the specific types
+interface Column {
+  id: string;
+  header:
+    | string
+    | React.ReactNode
+    | ((props: CheckboxHeaderProps | SortHeaderProps) => React.ReactNode);
+  cell: (props: CellProps) => React.ReactNode;
+}
+
+// Type guard to differentiate between CheckboxHeaderProps and SortHeaderProps
+function isCheckboxHeaderProps(
+  props: CheckboxHeaderProps | SortHeaderProps
+): props is CheckboxHeaderProps {
+  return (props as CheckboxHeaderProps).onCheckedChange !== undefined;
+}
+
 // Column types
 type CellProps =
   | LeadResponse
@@ -25,36 +55,13 @@ type CellProps =
       onCheckedChange: (checked: boolean) => void;
     };
 
-interface Column {
-  id: string;
-  header: string | React.ReactNode | ((props: any) => React.ReactNode);
-  cell: (
-    props:
-      | LeadResponse
-      | {
-          checked: boolean;
-          onCheckedChange: (checked: boolean) => void;
-        }
-  ) => React.ReactNode;
-}
-interface ColumnProps extends Column {
-  onDelete?: (ids: string[]) => void;
-}
-
-interface SortableHeaderProps {
-  children: React.ReactNode;
-  isSorted: boolean;
-  isDesc: boolean;
-  onSort: () => void;
-}
-
 // Sort by desc/asc
 const SortableHeader = ({
   children,
   isSorted,
   isDesc,
   onSort,
-}: SortableHeaderProps) => (
+}: SortHeaderProps) => (
   <Button
     variant="ghost"
     size="sm"
@@ -82,22 +89,21 @@ export const columns = ({
   onDelete: (id: string[]) => void;
   sort: { column: string; direction: 'asc' | 'desc' };
   onSort: (column: string) => void;
-}): ColumnProps[] => [
+}): Column[] => [
   {
     id: 'select',
-    header: ({
-      checked,
-      onCheckedChange,
-    }: {
-      checked: boolean;
-      onCheckedChange: (checked: boolean) => void;
-    }) => (
-      <Checkbox
-        checked={checked}
-        onCheckedChange={onCheckedChange}
-        aria-label="Select all"
-      />
-    ),
+    header: (props) => {
+      if (isCheckboxHeaderProps(props)) {
+        return (
+          <Checkbox
+            checked={props.checked}
+            onCheckedChange={props.onCheckedChange}
+            aria-label="Select all"
+          />
+        );
+      }
+      return null;
+    },
     cell: (props: CellProps) => {
       if ('checked' in props) {
         return (

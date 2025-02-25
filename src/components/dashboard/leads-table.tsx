@@ -27,7 +27,11 @@ import { toast } from 'sonner';
 
 const ITEMS_PER_PAGE = 15;
 
-export function LeadsTable() {
+export function LeadsTable({
+  onLeadsUpdate,
+}: {
+  onLeadsUpdate: (leads: LeadResponse[]) => void;
+}) {
   const [leads, setLeads] = useState<LeadResponse[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -177,6 +181,9 @@ export function LeadsTable() {
       setLeads(data.data);
       setSelectedLeads(new Set());
 
+      // Update the leads in the overview
+      onLeadsUpdate(data.data);
+
       // Success toast
       toast.success(
         ids.length === 1
@@ -293,6 +300,10 @@ export function LeadsTable() {
                             isSorted: sort.column === column.id,
                             isDesc: sort.direction === 'desc',
                             onSort: () => handleSort(column.id),
+                            children:
+                              typeof column.header === 'function'
+                                ? null
+                                : column.header,
                           })
                         : column.header}
                     </TableHead>

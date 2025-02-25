@@ -7,38 +7,47 @@ import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
 import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
 
-export function LeadsOverview() {
-  const [leads, setLeads] = useState<LeadResponse[]>([]);
+interface LeadsOverviewProps {
+  leads: LeadResponse[];
+}
+
+export function LeadsOverview({ leads }: LeadsOverviewProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    async function fetchLeadData() {
-      try {
-        const response = await fetch('/api/leads');
-        if (!response.ok) throw new Error('Failed to fetch leads');
+    // Only handle loading state if no leads are provided yet
+    if (leads.length > 0) {
+      setIsLoading(false);
+    } else {
+      async function fetchLeadData() {
+        try {
+          const response = await fetch('/api/leads');
+          if (!response.ok) throw new Error('Failed to fetch leads');
 
-        const data = await response.json();
-        if (!data.success) {
-          throw new Error(data.error || 'Failed to fetch leads');
+          const data = await response.json();
+          if (!data.success) {
+            throw new Error(data.error || 'Failed to fetch leads');
+          }
+        } catch (error) {
+          console.error('Error fetching leads:', error);
+          setError('Could not load leads data');
+        } finally {
+          setIsLoading(false);
         }
-        setLeads(data.data);
-      } catch (error) {
-        console.error('Error fetching leads:', error);
-        setError('Could not load leads data');
-      } finally {
-        setIsLoading(false);
       }
-    }
 
-    fetchLeadData();
-  }, []);
+      fetchLeadData();
+    }
+  }, [leads]);
 
   if (isLoading) return <LeadsOverviewSkeleton />;
   if (error) return <div>Error: {error}</div>;
 
   // Get total number of leads
   const totalLeads = leads.length;
+
+  // Calculate category counts
   const categoryCounts = leads.reduce((acc, lead) => {
     acc[lead.category] = (acc[lead.category] || 0) + 1;
     return acc;
