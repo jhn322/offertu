@@ -15,6 +15,15 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Category translations
+  const categoryTranslations: Record<string, string> = {
+    careers: 'Karriär',
+    news: 'Nyheter',
+    service: 'Service',
+    api: 'API',
+    templates: 'Mallar',
+  };
+
   useEffect(() => {
     // Only handle loading state if no leads are provided yet
     if (leads.length > 0) {
@@ -79,7 +88,7 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
         <Card key={category}>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium capitalize">
-              {category} Leads
+              {categoryTranslations[category] || category} Leads
             </CardTitle>
           </CardHeader>
           <CardContent>

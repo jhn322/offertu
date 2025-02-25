@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/tooltip';
 import { jobs } from '@/app/karriarer/data';
 import { format } from 'date-fns';
+import { sv } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -261,7 +262,18 @@ export const columns = ({
     ),
     cell: (props: CellProps) => {
       if ('category' in props) {
-        return <Badge variant="outline">{props.category}</Badge>;
+        // Category translation
+        const categoryTranslations: Record<string, string> = {
+          careers: 'Karriär',
+          news: 'Nyheter',
+          service: 'Startsida',
+          api: 'API',
+          templates: 'Mallar',
+        };
+
+        const translatedCategory =
+          categoryTranslations[props.category] || props.category;
+        return <Badge variant="outline">{translatedCategory}</Badge>;
       }
       return null;
     },
@@ -279,7 +291,7 @@ export const columns = ({
     ),
     cell: (props: CellProps) => {
       if ('createdAt' in props) {
-        return format(new Date(props.createdAt), 'PPP');
+        return format(new Date(props.createdAt), 'PPP', { locale: sv });
       }
       return null;
     },
