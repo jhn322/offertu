@@ -154,6 +154,46 @@ export const columns = ({
     },
   },
   {
+    id: 'id',
+    header: () => (
+      <SortableHeader
+        isSorted={sort.column === 'id'}
+        isDesc={sort.direction === 'desc'}
+        onSort={() => onSort('id')}
+      >
+        ID
+      </SortableHeader>
+    ),
+    cell: (props: CellProps) => {
+      if ('id' in props) {
+        return (
+          <span className="font-mono text-xs text-muted-foreground">
+            {props.id}
+          </span>
+        );
+      }
+      return null;
+    },
+  },
+  {
+    id: 'referenceId',
+    header: () => (
+      <SortableHeader
+        isSorted={sort.column === 'referenceId'}
+        isDesc={sort.direction === 'desc'}
+        onSort={() => onSort('referenceId')}
+      >
+        Referens ID
+      </SortableHeader>
+    ),
+    cell: (props: CellProps) => {
+      if ('referenceId' in props) {
+        return <Badge variant="outline">{props.referenceId || 'N/A'}</Badge>;
+      }
+      return null;
+    },
+  },
+  {
     id: 'category',
     header: () => (
       <SortableHeader
