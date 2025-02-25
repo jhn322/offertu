@@ -2,8 +2,16 @@
 
 import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import { ArrowDownIcon, ArrowUpIcon } from '@radix-ui/react-icons';
+import { InfoIcon } from 'lucide-react';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { jobs } from '@/app/karriarer/data';
 import { format } from 'date-fns';
-
+import { sv } from 'date-fns/locale';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -154,6 +162,94 @@ export const columns = ({
     },
   },
   {
+    id: 'id',
+    header: () => (
+      <SortableHeader
+        isSorted={sort.column === 'id'}
+        isDesc={sort.direction === 'desc'}
+        onSort={() => onSort('id')}
+      >
+        ID
+      </SortableHeader>
+    ),
+    cell: (props: CellProps) => {
+      if ('id' in props) {
+        const handleClick = async () => {
+          await navigator.clipboard.writeText(props.id);
+          // Create a temporary span
+          const span = document.createElement('span');
+          span.textContent = 'Kopierad';
+          span.className =
+            'absolute -top-6 left-0 text-xs text-green-500 bg-white px-2 py-1 rounded shadow-sm';
+
+          // Get the clicked element and append
+          const element = document.activeElement;
+          if (element instanceof HTMLElement) {
+            element.style.position = 'relative';
+            element.appendChild(span);
+
+            // 2 second timeout
+            setTimeout(() => span.remove(), 2000);
+          }
+        };
+
+        return (
+          <span
+            className="font-mono text-xs text-muted-foreground cursor-pointer hover:text-primary"
+            onClick={handleClick}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+          >
+            {props.id}
+          </span>
+        );
+      }
+      return null;
+    },
+  },
+  {
+    id: 'referenceId',
+    header: () => (
+      <SortableHeader
+        isSorted={sort.column === 'referenceId'}
+        isDesc={sort.direction === 'desc'}
+        onSort={() => onSort('referenceId')}
+      >
+        Referens ID
+      </SortableHeader>
+    ),
+    cell: (props: CellProps) => {
+      if ('referenceId' in props) {
+        console.log('Reference ID:', props.referenceId);
+        console.log('Jobs:', jobs);
+
+        const job = jobs.find((job) => job.id === props.referenceId);
+        return (
+          <div className="flex items-center">
+            <Badge variant="outline">{props.referenceId || 'N/A'}</Badge>
+            {job && (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <InfoIcon className="h-4 w-4 text-black cursor-help -ml-1" />
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-white">
+                    <p>
+                      {' '}
+                      <span className="font-bold">Tjänst:</span> {job.title}
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
+        );
+      }
+      return null;
+    },
+  },
+  {
     id: 'category',
     header: () => (
       <SortableHeader
@@ -166,7 +262,18 @@ export const columns = ({
     ),
     cell: (props: CellProps) => {
       if ('category' in props) {
-        return <Badge variant="outline">{props.category}</Badge>;
+        // Category translation
+        const categoryTranslations: Record<string, string> = {
+          careers: 'Karriär',
+          news: 'Nyheter',
+          service: 'Startsida',
+          api: 'API',
+          templates: 'Mallar',
+        };
+
+        const translatedCategory =
+          categoryTranslations[props.category] || props.category;
+        return <Badge variant="outline">{translatedCategory}</Badge>;
       }
       return null;
     },
@@ -184,7 +291,7 @@ export const columns = ({
     ),
     cell: (props: CellProps) => {
       if ('createdAt' in props) {
-        return format(new Date(props.createdAt), 'PPP');
+        return format(new Date(props.createdAt), 'PPP', { locale: sv });
       }
       return null;
     },
