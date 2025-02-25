@@ -1,6 +1,12 @@
 import LeadForm from '../LeadForm';
 // import LeadSubmissionForm from '../LeadSubmissionForm';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 export default function Header() {
   return (
@@ -54,7 +60,19 @@ export default function Header() {
             </CardContent>
 
             <div>
-              <LeadForm />
+              {/* Ansökningsformulär */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Anmäl intresse</CardTitle>
+                  <CardDescription>
+                    Fyll i formuläret nedan så återkommer vi inom kort med mer
+                    information.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <LeadForm category="service" />
+                </CardContent>
+              </Card>
             </div>
           </CardHeader>
 

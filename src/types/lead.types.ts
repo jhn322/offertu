@@ -13,7 +13,7 @@ export type CreateLeadInput = z.infer<typeof leadSchema>
 export type UpdateLeadInput = Partial<CreateLeadInput>;
 
 export interface LeadFormProps {
-  category?: LeadCategory
+  category: LeadCategory
   referenceId?: string
   showEmail?: boolean
   showPhone?: boolean

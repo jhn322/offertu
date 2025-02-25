@@ -124,7 +124,6 @@ export default async function JobDetail({
               <LeadForm
                 category="careers"
                 referenceId={job.id}
-                cardTitle="Ansök nu"
                 showPhone={false}
               />
             </CardContent>
