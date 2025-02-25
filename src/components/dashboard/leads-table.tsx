@@ -110,6 +110,12 @@ export function LeadsTable({
           return modifier * a.email.localeCompare(b.email);
         case 'phone':
           return modifier * (a.phone || '').localeCompare(b.phone || '');
+        case 'id':
+          return modifier * a.id.localeCompare(b.id);
+        case 'referenceId':
+          return (
+            modifier * (a.referenceId || '').localeCompare(b.referenceId || '')
+          );
         case 'category':
           return modifier * a.category.localeCompare(b.category);
         case 'createdAt':
