@@ -4,6 +4,7 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
+  DialogOverlay,
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -23,24 +24,26 @@ export function DeleteConfirmDialog({
 }: DeleteConfirmDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Bekräfta borttagning</DialogTitle>
-          <DialogDescription>
-            {itemCount === 1
-              ? 'Är du säker på att du vill ta bort denna lead? Detta går inte att ångra.'
-              : `Är du säker på att du vill ta bort ${itemCount} leads? Detta går inte att ångra.`}
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter>
-          <Button variant="outline" onClick={onClose}>
-            Avbryt
-          </Button>
-          <Button variant="destructive" onClick={onConfirm}>
-            Ta bort
-          </Button>
-        </DialogFooter>
-      </DialogContent>
+      <DialogOverlay className="bg-black/80">
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Bekräfta borttagning</DialogTitle>
+            <DialogDescription>
+              {itemCount === 1
+                ? 'Är du säker på att du vill ta bort denna lead? Detta går inte att ångra.'
+                : `Är du säker på att du vill ta bort ${itemCount} leads? Detta går inte att ångra.`}
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button variant="outline" onClick={onClose}>
+              Avbryt
+            </Button>
+            <Button variant="destructive" onClick={onConfirm}>
+              Ta bort
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </DialogOverlay>
     </Dialog>
   );
 }
