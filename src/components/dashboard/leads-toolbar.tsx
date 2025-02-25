@@ -31,16 +31,16 @@ export function LeadsToolbar({
   onDeleteSelected,
 }: LeadsToolbarProps) {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+    <div className="flex flex-col sm:flex-row gap-2">
+      <div className="flex flex-1 flex-wrap gap-2">
         <Input
           placeholder="Filtrera leads..."
           value={searchQuery}
           onChange={(e) => onSearchChange(e.target.value)}
-          className="h-8 w-[150px] lg:w-[250px]"
+          className="h-8 min-w-[150px] flex-1 sm:max-w-[250px]"
         />
         <Select value={categoryFilter} onValueChange={onCategoryChange}>
-          <SelectTrigger className="h-8 w-[150px]">
+          <SelectTrigger className="h-8 w-full sm:w-[150px]">
             <SelectValue placeholder="All categories" />
           </SelectTrigger>
           <SelectContent className="bg-white">
@@ -59,7 +59,7 @@ export function LeadsToolbar({
           </SelectContent>
         </Select>
       </div>
-      <div className="ml-2 mb-1 h-8 flex items-center">
+      <div className="flex h-8 items-center">
         {selectedCount > 0 ? (
           <Button
             variant="destructive"
@@ -67,7 +67,7 @@ export function LeadsToolbar({
             onClick={onDeleteSelected}
             className="flex items-center"
           >
-            <TrashIcon className="h-4 w-4" />
+            <TrashIcon className="h-4 w-4 mr-2" />
             Ta bort ({selectedCount})
           </Button>
         ) : (
