@@ -38,7 +38,7 @@ export default function ToolsPage() {
   return (
     <>
       <Navbar />
-      <section className="container py-8 md:py-12">
+      <section className="container py-12">
         <div className="flex flex-col gap-6">
           <div className="space-y-4">
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
