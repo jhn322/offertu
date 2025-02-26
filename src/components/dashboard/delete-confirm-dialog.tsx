@@ -24,7 +24,7 @@ export function DeleteConfirmDialog({
 }: DeleteConfirmDialogProps) {
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogOverlay className="bg-black/80">
+      <DialogOverlay className="bg-slate-900/40 backdrop-blur-[2px]">
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Bekräfta borttagning</DialogTitle>
