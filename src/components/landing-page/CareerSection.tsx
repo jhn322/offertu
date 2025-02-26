@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { ArrowRight, Users } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import Link from 'next/link';
+import { ArrowRight, Users } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function CareerSection() {
   return (
@@ -14,7 +14,7 @@ export default function CareerSection() {
             </h2>
             <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
               Vi söker talanger som vill vara med och forma framtidens
-              offerthantering:
+              offerthantering.
             </p>
           </div>
         </div>
