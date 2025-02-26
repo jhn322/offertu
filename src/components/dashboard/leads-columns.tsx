@@ -232,7 +232,7 @@ export const columns = ({
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <InfoIcon className="h-4 w-4 text-black cursor-help -ml-1" />
+                    <InfoIcon className="h-4 w-4 text-black cursor-help gap-1" />
                   </TooltipTrigger>
                   <TooltipContent className="bg-white">
                     <p>
@@ -266,7 +266,7 @@ export const columns = ({
         const categoryTranslations: Record<string, string> = {
           careers: 'Karriär',
           news: 'Nyheter',
-          service: 'Startsida',
+          service: 'Service',
           api: 'API',
           templates: 'Mallar',
         };
