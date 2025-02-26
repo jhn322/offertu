@@ -22,6 +22,7 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
     service: 'Service',
     api: 'API',
     templates: 'Mallar',
+    tools: 'Verktyg',
   };
 
   useEffect(() => {

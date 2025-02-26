@@ -269,6 +269,7 @@ export const columns = ({
           service: 'Service',
           api: 'API',
           templates: 'Mallar',
+          tools: 'Verktyg',
         };
 
         const translatedCategory =
