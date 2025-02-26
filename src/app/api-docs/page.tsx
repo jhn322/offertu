@@ -13,13 +13,6 @@ import { ArrowRight, Code, Lock, Zap } from 'lucide-react';
 import { Navbar } from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import LeadForm from '@/components/LeadForm';
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogDescription,
-//   DialogOverlay,
-//   DialogTitle,
-// } from '@radix-ui/react-dialog';
 import {
   DialogHeader,
   Dialog,
