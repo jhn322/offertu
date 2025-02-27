@@ -28,8 +28,8 @@ export default async function JobDetail({
   return (
     <>
       <Navbar />
-      <main className="container py-12">
-        <div className="mx-auto max-w-[800px] space-y-8">
+      <main className="mx-auto py-12">
+        <div className="container space-y-8">
           {/* Header Card */}
           <Card>
             <CardHeader className="space-y-4">
