@@ -99,6 +99,8 @@ export default async function ArticlePage({
                 src={article.image || '/nyheter/placeholder.jpg'}
                 alt={article.title}
                 className="h-full w-full object-cover"
+                width={1200}
+                height={600}
               />
             </div>
 
