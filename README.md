@@ -40,7 +40,7 @@ src/
 │   │   └── sheets/
 │   │       └── sync/
 │   │           └── route.ts    # Sync endpoint
-│   ├── api-docs/               # API documentation
+│   ├── api-dokumentation/               # API documentation
 │   ├── integritetspolicy/      # Privacy policy
 │   ├── karriarer/              # Careers
 │   ├── mallar/                 # Templates

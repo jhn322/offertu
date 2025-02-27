@@ -63,7 +63,7 @@ export default function Footer() {
               <div className="space-y-3">
                 <CardTitle className="font-semibold text-base">API</CardTitle>
                 <div className="grid gap-2">
-                  <Link href="/api-docs">
+                  <Link href="/api-dokumentation">
                     <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
                       Dokumentation
                     </CardDescription>
