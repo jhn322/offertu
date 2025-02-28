@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ChevronLeft, CalendarDays, Clock, Share2 } from 'lucide-react';
@@ -12,29 +11,15 @@ import Footer from '../../../components/Footer';
 import { TableOfContents } from '../table-of-contents';
 import { articles } from '../data';
 
-export async function generateMetadata({
+export default async function ArticlePage({
   params,
 }: {
-  params: { slug: string };
-}): Promise<Metadata> {
-  const slug = params.slug;
-  const article = articles.find((article) => article.slug === slug);
-
-  if (!article) {
-    return {
-      title: 'Artikel Hittades Inte',
-    };
-  }
-
-  return {
-    title: `${article.title} | Nyheter`,
-    description: article.excerpt,
-  };
-}
-
-export default function ArticlePage({ params }: { params: { slug: string } }) {
-  const slug = params.slug;
-  const article = articles.find((article) => article.slug === slug);
+  params: Promise<{ slug: string }>;
+}) {
+  const resolvedParams = await params;
+  const article = articles.find(
+    (article) => article.slug === resolvedParams.slug
+  );
 
   if (!article) {
     notFound();
