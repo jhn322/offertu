@@ -12,23 +12,26 @@ export default function Footer() {
       <div className="container px-4 py-8 md:py-12">
         <div className="flex flex-col space-y-8">
           {/* Logos */}
-          <div className="flex space-x-6">
-            <CardContent className="h-12 w-32 relative">
-              <AspectRatio ratio={32 / 12} className="w-32">
+          <div className="flex space-x-6 h-12">
+            <div className="w-24 relative">
+              <AspectRatio ratio={1 / 1} className="w-full">
                 <Image
-                  src="/placeholder.svg"
+                  src="/logo1.png"
                   alt="Logo 1"
                   fill
+                  sizes="(max-width: 768px) 96px, 96px"
+                  priority
                   className="object-contain"
                 />
               </AspectRatio>
-            </CardContent>
-            <div className="h-12 w-32 relative">
-              <AspectRatio ratio={32 / 12} className="w-32">
+            </div>
+            <div className="w-24 relative">
+              <AspectRatio ratio={1 / 1} className="w-full">
                 <Image
-                  src="/placeholder.svg"
+                  src="/logo2.png"
                   alt="Logo 2"
                   fill
+                  sizes="(max-width: 768px) 96px, 96px"
                   className="object-contain"
                 />
               </AspectRatio>
@@ -60,7 +63,7 @@ export default function Footer() {
                   </Link>
                 </div>
               </CardContent>
-              <div className="space-y-3">
+              <CardContent className="space-y-3">
                 <CardTitle className="font-semibold text-base">API</CardTitle>
                 <div className="grid gap-2">
                   <Link href="/api-dokumentation">
@@ -69,7 +72,7 @@ export default function Footer() {
                     </CardDescription>
                   </Link>
                 </div>
-              </div>
+              </CardContent>
             </nav>
 
             {/* Brand */}
