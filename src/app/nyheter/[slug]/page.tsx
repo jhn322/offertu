@@ -17,7 +17,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const slug = (await params).slug;
+  const slug = params.slug;
   const article = articles.find((article) => article.slug === slug);
 
   if (!article) {
@@ -32,12 +32,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: { slug: string };
-}) {
-  const slug = (await params).slug;
+export default function ArticlePage({ params }: { params: { slug: string } }) {
+  const slug = params.slug;
   const article = articles.find((article) => article.slug === slug);
 
   if (!article) {
