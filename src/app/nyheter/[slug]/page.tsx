@@ -1,4 +1,4 @@
-import { Metadata } from 'next';
+// import { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ChevronLeft, CalendarDays, Clock, Share2 } from 'lucide-react';
@@ -12,38 +12,15 @@ import Footer from '../../../components/Footer';
 import { TableOfContents } from '../table-of-contents';
 import { articles } from '../data';
 
-type Props = {
-  params: { slug: string };
-};
-
-// Generate metadata
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  if (!params?.slug) {
-    return {
-      title: 'Artikel hittades inte',
-    };
-  }
-
-  const article = articles.find((article) => article.slug === params.slug);
-
-  if (!article) {
-    return {
-      title: 'Artikel hittades inte',
-    };
-  }
-
-  return {
-    title: `${article.title} | Offertu Nyheter`,
-    description: article.excerpt,
-  };
-}
-
-export default async function ArticlePage({ params }: Props) {
-  if (!params?.slug) {
-    notFound();
-  }
-
-  const article = articles.find((article) => article.slug === params.slug);
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const resolvedParams = await params;
+  const article = articles.find(
+    (article) => article.slug === resolvedParams.slug
+  );
 
   if (!article) {
     notFound();
@@ -65,7 +42,7 @@ export default async function ArticlePage({ params }: Props) {
             </Link>
           </Button>
 
-          <Badge className="mb-4 ml-2 bg-[#4683FF] hover:bg-[#4683FF]/90">
+          <Badge className="mb-4 ml-2 bg-[#4683FF] hover:bg-[#4683FF]/90 text-white">
             {article.category}
           </Badge>
 
