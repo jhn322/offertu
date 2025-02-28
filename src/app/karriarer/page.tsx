@@ -56,7 +56,7 @@ export default function Career() {
                     <Button
                       asChild
                       variant="ghost"
-                      className="group-hover:translate-x-1 transition-transform duration-300 hover:bg-secondary hover:text-primary-foreground"
+                      className="group-hover:translate-x-1 transition-transform duration-300 bg-primary hover:bg-secondary hover:text-white"
                     >
                       <Link href={`/karriarer/${job.slug}`}>
                         Läs mer och ansök{' '}
