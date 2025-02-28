@@ -40,7 +40,7 @@ src/
 │   │   └── sheets/
 │   │       └── sync/
 │   │           └── route.ts    # Sync endpoint
-│   ├── api-docs/               # API documentation
+│   ├── api-dokumentation/      # API documentation
 │   ├── integritetspolicy/      # Privacy policy
 │   ├── karriarer/              # Careers
 │   ├── mallar/                 # Templates
@@ -53,13 +53,12 @@ src/
 │   ├── not-found.tsx          # 404 page
 │   └── page.tsx               # Home page
 ├── components/
-│   ├── LeadSubmissionForm.tsx  # Main form component
-│   ├── Hero.tsx               # Hero section
-│   ├── ApiSection.tsx         # API section
-│   ├── CareerSection.tsx      # Career section
-│   ├── ResourcesSection.tsx   # Resources section
-│   ├── Navbar.tsx            # Navigation menu
-│   └── ui/                   # UI components
+│   ├── dashboard/             # Dashboard components
+│   ├── landing-page/          # Front page components
+|   ├── ui/                    # UI components
+│   ├── Footer.tsx             # Footer component
+│   ├── LeadForm.tsx           # Main form component
+│   └── Navbar.tsx             # Navigation menu
 ├── lib/
 │   ├── db/
 │   │   └── prisma.ts         # Database client

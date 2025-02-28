@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { ArrowRight, Code2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from 'next/link';
+import { ArrowRight, Code2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function ApiSection() {
   return (
@@ -38,7 +38,7 @@ export default function ApiSection() {
               </p>
               <Button asChild className="bg-[#FFAE00] hover:bg-primary/90">
                 <Link
-                  href="/api-docs"
+                  href="/api-dokumentation"
                   className="inline-flex items-center gap-2"
                 >
                   Kom igång med API

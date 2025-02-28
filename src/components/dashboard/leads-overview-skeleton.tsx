@@ -1,7 +1,7 @@
 export function LeadsOverviewSkeleton() {
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {[...Array(5)].map((_, i) => (
+      {[...Array(8)].map((_, i) => (
         <div
           key={i}
           className="rounded-lg border bg-card text-card-foreground shadow-sm"
