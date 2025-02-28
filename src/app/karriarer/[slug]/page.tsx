@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { jobs } from '../data';
 import { Navbar } from '@/components/Navbar';
@@ -11,13 +12,38 @@ import {
 } from '@/components/ui/card';
 import LeadForm from '@/components/LeadForm';
 
-export default async function JobDetail({
-  params,
-}: {
-  params: Promise<{ slug: string }>;
-}) {
-  const resolvedParams = await params;
-  const job = jobs.find((job) => job.slug === resolvedParams.slug);
+type Props = {
+  params: { slug: string };
+};
+
+// Generate metadata
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  if (!params?.slug) {
+    return {
+      title: 'Tjänst hittades inte',
+    };
+  }
+
+  const job = jobs.find((job) => job.slug === params.slug);
+
+  if (!job) {
+    return {
+      title: 'Tjänst hittades inte',
+    };
+  }
+
+  return {
+    title: `${job.title} | Offertu Karriär`,
+    description: job.description,
+  };
+}
+
+export default function JobDetail({ params }: Props) {
+  if (!params?.slug) {
+    notFound();
+  }
+
+  const job = jobs.find((job) => job.slug === params.slug);
 
   if (!job) {
     notFound();
