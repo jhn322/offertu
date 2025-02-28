@@ -38,7 +38,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function JobDetail({ params }: Props) {
+export default async function JobDetail({ params }: Props) {
   if (!params?.slug) {
     notFound();
   }
