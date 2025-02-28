@@ -1,4 +1,3 @@
-// import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ChevronLeft, CalendarDays, Clock, Share2 } from 'lucide-react';
