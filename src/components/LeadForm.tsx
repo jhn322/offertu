@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { leadSchema, type LeadFormData } from '@/lib/validations/lead.schema';
 import { LeadFormProps } from '@/types';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react'; // Import useState for managing loading state
+import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -61,7 +61,6 @@ export default function LeadForm({
 
       // Clear form after successful submission
       form.reset();
-
       // Redirect to thank you page with lead ID
       router.push(`/tack?id=${responseData.id}`);
     } catch (err) {
@@ -78,6 +77,7 @@ export default function LeadForm({
         className="space-y-4"
         method="POST"
         autoComplete="on"
+        name="lead-form"
       >
         {/* Email Field */}
         {showEmail && (
@@ -86,14 +86,17 @@ export default function LeadForm({
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel htmlFor="email">Email</FormLabel>
                 <FormControl>
                   <Input
+                    {...field}
                     id="email"
-                    placeholder="Skriv in din email"
+                    name="email"
                     type="email"
                     autoComplete="email"
-                    {...field}
+                    placeholder="Skriv in din email"
+                    spellCheck="false"
+                    autoCapitalize="none"
                   />
                 </FormControl>
                 <FormMessage />
@@ -109,14 +112,15 @@ export default function LeadForm({
             name="phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Telefon</FormLabel>
+                <FormLabel htmlFor="phone">Telefon</FormLabel>
                 <FormControl>
                   <Input
-                    id="tel"
-                    placeholder="Skriv in ditt telefonnummer"
+                    {...field}
+                    id="phone"
+                    name="phone"
                     type="tel"
                     autoComplete="tel"
-                    {...field}
+                    placeholder="Skriv in ditt telefonnummer"
                   />
                 </FormControl>
                 <FormMessage />
