@@ -74,38 +74,77 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">
-            Totalt antal Leads
-          </CardTitle>
-        </CardHeader>
+      {/* Mobile summary card */}
+      <Card className="md:hidden col-span-full">
+        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"></CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{totalLeads}</div>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">
+                Totalt antal:
+              </span>
+              <span className="font-bold">{totalLeads}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-muted-foreground">
+                Senaste lead:
+              </span>
+              <span className="text-sm">{latestLeadTime}</span>
+            </div>
+            <div className="border-t pt-2">
+              {Object.entries(categoryCounts).map(([category, count]) => (
+                <div
+                  key={category}
+                  className="flex justify-between items-center py-1"
+                >
+                  <span className="text-sm text-muted-foreground capitalize">
+                    {categoryTranslations[category] || category}:
+                  </span>
+                  <span className="font-medium">{count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Senaste Lead</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-sm text-muted-foreground">{latestLeadTime}</div>
-        </CardContent>
-      </Card>
-
-      {Object.entries(categoryCounts).map(([category, count]) => (
-        <Card key={category}>
+      {/* Larger screen view */}
+      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 col-span-full">
+        <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium capitalize">
-              {categoryTranslations[category] || category} Leads
+            <CardTitle className="text-sm font-medium">
+              Totalt antal Leads
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{count}</div>
+            <div className="text-2xl font-bold">{totalLeads}</div>
           </CardContent>
         </Card>
-      ))}
+
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Senaste Lead</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="text-sm text-muted-foreground">
+              {latestLeadTime}
+            </div>
+          </CardContent>
+        </Card>
+
+        {Object.entries(categoryCounts).map(([category, count]) => (
+          <Card key={category}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium capitalize">
+                {categoryTranslations[category] || category} Leads
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{count}</div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   );
 }

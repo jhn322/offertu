@@ -20,7 +20,6 @@ export default function Footer() {
                   alt="Logo 1"
                   fill
                   sizes="(max-width: 768px) 96px, 96px"
-                  priority
                   className="object-contain"
                 />
               </AspectRatio>

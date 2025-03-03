@@ -69,7 +69,7 @@ export default function ApiDocumentation() {
             </DialogContent>
           </Dialog>
 
-          <div className="mt-16 grid gap-8 md:grid-cols-3">
+          <div className=" grid gap-8 md:grid-cols-3">
             <Card>
               <CardHeader>
                 <Code className="h-10 w-10 text-primary" />

@@ -221,9 +221,6 @@ export const columns = ({
     ),
     cell: (props: CellProps) => {
       if ('referenceId' in props) {
-        console.log('Reference ID:', props.referenceId);
-        console.log('Jobs:', jobs);
-
         const job = jobs.find((job) => job.id === props.referenceId);
         return (
           <div className="flex items-center">
