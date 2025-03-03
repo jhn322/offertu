@@ -36,7 +36,8 @@ const templates = [
   },
   {
     title: 'Checklistor för offertgenomgång',
-    description: 'Systematisk genomgång för kvalitetssäkring',
+    description:
+      'Systematisk genomgång för kvalitetssäkring av offerten och kontraktet',
     icon: List,
     features: ['Steg-för-steg guide', 'Kvalitetskontroll', 'Best practices'],
   },

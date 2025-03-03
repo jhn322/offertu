@@ -1,5 +1,4 @@
 // import { Metadata } from 'next';
-import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { ChevronLeft, CalendarDays, Clock, Share2 } from 'lucide-react';
 import Link from 'next/link';
@@ -11,6 +10,7 @@ import { Navbar } from '../../../components/Navbar';
 import Footer from '../../../components/Footer';
 import { TableOfContents } from '../table-of-contents';
 import { articles } from '../data';
+import { ArticleImage } from '../article-image';
 
 export default async function ArticlePage({
   params,
@@ -76,15 +76,12 @@ export default async function ArticlePage({
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_250px]">
           <div className="article-content">
-            <div className="relative mb-8 aspect-video overflow-hidden rounded-lg">
-              <Image
-                src={article.image || '/nyheter/placeholder.jpg'}
-                alt={article.title}
-                className="h-full w-full object-cover"
-                width={1200}
-                height={600}
-              />
-            </div>
+            <ArticleImage
+              src={article.image || '/nyheter/placeholder.jpg'}
+              alt={article.title}
+              width={1200}
+              height={600}
+            />
 
             <div className="prose prose-lg max-w-none">
               {article.content.map((section, index) => (
