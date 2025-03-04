@@ -79,13 +79,12 @@ export default function Header() {
             <Card className="bg-card rounded-lg">
               <CardHeader>
                 <CardTitle className="font-semibold text-lg mb-2">
-                  Spara tid
+                  Spara värdefull tid
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Låt våra erfarna kalkylatorer ta hand om beräkningarna medan
-                  du fokuserar på det du gör bäst.
+                  Vår kompetenta och erfarna personal med bakgrund i byggbranschen tar hand om dina beräkningar. I genomsnitt halverar vi din offerttid och kunder sparar 15+ timmar i veckan som de kan lägga på faktiskt arbete istället för pappersarbete.
                 </p>
               </CardContent>
             </Card>
