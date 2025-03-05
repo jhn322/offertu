@@ -29,8 +29,8 @@ export default async function ArticlePage({
   return (
     <>
       <Navbar />
-      <main className="mx-auto py-12">
-        <div className="max-w-5xl mx-auto space-y-8">
+      <main className="max-w-3xl mx-auto py-12">
+        <div className="space-y-8">
           {/* Header Card */}
           <Card>
             <CardHeader className="space-y-4">
