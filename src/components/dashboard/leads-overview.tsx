@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
@@ -73,9 +73,8 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
     : 'N/A';
 
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      {/* Mobile summary card */}
-      <Card className="md:hidden col-span-full">
+    <div className="grid gap-4">
+      <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"></CardHeader>
         <CardContent>
           <div className="space-y-3">
@@ -107,44 +106,6 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
           </div>
         </CardContent>
       </Card>
-
-      {/* Larger screen view */}
-      <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 col-span-full">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">
-              Totalt antal Leads
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{totalLeads}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Senaste Lead</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="text-sm text-muted-foreground">
-              {latestLeadTime}
-            </div>
-          </CardContent>
-        </Card>
-
-        {Object.entries(categoryCounts).map(([category, count]) => (
-          <Card key={category}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium capitalize">
-                {categoryTranslations[category] || category} Leads
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{count}</div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
     </div>
   );
 }

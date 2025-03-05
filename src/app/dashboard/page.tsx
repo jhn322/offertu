@@ -4,6 +4,7 @@ import { LeadsTable } from '@/components/dashboard/leads-table';
 import { LeadsOverview } from '@/components/dashboard/leads-overview';
 import { LeadsOverviewSkeleton } from '@/components/dashboard/leads-overview-skeleton';
 import { LeadsTableSkeleton } from '@/components/dashboard/leads-table-skeleton';
+import { LeadsCharts } from '@/components/dashboard/leads-charts';
 import { DashboardShell } from '@/components/dashboard/shell';
 import { Navbar } from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -45,9 +46,14 @@ export default function DashboardPage() {
       <Navbar />
       <DashboardShell>
         <div className="flex flex-col gap-8">
-          <Suspense fallback={<LeadsOverviewSkeleton />}>
-            <LeadsOverview leads={leads} />
-          </Suspense>
+          <div className="grid gap-4 md:grid-cols-2">
+            <Suspense fallback={<LeadsOverviewSkeleton />}>
+              <LeadsOverview leads={leads} />
+            </Suspense>
+            <Suspense fallback={<div className="h-[300px] animate-pulse" />}>
+              <LeadsCharts leads={leads} />
+            </Suspense>
+          </div>
           <Suspense fallback={<LeadsTableSkeleton />}>
             <LeadsTable onLeadsUpdate={handleLeadsUpdate} />
           </Suspense>

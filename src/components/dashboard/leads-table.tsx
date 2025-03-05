@@ -56,6 +56,10 @@ export function LeadsTable({
     direction: 'desc',
   });
 
+  React.useEffect(() => {
+    setCurrentPage(1);
+  }, [categoryFilter]);
+
   // Handler for sorting
   const handleSort = (column: string) => {
     setSort((prev) => ({
