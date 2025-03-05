@@ -29,7 +29,7 @@ export default async function ArticlePage({
   return (
     <>
       <Navbar />
-      <main className="container py-8">
+      <main className="max-w-5xl mx-auto py-8">
         <div className="mb-6">
           <Button
             variant="ghost"
