@@ -30,6 +30,15 @@ export function LeadsToolbar({
   selectedCount,
   onDeleteSelected,
 }: LeadsToolbarProps) {
+  const categoryTranslations: Record<string, string> = {
+    careers: 'Karriär',
+    news: 'Nyheter',
+    service: 'Service',
+    api: 'API',
+    templates: 'Mallar',
+    tools: 'Verktyg',
+  };
+
   return (
     <div className="flex flex-col sm:flex-row gap-2">
       <div className="flex flex-1 flex-wrap gap-2">
@@ -53,7 +62,7 @@ export function LeadsToolbar({
                 value={category}
                 className="cursor-pointer"
               >
-                {category}
+                {categoryTranslations[category] || category}
               </SelectItem>
             ))}
           </SelectContent>
