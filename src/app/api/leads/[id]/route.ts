@@ -35,6 +35,7 @@ export async function PUT(
     const body = await request.json()
     const validatedData = updateLeadSchema.safeParse(body)
 
+    // Validate the request body
     if (!validatedData.success) {
       return NextResponse.json(
         { success: false, error: validatedData.error.errors[0].message },
@@ -43,6 +44,17 @@ export async function PUT(
     }
 
     const resolvedParams = await params
+    // Check if the lead exists before updating
+    const existingLead = await leadActions.getById(resolvedParams.id)
+
+    if (!existingLead.success) {
+      return NextResponse.json(
+        { success: false, error: 'Lead not found' },
+        { status: 404 }
+      )
+    }
+
+    // Update the lead
     const result = await leadActions.update(resolvedParams.id, validatedData.data)
     return NextResponse.json(result)
   } catch (err) {
