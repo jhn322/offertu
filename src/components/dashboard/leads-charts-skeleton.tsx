@@ -15,23 +15,14 @@ export function LeadsChartsSkeleton() {
           </TabsList>
           <TabsContent value="monthly">
             <div className="h-[300px] pt-4">
+              {/* Chart area */}
+              <div className="h-[250px] w-full rounded-lg bg-muted/50 animate-pulse" />
               {/* X-axis labels */}
-              <div className="flex justify-between mb-2">
+              <div className="flex justify-between mt-2">
                 {[...Array(6)].map((_, i) => (
                   <div
                     key={i}
                     className="h-3 w-12 bg-muted animate-pulse rounded"
-                  />
-                ))}
-              </div>
-              {/* Chart area */}
-              <div className="h-[250px] w-full rounded-lg bg-muted/50 animate-pulse" />
-              {/* Y-axis labels */}
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 space-y-6">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-3 w-6 bg-muted animate-pulse rounded"
                   />
                 ))}
               </div>
@@ -39,23 +30,14 @@ export function LeadsChartsSkeleton() {
           </TabsContent>
           <TabsContent value="category">
             <div className="h-[300px] pt-4">
+              {/* Chart area */}
+              <div className="h-[250px] w-full rounded-lg bg-muted/50 animate-pulse" />
               {/* X-axis labels */}
-              <div className="flex justify-between mb-2">
+              <div className="flex justify-between mt-2">
                 {[...Array(6)].map((_, i) => (
                   <div
                     key={i}
                     className="h-3 w-12 bg-muted animate-pulse rounded"
-                  />
-                ))}
-              </div>
-              {/* Chart area */}
-              <div className="h-[250px] w-full rounded-lg bg-muted/50 animate-pulse" />
-              {/* Y-axis labels */}
-              <div className="absolute left-0 top-1/2 -translate-y-1/2 space-y-6">
-                {[...Array(5)].map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-3 w-6 bg-muted animate-pulse rounded"
                   />
                 ))}
               </div>
