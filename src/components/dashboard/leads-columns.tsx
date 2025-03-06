@@ -24,6 +24,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LeadResponse } from '@/types';
+import { categoryTranslations } from '@/lib/constants';
 
 // Specific interfaces for the header props
 interface CheckboxHeaderProps {
@@ -259,16 +260,6 @@ export const columns = ({
     ),
     cell: (props: CellProps) => {
       if ('category' in props) {
-        // Category translation
-        const categoryTranslations: Record<string, string> = {
-          careers: 'Karriär',
-          news: 'Nyheter',
-          service: 'Service',
-          api: 'API',
-          templates: 'Mallar',
-          tools: 'Verktyg',
-        };
-
         const translatedCategory =
           categoryTranslations[props.category] || props.category;
         return <Badge variant="outline">{translatedCategory}</Badge>;

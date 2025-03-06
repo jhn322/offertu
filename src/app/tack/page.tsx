@@ -117,8 +117,13 @@ function ThanksContent() {
 
               <div className="text-center">
                 <p className="text-muted-foreground">
-                  Under tiden är du välkommen att utforska våra resurser och
-                  verktyg
+                  Under tiden är du välkommen att utforska våra{' '}
+                  <Link
+                    href="/verktyg-resurser"
+                    className="underline hover:text-primary"
+                  >
+                    verktyg
+                  </Link>
                 </p>
               </div>
             </>
