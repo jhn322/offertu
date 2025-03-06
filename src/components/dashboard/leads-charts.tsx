@@ -19,6 +19,7 @@ import { sv } from 'date-fns/locale';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LeadsChartsSkeleton } from './leads-charts-skeleton';
 import { useState, useEffect } from 'react';
+import { categoryTranslations } from '@/lib/constants';
 
 interface LeadsChartsProps {
   leads: LeadResponse[];
@@ -73,15 +74,6 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
 
   // Get category distribution data
   const categoryData = React.useMemo(() => {
-    const categoryTranslations: Record<string, string> = {
-      careers: 'Karriär',
-      news: 'Nyheter',
-      service: 'Service',
-      api: 'API',
-      templates: 'Mallar',
-      tools: 'Verktyg',
-    };
-
     const categoryCounts = leads.reduce((acc, lead) => {
       acc[lead.category] = (acc[lead.category] || 0) + 1;
       return acc;

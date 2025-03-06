@@ -6,6 +6,7 @@ import { sv } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
 import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
+import { categoryTranslations } from '@/lib/constants';
 
 interface LeadsOverviewProps {
   leads: LeadResponse[];
@@ -14,16 +15,6 @@ interface LeadsOverviewProps {
 export function LeadsOverview({ leads }: LeadsOverviewProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // Category translations
-  const categoryTranslations: Record<string, string> = {
-    careers: 'Karriär',
-    news: 'Nyheter',
-    service: 'Service',
-    api: 'API',
-    templates: 'Mallar',
-    tools: 'Verktyg',
-  };
 
   useEffect(() => {
     // Only handle loading state if no leads are provided yet

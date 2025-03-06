@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { TrashIcon } from '@radix-ui/react-icons';
+import { categoryTranslations } from '@/lib/constants';
 
 interface LeadsToolbarProps {
   searchQuery: string;
@@ -30,15 +31,6 @@ export function LeadsToolbar({
   selectedCount,
   onDeleteSelected,
 }: LeadsToolbarProps) {
-  const categoryTranslations: Record<string, string> = {
-    careers: 'Karriär',
-    news: 'Nyheter',
-    service: 'Service',
-    api: 'API',
-    templates: 'Mallar',
-    tools: 'Verktyg',
-  };
-
   return (
     <div className="flex flex-col sm:flex-row gap-2">
       <div className="flex flex-1 flex-wrap gap-2">
