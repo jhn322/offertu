@@ -1,12 +1,25 @@
 'use client';
 
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { formatDistanceToNow } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
 import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
 import { categoryTranslations } from '@/lib/constants';
+import {
+  UsersIcon,
+  ClockIcon,
+  TrendingUpIcon,
+  BarChartIcon,
+} from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
 
 interface LeadsOverviewProps {
   leads: LeadResponse[];
@@ -48,11 +61,19 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
   // Get total number of leads
   const totalLeads = leads.length;
 
-  // Calculate category counts
+  // Calculate category counts and percentages
   const categoryCounts = leads.reduce((acc, lead) => {
     acc[lead.category] = (acc[lead.category] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
+
+  const categoryPercentages = Object.entries(categoryCounts).map(
+    ([category, count]) => ({
+      category,
+      count,
+      percentage: (count / totalLeads) * 100,
+    })
+  );
 
   // Get the latest lead
   const latestLead = leads[0];
@@ -63,36 +84,91 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
       })
     : 'N/A';
 
+  // Calculate leads from last 30 days
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+  const recentLeads = leads.filter(
+    (lead) => new Date(lead.createdAt) > thirtyDaysAgo
+  );
+  const recentLeadsCount = recentLeads.length;
+  const recentLeadsPercentage = (recentLeadsCount / totalLeads) * 100;
+
   return (
     <div className="grid gap-4">
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2"></CardHeader>
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2">
+            Leads Översikt
+          </CardTitle>
+          <CardDescription className="text-sm">
+            Statistik och analys leads
+          </CardDescription>
+        </CardHeader>
         <CardContent>
-          <div className="space-y-3">
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">
-                Totalt antal:
-              </span>
-              <span className="font-bold">{totalLeads}</span>
-            </div>
-            <div className="flex justify-between items-center">
-              <span className="text-sm text-muted-foreground">
-                Senaste lead:
-              </span>
-              <span className="text-sm">{latestLeadTime}</span>
-            </div>
-            <div className="border-t pt-2">
-              {Object.entries(categoryCounts).map(([category, count]) => (
-                <div
-                  key={category}
-                  className="flex justify-between items-center py-1"
-                >
-                  <span className="text-sm text-muted-foreground capitalize">
-                    {categoryTranslations[category] || category}:
+          <div className="grid gap-4">
+            {/* Key Metrics */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-lg border p-3">
+                <div className="flex items-center gap-2">
+                  <UsersIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">
+                    Totalt antal
                   </span>
-                  <span className="font-medium">{count}</span>
                 </div>
-              ))}
+                <div className="mt-1.5 flex items-baseline gap-1.5">
+                  <span className="text-xl font-bold">{totalLeads}</span>
+                  <span className="text-sm text-muted-foreground">leads</span>
+                </div>
+              </div>
+              <div className="rounded-lg border p-3">
+                <div className="flex items-center gap-2">
+                  <ClockIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">
+                    Senaste lead
+                  </span>
+                </div>
+                <div className="mt-1.5">
+                  <span className="text-sm font-medium">{latestLeadTime}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Recent Activity */}
+            <div className="rounded-lg border p-3">
+              <div className="flex items-center gap-2">
+                <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">
+                  Senaste 30 dagarna
+                </span>
+              </div>
+              <div className="mt-1.5 flex items-baseline gap-1.5">
+                <span className="text-xl font-bold">{recentLeadsCount}</span>
+                <span className="text-sm text-muted-foreground">leads</span>
+              </div>
+              <Progress value={recentLeadsPercentage} className="mt-1.5 h-1" />
+            </div>
+
+            {/* Category Distribution */}
+            <div className="rounded-lg border p-3">
+              <div className="flex items-center gap-2">
+                <BarChartIcon className="h-4 w-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">
+                  Kategorifördelning
+                </span>
+              </div>
+              <div className="mt-3 space-y-2">
+                {categoryPercentages.map(({ category, count, percentage }) => (
+                  <div key={category} className="space-y-0.5">
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="capitalize">
+                        {categoryTranslations[category] || category}
+                      </span>
+                      <span className="font-medium">{count}</span>
+                    </div>
+                    <Progress value={percentage} className="h-1" />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </CardContent>
