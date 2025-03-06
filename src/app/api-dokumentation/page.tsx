@@ -10,8 +10,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { ArrowRight, Code, Lock, Zap } from 'lucide-react';
-import { Navbar } from '../../components/Navbar';
-import Footer from '../../components/Footer';
 import LeadForm from '@/components/LeadForm';
 import {
   DialogHeader,
@@ -28,7 +26,6 @@ export default function ApiDocumentation() {
 
   return (
     <>
-      <Navbar />
       <section className="container py-12">
         <div className="flex flex-col gap-6">
           <div className="space-y-4">
@@ -120,7 +117,6 @@ export default function ApiDocumentation() {
           </div>
         </div>
       </section>
-      <Footer />
     </>
   );
 }

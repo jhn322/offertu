@@ -6,8 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Navbar } from '../../../components/Navbar';
-import Footer from '../../../components/Footer';
 import { TableOfContents } from '../table-of-contents';
 import { articles } from '../data';
 import { ArticleImage } from '../article-image';
@@ -28,7 +26,6 @@ export default async function ArticlePage({
 
   return (
     <>
-      <Navbar />
       <main className="max-w-5xl mx-auto py-8">
         <div className="mb-6">
           <Button
@@ -154,7 +151,6 @@ export default async function ArticlePage({
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

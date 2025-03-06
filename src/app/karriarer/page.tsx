@@ -10,14 +10,11 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { ArrowRight } from 'lucide-react';
-import { Navbar } from '../../components/Navbar';
-import Footer from '../../components/Footer';
 import { jobs } from './data';
 
 export default function Career() {
   return (
     <>
-      <Navbar />
       <section className="container py-12">
         <div className="flex flex-col gap-6">
           <div className="space-y-4">
@@ -70,7 +67,6 @@ export default function Career() {
           </div>
         </div>
       </section>
-      <Footer />
     </>
   );
 }

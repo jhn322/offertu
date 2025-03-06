@@ -3,13 +3,10 @@ import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
-import { Navbar } from '../../../components/Navbar';
-import Footer from '../../../components/Footer';
 
 export default function ArticleLoading() {
   return (
     <>
-      <Navbar />
       <main className="max-w-5xl mx-auto py-8">
         <div className="mb-6">
           <Button
@@ -90,7 +87,6 @@ export default function ArticleLoading() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

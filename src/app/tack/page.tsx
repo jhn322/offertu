@@ -5,8 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, ArrowLeft, Phone, Mail } from 'lucide-react';
 import Link from 'next/link';
-import { Navbar } from '../../components/Navbar';
-import Footer from '../../components/Footer';
 import { useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
@@ -153,7 +151,6 @@ function ThanksContent() {
 export default function ThanksPage() {
   return (
     <>
-      <Navbar />
       <Suspense
         fallback={
           <div className="flex items-center justify-center min-h-[50vh]">
@@ -163,7 +160,6 @@ export default function ThanksPage() {
       >
         <ThanksContent />
       </Suspense>
-      <Footer />
     </>
   );
 }
