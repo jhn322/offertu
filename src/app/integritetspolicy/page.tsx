@@ -1,11 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Navbar } from '../../components/Navbar';
-import Footer from '../../components/Footer';
 
 export default function IntegrityPolicy() {
   return (
     <>
-      <Navbar />
       <main className="mx-auto py-12">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl font-bold mb-8 text-center">
@@ -309,7 +306,6 @@ export default function IntegrityPolicy() {
           </Card>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

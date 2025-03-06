@@ -8,8 +8,6 @@ import {
 } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { CheckCircle, FileText, List, Shield } from 'lucide-react';
-import { Navbar } from '../../components/Navbar';
-import Footer from '../../components/Footer';
 import LeadForm from '../../components/LeadForm';
 
 const templates = [
@@ -46,7 +44,6 @@ const templates = [
 export default function Templates() {
   return (
     <>
-      <Navbar />
       <section className="container py-12">
         <div className="flex flex-col gap-6">
           <div className="space-y-4">
@@ -105,7 +102,6 @@ export default function Templates() {
           </div>
         </div>
       </section>
-      <Footer />
     </>
   );
 }
