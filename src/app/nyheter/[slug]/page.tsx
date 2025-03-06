@@ -9,12 +9,17 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { TableOfContents } from '../table-of-contents';
 import { articles } from '../data';
 import { ArticleImage } from '../article-image';
+import type { Metadata } from 'next';
 
-export default async function ArticlePage({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}) {
+};
+
+/**
+ * Hjälpfunktion för att hämta artikel från slug
+ * Returnerar artikeln om den finns, annars anropar notFound()
+ */
+async function getArticleFromSlug(params: Promise<{ slug: string }>) {
   const resolvedParams = await params;
   const article = articles.find(
     (article) => article.slug === resolvedParams.slug
@@ -23,6 +28,61 @@ export default async function ArticlePage({
   if (!article) {
     notFound();
   }
+
+  return article;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const article = await getArticleFromSlug(params);
+
+  // Använd artikelns bild om den finns, annars använd en relevant Unsplash-bild
+  const fallbackImages = {
+    Trender:
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&h=600&auto=format&fit=crop',
+    Guide:
+      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&h=600&auto=format&fit=crop',
+    Digitalisering:
+      'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?q=80&w=1200&h=600&auto=format&fit=crop',
+  };
+
+  const imageUrl =
+    article.image ||
+    fallbackImages[article.category as keyof typeof fallbackImages] ||
+    'https://images.unsplash.com/photo-1664575602554-2087b04935a5?q=80&w=1200&h=600&auto=format&fit=crop';
+
+  return {
+    title: `${article.title} | Offertu Nyheter`,
+    description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 600,
+          alt: article.title,
+        },
+      ],
+      type: 'article',
+      publishedTime: article.date,
+      authors: [article.author.name],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: article.excerpt,
+      images: [imageUrl],
+    },
+  };
+}
+
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const article = await getArticleFromSlug(params);
 
   return (
     <>

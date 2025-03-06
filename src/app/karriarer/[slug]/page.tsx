@@ -9,12 +9,17 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import LeadForm from '@/components/LeadForm';
+import type { Metadata } from 'next';
 
-export default async function ArticlePage({
-  params,
-}: {
+type Props = {
   params: Promise<{ slug: string }>;
-}) {
+};
+
+/**
+ * Hjälpfunktion för att hämta job från slug
+ * Returnerar jobbet om det finns, annars anropar notFound()
+ */
+async function getJobFromSlug(params: Promise<{ slug: string }>) {
   const resolvedParams = await params;
   const job = jobs.find((job) => job.slug === resolvedParams.slug);
 
@@ -22,6 +27,61 @@ export default async function ArticlePage({
     notFound();
   }
 
+  return job;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const job = await getJobFromSlug(params);
+
+  // Använd en lämplig Unsplash-bild baserat på avdelning
+  const departmentImages = {
+    'Project Management':
+      'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&h=600&auto=format&fit=crop',
+    Engineering:
+      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&h=600&auto=format&fit=crop',
+    'Data Science':
+      'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&h=600&auto=format&fit=crop',
+    'Human Resources':
+      'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&h=600&auto=format&fit=crop',
+  };
+
+  const imageUrl =
+    departmentImages[job.department as keyof typeof departmentImages] ||
+    'https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=1200&h=600&auto=format&fit=crop';
+
+  return {
+    title: `${job.title} | Karriär på Offertu`,
+    description: job.description,
+    openGraph: {
+      title: `${job.title} - ${job.department}`,
+      description: job.description,
+      images: [
+        {
+          url: imageUrl,
+          width: 1200,
+          height: 600,
+          alt: `${job.title} på Offertu`,
+        },
+      ],
+      type: 'website',
+      siteName: 'Karriär på Offertu',
+      locale: 'sv_SE',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${job.title} | Karriär på Offertu`,
+      description: job.description,
+      images: [imageUrl],
+    },
+  };
+}
+
+export default async function ArticlePage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const job = await getJobFromSlug(params);
   const Icon = job.icon;
 
   return (
