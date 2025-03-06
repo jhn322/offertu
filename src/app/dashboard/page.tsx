@@ -6,8 +6,6 @@ import { LeadsOverviewSkeleton } from '@/components/dashboard/leads-overview-ske
 import { LeadsTableSkeleton } from '@/components/dashboard/leads-table-skeleton';
 import { LeadsCharts } from '@/components/dashboard/leads-charts';
 import { DashboardShell } from '@/components/dashboard/shell';
-import { Navbar } from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import { Suspense, useState, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { LeadResponse } from '@/types';
@@ -43,7 +41,6 @@ export default function DashboardPage() {
   return (
     <main>
       <Toaster richColors />
-      <Navbar />
       <DashboardShell>
         <div className="flex flex-col gap-8">
           <div className="grid gap-4 md:grid-cols-2">
@@ -59,7 +56,6 @@ export default function DashboardPage() {
           </Suspense>
         </div>
       </DashboardShell>
-      <Footer />
     </main>
   );
 }

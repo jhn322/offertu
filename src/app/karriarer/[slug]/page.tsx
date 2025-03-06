@@ -1,8 +1,6 @@
 // import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { jobs } from '../data';
-import { Navbar } from '@/components/Navbar';
-import Footer from '@/components/Footer';
 import {
   Card,
   CardContent,
@@ -28,7 +26,6 @@ export default async function ArticlePage({
 
   return (
     <>
-      <Navbar />
       <main className="max-w-3xl mx-auto py-12">
         <div className="space-y-8">
           {/* Header Card */}
@@ -131,7 +128,6 @@ export default async function ArticlePage({
           </Card>
         </div>
       </main>
-      <Footer />
     </>
   );
 }
