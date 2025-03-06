@@ -14,30 +14,30 @@ export function LeadsChartsSkeleton() {
             <div className="h-9 w-full bg-muted animate-pulse rounded" />
           </TabsList>
           <TabsContent value="monthly">
-            <div className="h-[300px] pt-4">
+            <div className="h-[380px] pt-4">
               {/* Chart area */}
-              <div className="h-[250px] w-full rounded-lg bg-muted/50 animate-pulse" />
+              <div className="h-[330px] w-full rounded-lg bg-muted/50 animate-pulse" />
               {/* X-axis labels */}
-              <div className="flex justify-between mt-2">
+              <div className="flex justify-between mt-4">
                 {[...Array(6)].map((_, i) => (
                   <div
                     key={i}
-                    className="h-3 w-12 bg-muted animate-pulse rounded"
+                    className="h-4 w-16 bg-muted animate-pulse rounded"
                   />
                 ))}
               </div>
             </div>
           </TabsContent>
           <TabsContent value="category">
-            <div className="h-[300px] pt-4">
+            <div className="h-[450px] pt-4">
               {/* Chart area */}
-              <div className="h-[250px] w-full rounded-lg bg-muted/50 animate-pulse" />
-              {/* X-axis labels */}
-              <div className="flex justify-between mt-2">
-                {[...Array(6)].map((_, i) => (
+              <div className="h-[400px] w-full rounded-lg bg-muted/50 animate-pulse" />
+              {/* Category labels */}
+              <div className="flex justify-between mt-4">
+                {[...Array(4)].map((_, i) => (
                   <div
                     key={i}
-                    className="h-3 w-12 bg-muted animate-pulse rounded"
+                    className="h-4 w-24 bg-muted animate-pulse rounded"
                   />
                 ))}
               </div>
