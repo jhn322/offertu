@@ -32,35 +32,21 @@ async function getJobFromSlug(params: Promise<{ slug: string }>) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const job = await getJobFromSlug(params);
-
-  // Använd en lämplig Unsplash-bild baserat på avdelning
-  const departmentImages = {
-    'Project Management':
-      'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&h=600&auto=format&fit=crop',
-    Engineering:
-      'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&h=600&auto=format&fit=crop',
-    'Data Science':
-      'https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&h=600&auto=format&fit=crop',
-    'Human Resources':
-      'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&h=600&auto=format&fit=crop',
-  };
-
-  const imageUrl =
-    departmentImages[job.department as keyof typeof departmentImages] ||
-    'https://images.unsplash.com/photo-1568992687947-868a62a9f521?q=80&w=1200&h=600&auto=format&fit=crop';
+  const fallbackImage =
+    'https://images.unsplash.com/photo-1521737852567-6949f3f9f2b5?q=80&w=1200&h=600&auto=format&fit=crop';
 
   return {
     title: `${job.title} | Karriär på Offertu`,
-    description: job.description,
+    description: job.metaDescription || job.description,
     openGraph: {
       title: `${job.title} - ${job.department}`,
-      description: job.description,
+      description: job.metaDescription || job.description,
       images: [
         {
-          url: imageUrl,
+          url: job.ogImageUrl || fallbackImage,
           width: 1200,
           height: 600,
-          alt: `${job.title} på Offertu`,
+          alt: job.ogImageAlt || `${job.title} på Offertu`,
         },
       ],
       type: 'website',
@@ -70,13 +56,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: 'summary_large_image',
       title: `${job.title} | Karriär på Offertu`,
-      description: job.description,
-      images: [imageUrl],
+      description: job.metaDescription || job.description,
+      images: [job.ogImageUrl || fallbackImage],
     },
   };
 }
 
-export default async function ArticlePage({
+export default async function JobPage({
   params,
 }: {
   params: Promise<{ slug: string }>;

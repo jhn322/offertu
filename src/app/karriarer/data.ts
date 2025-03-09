@@ -10,6 +10,9 @@ export const jobs = [
     type: "Heltid",
     icon: Users,
     description: "Vi söker en erfaren projektledare som kan driva våra kundprojekt framåt.",
+    metaDescription: "Lediga tjänster hos Offertu: Projektledare med 3+ års erfarenhet sökes till vårt kontor i Stockholm. Heltidstjänst med ansvar för kundprojekt.",
+    ogImageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&h=600&auto=format&fit=crop",
+    ogImageAlt: "Projektledare på Offertu",
     responsibilities: [
       "Leda och koordinera projekt från start till mål",
       "Hantera kundkommunikation och förväntningar",
@@ -38,6 +41,9 @@ export const jobs = [
     type: "Heltid",
     icon: Code2,
     description: "Vi söker en kreativ front-end utvecklare som kan skapa användarvänliga gränssnitt.",
+    metaDescription: "Front-end utvecklare sökes till Offertu i Malmö. Heltidstjänst med fokus på React och moderna webbteknologier. Ansök idag!",
+    ogImageUrl: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1200&h=600&auto=format&fit=crop",
+    ogImageAlt: "Front-end utvecklare på Offertu",
     responsibilities: [
       "Utveckla och underhålla webbapplikationer",
       "Samarbeta med designteamet för att implementera UI/UX",
@@ -66,6 +72,9 @@ export const jobs = [
     type: "Deltid",
     icon: Building2,
     description: "Vi söker en analytisk dataanalytiker som kan omvandla data till insikter.",
+    metaDescription: "Dataanalytiker sökes på deltid till vårt Göteborgskontor. Perfekt för dig med kunskaper i SQL och Python som vill jobba med dataanalys i ett innovativt företag.",
+    ogImageUrl: "https://images.unsplash.com/photo-1551434678-e076c223a692?q=80&w=1200&h=600&auto=format&fit=crop",
+    ogImageAlt: "Dataanalytiker på Offertu",
     responsibilities: [
       "Samla in och analysera data för att stödja affärsbeslut",
       "Skapa rapporter och visualiseringar",
@@ -94,6 +103,9 @@ export const jobs = [
     type: "Heltid",
     icon: Users,
     description: "Vi söker en HR-specialist som kan stödja vår personalavdelning i olika HR-processer.",
+    metaDescription: "HR-specialist sökes till Offertu i Stockholm. Som HR-specialist hos oss får du arbeta med rekrytering, onboarding, personalfrågor och kompetensutveckling.",
+    ogImageUrl: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&h=600&auto=format&fit=crop",
+    ogImageAlt: "HR Specialist på Offertu",
     responsibilities: [
       "Rekrytering och onboarding av nya medarbetare",
       "Utveckla och implementera HR-policyer",

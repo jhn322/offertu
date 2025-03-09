@@ -34,34 +34,21 @@ async function getArticleFromSlug(params: Promise<{ slug: string }>) {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const article = await getArticleFromSlug(params);
-
-  // Använd artikelns bild om den finns, annars använd en relevant Unsplash-bild
-  const fallbackImages = {
-    Trender:
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&h=600&auto=format&fit=crop',
-    Guide:
-      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&h=600&auto=format&fit=crop',
-    Digitalisering:
-      'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?q=80&w=1200&h=600&auto=format&fit=crop',
-  };
-
-  const imageUrl =
-    article.image ||
-    fallbackImages[article.category as keyof typeof fallbackImages] ||
-    'https://images.unsplash.com/photo-1664575602554-2087b04935a5?q=80&w=1200&h=600&auto=format&fit=crop';
+  const fallbackImage =
+    'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&h=600&auto=format&fit=crop';
 
   return {
     title: `${article.title} | Offertu Nyheter`,
-    description: article.excerpt,
+    description: article.metaDescription || article.excerpt,
     openGraph: {
       title: article.title,
-      description: article.excerpt,
+      description: article.metaDescription || article.excerpt,
       images: [
         {
-          url: imageUrl,
+          url: article.ogImageUrl || fallbackImage,
           width: 1200,
           height: 600,
-          alt: article.title,
+          alt: article.imageAlt || article.title,
         },
       ],
       type: 'article',
@@ -71,8 +58,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     twitter: {
       card: 'summary_large_image',
       title: article.title,
-      description: article.excerpt,
-      images: [imageUrl],
+      description: article.metaDescription || article.excerpt,
+      images: [article.ogImageUrl || fallbackImage],
     },
   };
 }
@@ -134,8 +121,8 @@ export default async function ArticlePage({
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_250px]">
           <div className="article-content">
             <ArticleImage
-              src={article.image || '/nyheter/placeholder.jpg'}
-              alt={article.title}
+              src={article.imageUrl}
+              alt={article.imageAlt || article.title}
               width={1200}
               height={600}
             />
