@@ -5,15 +5,8 @@ import ResourcesSection from '../components/landing-page/ResourcesSection';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  // * Kommenterat ut för att använda metadata från layout.tsx
-  // title: 'Offertu | Effektiv offerthantering',
-  // description:
-  //   'Offertu hjälper företag att effektivisera offertprocessen med smarta verktyg för projektkalkylering, offerthantering och uppföljning.',
-  openGraph: {
-    title: 'Välkommen till Offertu - Din partner för effektiv offerthantering',
-    // description:
-    //   'Offertu hjälper företag att effektivisera offertprocessen med smarta verktyg för projektkalkylering, offerthantering och uppföljning.',
-  },
+  // * Metadata ärvs från layout.tsx
+  // Lägg till specifik metadata här om det behövs
 };
 
 export default function Home() {
