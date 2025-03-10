@@ -19,25 +19,10 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main id="main-content" className="flex flex-col min-h-screen">
-      {/* Semantisk sektion för hero-bannern */}
-      <section aria-labelledby="hero-heading">
-        <Hero />
-      </section>
-
-      {/* Semantisk sektion för API-information */}
-      <section aria-labelledby="api-heading">
-        <ApiSection />
-      </section>
-
-      {/* Semantisk sektion för karriärmöjligheter */}
-      <section aria-labelledby="career-heading">
-        <CareerSection />
-      </section>
-
-      {/* Semantisk sektion för resurser */}
-      <section aria-labelledby="resources-heading">
-        <ResourcesSection />
-      </section>
+      <Hero />
+      <ApiSection />
+      <CareerSection />
+      <ResourcesSection />
     </main>
   );
 }

@@ -4,22 +4,23 @@ import {
   CardContent,
   CardDescription,
   CardHeader,
-  CardTitle,
 } from '@/components/ui/card';
 
 export default function Hero() {
   return (
-    <CardHeader className="bg-background py-16 px-2 sm:px-4 md:py-20">
+    <section
+      id="hero-section"
+      aria-labelledby="hero-heading"
+      className="bg-background py-16 px-2 sm:px-4 md:py-20"
+    >
       <CardContent className="max-w-6xl mx-auto">
         <div className="space-y-12">
-          <CardTitle>
-            <h1
-              id="hero-heading"
-              className="text-4xl md:text-5xl font-bold text-primary-foreground px-1"
-            >
-              Offertu
-            </h1>
-          </CardTitle>
+          <h1
+            id="hero-heading"
+            className="text-4xl md:text-5xl font-bold text-primary-foreground px-1"
+          >
+            Offertu
+          </h1>
 
           <CardHeader className="grid lg:grid-cols-2 gap-16 items-start px-1">
             <CardContent className="space-y-8 px-0">
@@ -138,6 +139,6 @@ export default function Hero() {
           </section>
         </div>
       </CardContent>
-    </CardHeader>
+    </section>
   );
 }

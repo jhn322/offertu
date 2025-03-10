@@ -14,7 +14,7 @@ export default function ResourcesSection() {
       <div className="container px-4 md:px-6">
         <h2
           id="resources-heading"
-          className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12"
+          className="sr-only text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl text-center mb-12"
         >
           Resurser och verktyg
         </h2>
