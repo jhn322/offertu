@@ -1,6 +1,32 @@
-import { Building2, Code2, Users } from "lucide-react";
+import { Building2, Code2, Users, LucideIcon } from "lucide-react";
 
-export const jobs = [
+// Definiera en JobType interface
+export interface JobType {
+  id: string;
+  slug: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  icon: LucideIcon;
+  description: string;
+  metaDescription: string;
+  ogImageUrl?: string;
+  ogImageAlt?: string;
+  datePosted?: string;
+  validThrough?: string;
+  skills?: string[];
+  experience?: string;
+  education?: string;
+  salary?: string;
+  employmentType?: string;
+  workMode?: string;
+  responsibilities: string[];
+  requirements: string[];
+  benefits?: string[];
+}
+
+export const jobs: JobType[] = [
   {
     id: "1",
     slug: "projektledare",
@@ -13,6 +39,16 @@ export const jobs = [
     metaDescription: "Lediga tjänster hos Offertu: Projektledare med 3+ års erfarenhet sökes till vårt kontor i Stockholm. Heltidstjänst med ansvar för kundprojekt.",
     ogImageUrl: "https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=1200&h=600&auto=format&fit=crop",
     ogImageAlt: "Projektledare på Offertu",
+
+    datePosted: "2023-11-15", // När annonsen publicerades
+    validThrough: "2024-01-15", // Sista ansökningsdatum
+    skills: ["Projektledning", "Kundkommunikation", "Agila metoder", "Budgetansvar"],
+    experience: "3+ års erfarenhet av projektledning inom tech",
+    education: "Relevant högskoleexamen eller motsvarande arbetslivserfarenhet",
+    salary: "35 000 - 45 000 SEK", // Löneintervall om det kan delas
+    employmentType: "FULL_TIME", // Schema.org-format för anställningstyp
+    workMode: "Hybrid", // T.ex. "På plats", "Remote" eller "Hybrid"
+
     responsibilities: [
       "Leda och koordinera projekt från start till mål",
       "Hantera kundkommunikation och förväntningar",
