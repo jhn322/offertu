@@ -13,27 +13,27 @@ export default function Footer() {
         <div className="flex flex-col space-y-8">
           {/* Logos */}
           <div className="flex space-x-6 h-12">
-            <div className="w-24 relative">
-              <AspectRatio ratio={1 / 1} className="w-full">
-                <Image
-                  src="/logo1.png"
-                  alt="Logo 1"
-                  fill
-                  sizes="(max-width: 768px) 96px, 96px"
-                  className="object-contain"
-                />
-              </AspectRatio>
+            <div className="w-24 h-12">
+              <Image
+                src="/logo1.png"
+                alt="Logo 1"
+                width={96}
+                height={48}
+                priority
+                sizes="96px"
+                className="object-contain w-full h-full"
+              />
             </div>
-            <div className="w-24 relative">
-              <AspectRatio ratio={1 / 1} className="w-full">
-                <Image
-                  src="/logo2.png"
-                  alt="Logo 2"
-                  fill
-                  sizes="(max-width: 768px) 96px, 96px"
-                  className="object-contain"
-                />
-              </AspectRatio>
+            <div className="w-24 h-12">
+              <Image
+                src="/logo2.png"
+                alt="Logo 2"
+                width={96}
+                height={48}
+                priority
+                sizes="96px"
+                className="object-contain w-full h-full"
+              />
             </div>
           </div>
 
