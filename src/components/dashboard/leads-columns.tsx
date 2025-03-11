@@ -21,10 +21,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Badge } from '@/components/ui/badge';
+import { Badge, badgeVariants } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { LeadResponse } from '@/types';
 import { categoryTranslations } from '@/lib/constants';
+import { categoryColors } from './leads-charts';
+import { type VariantProps } from 'class-variance-authority';
 
 // Specific interfaces for the header props
 interface CheckboxHeaderProps {
@@ -64,6 +66,9 @@ type CellProps =
       onCheckedChange: (checked: boolean) => void;
     };
 
+// Extract the variant type from badgeVariants
+type BadgeVariant = NonNullable<VariantProps<typeof badgeVariants>['variant']>;
+
 // Sort by desc/asc
 const SortableHeader = ({
   children,
@@ -89,14 +94,6 @@ const SortableHeader = ({
     )}
   </Button>
 );
-
-const CATEGORY_COLORS: Record<string, string> = {
-  Service: 'bg-primary',
-  Mallar: 'bg-secondary',
-  API: 'bg-accent',
-  Karriär: 'bg-info',
-  Verktyg: 'bg-warning',
-};
 
 export const columns = ({
   onDelete,
@@ -270,9 +267,12 @@ export const columns = ({
       if ('category' in props) {
         const translatedCategory =
           categoryTranslations[props.category] || props.category;
-        const colorClass = CATEGORY_COLORS[props.category] || 'bg-default';
+
+        // Get the tailwind color variant
+        const colorVariant = categoryColors[props.category] || 'outline';
+
         return (
-          <Badge variant="outline" className={colorClass}>
+          <Badge variant={colorVariant as BadgeVariant}>
             {translatedCategory}
           </Badge>
         );
