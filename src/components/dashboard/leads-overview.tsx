@@ -58,7 +58,25 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
   if (isLoading) return <LeadsOverviewSkeleton />;
   if (error) return <div>Error: {error}</div>;
 
-  // Get total number of leads
+  // Get the most recent lead
+  const mostRecentLead =
+    leads.length > 0
+      ? leads.reduce((latest, current) =>
+          new Date(current.createdAt) > new Date(latest.createdAt)
+            ? current
+            : latest
+        )
+      : null;
+
+  // Calculate time since last lead
+  const timeSinceLastLead = mostRecentLead
+    ? formatDistanceToNow(new Date(mostRecentLead.createdAt), {
+        addSuffix: true,
+        locale: sv,
+      })
+    : 'Ingen data';
+
+  // Get total leads count
   const totalLeads = leads.length;
 
   // Calculate category counts and percentages
@@ -75,23 +93,12 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
     })
   );
 
-  // Get the latest lead
-  const latestLead = leads[0];
-  const latestLeadTime = latestLead
-    ? formatDistanceToNow(new Date(latestLead.createdAt), {
-        addSuffix: true,
-        locale: sv,
-      })
-    : 'N/A';
-
-  // Calculate leads from last 30 days
+  // Get leads from last 30 days
   const thirtyDaysAgo = new Date();
   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
   const recentLeads = leads.filter(
     (lead) => new Date(lead.createdAt) > thirtyDaysAgo
-  );
-  const recentLeadsCount = recentLeads.length;
-  const recentLeadsPercentage = (recentLeadsCount / totalLeads) * 100;
+  ).length;
 
   return (
     <div className="grid gap-4">
@@ -128,7 +135,17 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
                   </span>
                 </div>
                 <div className="mt-1.5">
-                  <span className="text-sm font-medium">{latestLeadTime}</span>
+                  <span className="text-sm font-medium">
+                    {mostRecentLead?.email || 'Ingen data'}
+                  </span>
+                  {mostRecentLead && (
+                    <span
+                      className="block text-xs text-muted-foreground mt-1"
+                      aria-label={`Mottagen ${timeSinceLastLead}`}
+                    >
+                      {timeSinceLastLead}
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -142,10 +159,13 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
                 </span>
               </div>
               <div className="mt-1.5 flex items-baseline gap-1.5">
-                <span className="text-xl font-bold">{recentLeadsCount}</span>
+                <span className="text-xl font-bold">{recentLeads}</span>
                 <span className="text-sm text-muted-foreground">leads</span>
               </div>
-              <Progress value={recentLeadsPercentage} className="mt-1.5 h-1" />
+              <Progress
+                value={(recentLeads / totalLeads) * 100}
+                className="mt-1.5 h-1"
+              />
             </div>
 
             {/* Category Distribution */}
