@@ -2,16 +2,20 @@ import Hero from '../components/landing-page/Hero';
 import ApiSection from '../components/landing-page/ApiSection';
 import CareerSection from '../components/landing-page/CareerSection';
 import ResourcesSection from '../components/landing-page/ResourcesSection';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  // * Metadata ärvs från layout.tsx
+  // Lägg till specifik metadata här om det behövs
+};
 
 export default function Home() {
   return (
-    <div>
-      <main>
-        <Hero />
-        <ApiSection />
-        <CareerSection />
-        <ResourcesSection />
-      </main>
-    </div>
+    <main id="main-content" className="flex flex-col min-h-screen">
+      <Hero />
+      <ApiSection />
+      <CareerSection />
+      <ResourcesSection />
+    </main>
   );
 }
