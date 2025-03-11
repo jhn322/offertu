@@ -56,7 +56,7 @@ export default function Footer() {
                   </Link>
                   <Link href="/verktyg-resurser">
                     <CardDescription className="text-sm text-muted-foreground hover:text-primary transition-colors">
-                      Verktyg & Resurser{' '}
+                      Verktyg{' '}
                     </CardDescription>
                   </Link>
                 </div>

@@ -121,14 +121,15 @@ export default function NewsPage() {
                   aria-label={`Läs hela artikeln: ${article.title}`}
                 >
                   <CardHeader>
-                    <figure className="relative aspect-video w-full mb-4">
+                    <figure className="relative aspect-[16/9] w-full mb-4">
                       <Image
                         src={article.imageUrl}
                         alt={article.imageAlt || article.title}
                         fill
-                        className="object-cover rounded-lg"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                        priority={articles.indexOf(article) < 3}
+                        className="absolute inset-0 object-cover rounded-lg"
+                        sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                        priority={articles.indexOf(article) < 2}
+                        quality={75}
                         itemProp="image"
                       />
                     </figure>

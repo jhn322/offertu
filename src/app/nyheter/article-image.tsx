@@ -9,13 +9,28 @@ interface ArticleImageProps {
   alt: string;
   width: number;
   height: number;
+  priority?: boolean;
 }
 
-export function ArticleImage({ src, alt, width, height }: ArticleImageProps) {
+export function ArticleImage({
+  src,
+  alt,
+  width = 1200,
+  height = 675, // 16:9 aspect ratio
+  priority = true, // Default to true since article images are usually LCP
+}: ArticleImageProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   return (
-    <div className="relative mb-8 aspect-video overflow-hidden rounded-lg">
+    <div
+      className="relative mb-8 overflow-hidden rounded-lg"
+      style={{
+        aspectRatio: '16/9',
+        width: '100%',
+        maxWidth: width,
+        margin: '0 auto',
+      }}
+    >
       {isLoading && (
         <Skeleton
           className="absolute inset-0 h-full w-full rounded-lg"
@@ -27,14 +42,15 @@ export function ArticleImage({ src, alt, width, height }: ArticleImageProps) {
         alt={alt}
         width={width}
         height={height}
-        quality={90}
-        priority
+        quality={85} // Slightly reduced quality for better performance while maintaining good looks
+        priority={priority}
         className={`h-full w-full object-cover transition-opacity duration-300 ${
           isLoading ? 'opacity-0' : 'opacity-100'
         }`}
         onLoadingComplete={() => setIsLoading(false)}
-        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+        sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1200px"
         itemProp="image"
+        fetchPriority="high"
       />
     </div>
   );
