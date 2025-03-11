@@ -9,7 +9,10 @@ export default function CareerSection() {
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+            <h2
+              id="career-heading"
+              className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+            >
               Karriär
             </h2>
             <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
@@ -22,7 +25,7 @@ export default function CareerSection() {
           <Card className="border-2 border-[#4683FF] bg-white">
             <CardHeader>
               <div className="flex items-center gap-4">
-                <div className="rounded-lg bg-[#4683FF] p-2">
+                <div className="rounded-lg bg-[#4683FF] p-2" aria-hidden="true">
                   <Users className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold">Lediga tjänster</h3>
@@ -41,9 +44,10 @@ export default function CareerSection() {
                 <Link
                   href="/karriarer"
                   className="inline-flex items-center gap-2"
+                  aria-label="Se alla lediga tjänster"
                 >
                   Karriär
-                  <ArrowRight className="h-4 w-4" />
+                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
                 </Link>
               </Button>
             </CardContent>
