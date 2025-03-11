@@ -1,6 +1,32 @@
-import { Building2, Code2, Users } from "lucide-react";
+import { Building2, Code2, Users, LucideIcon } from "lucide-react";
 
-export const jobs = [
+// Definiera en JobType interface
+export interface JobType {
+  id: string;
+  slug: string;
+  title: string;
+  department: string;
+  location: string;
+  type: string;
+  icon: LucideIcon;
+  description: string;
+  metaDescription: string;
+  ogImageUrl?: string;
+  ogImageAlt?: string;
+  datePosted?: string;
+  validThrough?: string;
+  skills?: string[];
+  experience?: string;
+  education?: string;
+  salary?: string;
+  employmentType?: string;
+  workMode?: string;
+  responsibilities: string[];
+  requirements: string[];
+  benefits?: string[];
+}
+
+export const jobs: JobType[] = [
   {
     id: "1",
     slug: "projektledare",

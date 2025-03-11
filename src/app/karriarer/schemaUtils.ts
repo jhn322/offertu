@@ -1,5 +1,7 @@
+import { JobType } from './data';
+
 // Function to generate structured data for a single job posting
-export function generateJobPostingSchema(job: any) {
+export function generateJobPostingSchema(job: JobType) {
   return {
     '@context': 'https://schema.org',
     '@type': 'JobPosting',
@@ -104,7 +106,7 @@ function extractRegion(location: string): string {
 }
 
 // Function to generate structured data for a list of job postings
-export function generateJobListSchema(jobs: any[]) {
+export function generateJobListSchema(jobs: JobType[]) {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',

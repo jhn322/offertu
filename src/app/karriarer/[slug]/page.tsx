@@ -165,7 +165,7 @@ export default async function JobPage({
                     className="list-disc list-inside space-y-2 text-muted-foreground"
                     itemProp="jobBenefits"
                   >
-                    {job.benefits.map((benefit, index) => (
+                    {job.benefits?.map((benefit, index) => (
                       <li key={index}>{benefit}</li>
                     ))}
                   </ul>
