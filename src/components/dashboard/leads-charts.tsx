@@ -126,7 +126,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
   };
 
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <CardTitle>Statistik</CardTitle>
       </CardHeader>
@@ -137,7 +137,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
             <TabsTrigger value="category">Kategorier</TabsTrigger>
           </TabsList>
           <TabsContent value="monthly">
-            <div className="h-[380px] pt-4">
+            <div className="h-[400px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={monthlyData}>
                   <XAxis
@@ -171,7 +171,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
             </div>
           </TabsContent>
           <TabsContent value="category">
-            <div className="h-[380px] pt-4">
+            <div className="h-[400px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={categoryData}>
                   <XAxis

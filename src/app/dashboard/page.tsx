@@ -1,61 +1,21 @@
-'use client';
+import type { Metadata } from 'next';
+import { DashboardContent } from '../../components/dashboard/dashboard-content';
 
-import { LeadsTable } from '@/components/dashboard/leads-table';
-import { LeadsOverview } from '@/components/dashboard/leads-overview';
-import { LeadsOverviewSkeleton } from '@/components/dashboard/leads-overview-skeleton';
-import { LeadsTableSkeleton } from '@/components/dashboard/leads-table-skeleton';
-import { LeadsCharts } from '@/components/dashboard/leads-charts';
-import { DashboardShell } from '@/components/dashboard/shell';
-import { Suspense, useState, useEffect } from 'react';
-import { Toaster } from 'sonner';
-import { LeadResponse } from '@/types';
+export const metadata: Metadata = {
+  title: 'Dashboard',
+  description:
+    'Hantera dina leads och förfrågningar effektivt med Offertu dashboard.',
+  openGraph: {
+    title: 'Dashboarh',
+    description:
+      'Hantera dina leads och förfrågningar effektivt med Offertu dashboard.',
+  },
+};
 
 export default function DashboardPage() {
-  const [leads, setLeads] = useState<LeadResponse[]>([]);
-
-  // Initial fetch of leads
-  useEffect(() => {
-    async function fetchInitialLeads() {
-      try {
-        const response = await fetch('/api/leads');
-        if (!response.ok) throw new Error('Failed to fetch leads');
-
-        const data = await response.json();
-        if (!data.success) {
-          throw new Error(data.error || 'Failed to fetch leads');
-        }
-        setLeads(data.data);
-      } catch (error) {
-        console.error('Error fetching initial leads:', error);
-      }
-    }
-
-    fetchInitialLeads();
-  }, []);
-
-  // Handler for updating leads
-  const handleLeadsUpdate = (newLeads: LeadResponse[]) => {
-    setLeads(newLeads);
-  };
-
   return (
     <main>
-      <Toaster richColors />
-      <DashboardShell>
-        <div className="flex flex-col gap-8">
-          <div className="grid gap-4 md:grid-cols-2">
-            <Suspense fallback={<LeadsOverviewSkeleton />}>
-              <LeadsOverview leads={leads} />
-            </Suspense>
-            <Suspense fallback={<div className="h-[300px] animate-pulse" />}>
-              <LeadsCharts leads={leads} />
-            </Suspense>
-          </div>
-          <Suspense fallback={<LeadsTableSkeleton />}>
-            <LeadsTable onLeadsUpdate={handleLeadsUpdate} />
-          </Suspense>
-        </div>
-      </DashboardShell>
+      <DashboardContent />
     </main>
   );
 }

@@ -90,6 +90,14 @@ const SortableHeader = ({
   </Button>
 );
 
+const CATEGORY_COLORS: Record<string, string> = {
+  Service: 'bg-primary',
+  Mallar: 'bg-secondary',
+  API: 'bg-accent',
+  Karriär: 'bg-info',
+  Verktyg: 'bg-warning',
+};
+
 export const columns = ({
   onDelete,
   sort,
@@ -262,7 +270,12 @@ export const columns = ({
       if ('category' in props) {
         const translatedCategory =
           categoryTranslations[props.category] || props.category;
-        return <Badge variant="outline">{translatedCategory}</Badge>;
+        const colorClass = CATEGORY_COLORS[props.category] || 'bg-default';
+        return (
+          <Badge variant="outline" className={colorClass}>
+            {translatedCategory}
+          </Badge>
+        );
       }
       return null;
     },
