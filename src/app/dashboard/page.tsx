@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     'Hantera dina leads och förfrågningar effektivt med Offertu dashboard.',
   openGraph: {
-    title: 'Dashboarh',
+    title: 'Dashboard',
     description:
       'Hantera dina leads och förfrågningar effektivt med Offertu dashboard.',
   },
