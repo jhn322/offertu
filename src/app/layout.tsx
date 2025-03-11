@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://offertu.se'), // Ändra till er faktiska domän
+  metadataBase: new URL('https://offertu.vercel.app'), // Ändra till er faktiska domän
   alternates: {
     canonical: '/',
     languages: {
@@ -50,7 +50,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'sv_SE',
-    url: 'https://offertu.se', // Ändra till er faktiska domän
+    url: 'https://offertu.vercel.app', // Ändra till er faktiska domän
     siteName: 'Offertu',
     title: 'Offertu | Effektiv offerthantering för företag',
     description:

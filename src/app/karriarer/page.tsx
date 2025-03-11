@@ -35,7 +35,7 @@ export const metadata: Metadata = {
       'Sök jobb hos ett av Sveriges mest innovativa tech-bolag inom offerthantering och kalkylering.',
     images: [
       {
-        url: 'https://offertu.se/images/karriar-banner.jpg', // Ersätt med verklig bild
+        url: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?q=80&w=1738&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Ersätt med verklig bild
         width: 1200,
         height: 630,
         alt: 'Karriär hos Offertu',

@@ -20,8 +20,8 @@ export function generateJobPostingSchema(job: JobType) {
     hiringOrganization: {
       '@type': 'Organization',
       name: 'Offertu AB',
-      sameAs: 'https://offertu.se',
-      logo: 'https://offertu.se/logo.png', // Update with actual logo URL
+      sameAs: 'https://offertu.vercel.app',
+      logo: 'https://offertu.vercel.app/logo.png', // Update with actual logo URL
       // Add organization description if available
       description: 'Ett snabbväxande tech-bolag som revolutionerar hur företag hanterar sina offerter och kalkyler'
     },
@@ -70,7 +70,7 @@ export function generateJobPostingSchema(job: JobType) {
     },
 
     // Add direct URL to apply
-    url: `https://offertu.se/karriarer/${job.slug}`,
+    url: `https://offertu.vercel.app/karriarer/${job.slug}`,
   };
 }
 
@@ -113,7 +113,7 @@ export function generateJobListSchema(jobs: JobType[]) {
     itemListElement: jobs.map((job, index) => ({
       '@type': 'ListItem',
       position: index + 1,
-      url: `https://offertu.se/karriarer/${job.slug}`,
+      url: `https://offertu.vercel.app/karriarer/${job.slug}`,
       item: generateJobPostingSchema(job) // Use the complete JobPosting schema for each job
     }))
   };
