@@ -3,20 +3,20 @@ import { Tabs, TabsContent, TabsList } from '@/components/ui/tabs';
 
 export function LeadsChartsSkeleton() {
   return (
-    <Card>
+    <Card className="h-full">
       <CardHeader>
         <div className="h-6 w-24 bg-muted animate-pulse rounded" />
       </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="monthly" className="w-full">
+      <CardContent className="h-[450px]">
+        <Tabs defaultValue="monthly" className="w-full h-full">
           <TabsList className="grid w-full grid-cols-2">
             <div className="h-9 w-full bg-muted animate-pulse rounded" />
             <div className="h-9 w-full bg-muted animate-pulse rounded" />
           </TabsList>
-          <TabsContent value="monthly">
-            <div className="h-[380px] pt-4">
+          <TabsContent value="monthly" className="h-[calc(100%-40px)]">
+            <div className="h-full pt-4 flex flex-col">
               {/* Chart area */}
-              <div className="h-[330px] w-full rounded-lg bg-muted/50 animate-pulse" />
+              <div className="h-[calc(100%-30px)] w-full rounded-lg bg-muted/50 animate-pulse" />
               {/* X-axis labels */}
               <div className="flex justify-between mt-4">
                 {[...Array(6)].map((_, i) => (
@@ -28,10 +28,10 @@ export function LeadsChartsSkeleton() {
               </div>
             </div>
           </TabsContent>
-          <TabsContent value="category">
-            <div className="h-[450px] pt-4">
+          <TabsContent value="category" className="h-[calc(100%-40px)]">
+            <div className="h-full pt-4 flex flex-col">
               {/* Chart area */}
-              <div className="h-[400px] w-full rounded-lg bg-muted/50 animate-pulse" />
+              <div className="h-[calc(100%-30px)] w-full rounded-lg bg-muted/50 animate-pulse" />
               {/* Category labels */}
               <div className="flex justify-between mt-4">
                 {[...Array(4)].map((_, i) => (
