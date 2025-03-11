@@ -17,17 +17,24 @@ export function ArticleImage({ src, alt, width, height }: ArticleImageProps) {
   return (
     <div className="relative mb-8 aspect-video overflow-hidden rounded-lg">
       {isLoading && (
-        <Skeleton className="absolute inset-0 h-full w-full rounded-lg" />
+        <Skeleton
+          className="absolute inset-0 h-full w-full rounded-lg"
+          role="presentation"
+        />
       )}
       <Image
         src={src}
         alt={alt}
         width={width}
         height={height}
+        quality={90}
+        priority
         className={`h-full w-full object-cover transition-opacity duration-300 ${
           isLoading ? 'opacity-0' : 'opacity-100'
         }`}
         onLoadingComplete={() => setIsLoading(false)}
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+        itemProp="image"
       />
     </div>
   );

@@ -1,4 +1,3 @@
-// import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { ChevronLeft, CalendarDays, Clock, Share2 } from 'lucide-react';
 import Link from 'next/link';
@@ -38,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     'https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&h=600&auto=format&fit=crop';
 
   return {
-    title: `${article.title} | Offertu Nyheter`,
+    title: article.title,
     description: article.metaDescription || article.excerpt,
     openGraph: {
       title: article.title,
@@ -71,132 +70,210 @@ export default async function ArticlePage({
 }) {
   const article = await getArticleFromSlug(params);
 
+  const publishDate = new Date(article.date).toISOString();
+
+  // Schema.org Article data
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.metaDescription || article.excerpt,
+    image: article.ogImageUrl || article.imageUrl,
+    datePublished: publishDate,
+    dateModified: publishDate,
+    author: {
+      '@type': 'Person',
+      name: article.author.name,
+      image: article.author.avatar,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Offertu',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://offertu.se/logo.png',
+      },
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `https://offertu.se/nyheter/${article.slug}`,
+    },
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <main className="max-w-5xl mx-auto py-8">
-        <div className="mb-6">
+        <nav aria-label="Tillbaka till nyheter" className="mb-6">
           <Button
             variant="ghost"
             asChild
-            className="mb-4 pl-0 text-muted-foreground"
+            className="pl-0 text-muted-foreground"
           >
             <Link href="/nyheter">
-              <ChevronLeft className="mr-2 h-4 w-4" />
+              <ChevronLeft className="mr-2 h-4 w-4" aria-hidden="true" />
               Tillbaka till nyheter
             </Link>
           </Button>
+        </nav>
 
-          <Badge className="mb-4 ml-2 bg-[#4683FF] hover:bg-[#4683FF]/90 text-white">
-            {article.category}
-          </Badge>
+        <article itemScope itemType="https://schema.org/Article">
+          <header className="mb-6">
+            <Badge className="mb-4 ml-2 bg-[#4683FF] hover:bg-[#4683FF]/90 text-white">
+              {article.category}
+            </Badge>
 
-          <h1 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
-            {article.title}
-          </h1>
+            <h1
+              itemProp="headline"
+              className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+            >
+              {article.title}
+            </h1>
 
-          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src={article.author.avatar}
-                  alt={article.author.name}
-                />
-                <AvatarFallback>{article.author.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <span>{article.author.name}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <CalendarDays className="h-4 w-4" />
-              <span>{article.date}</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <Clock className="h-4 w-4" />
-              <span>{article.readTime}</span>
-            </div>
-          </div>
-        </div>
-
-        <Separator className="my-6" />
-
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_250px]">
-          <div className="article-content">
-            <ArticleImage
-              src={article.imageUrl}
-              alt={article.imageAlt || article.title}
-              width={1200}
-              height={600}
-            />
-
-            <div className="prose prose-lg max-w-none">
-              {article.content.map((section, index) => (
-                <section key={index} id={section.id}>
-                  {section.title && (
-                    <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-                      {section.title}
-                    </h2>
-                  )}
-                  {section.paragraphs.map((paragraph, pIndex) => (
-                    <p key={pIndex}>{paragraph}</p>
-                  ))}
-                </section>
-              ))}
-            </div>
-
-            <div className="mt-10 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Avatar className="h-10 w-10">
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+              <div
+                className="flex items-center gap-2"
+                itemProp="author"
+                itemScope
+                itemType="https://schema.org/Person"
+              >
+                <Avatar className="h-8 w-8">
                   <AvatarImage
                     src={article.author.avatar}
                     alt={article.author.name}
+                    itemProp="image"
                   />
                   <AvatarFallback>
                     {article.author.name.charAt(0)}
                   </AvatarFallback>
                 </Avatar>
-                <div>
-                  <p className="text-sm font-medium">Skriven av</p>
-                  <p className="font-semibold">{article.author.name}</p>
-                </div>
+                <span itemProp="name">{article.author.name}</span>
               </div>
-
-              <Button variant="outline" size="sm" className="gap-2">
-                <Share2 className="h-4 w-4" />
-                Dela
-              </Button>
+              <time
+                dateTime={publishDate}
+                itemProp="datePublished"
+                className="flex items-center gap-1"
+              >
+                <CalendarDays className="h-4 w-4" aria-hidden="true" />
+                {article.date}
+              </time>
+              <div className="flex items-center gap-1">
+                <Clock className="h-4 w-4" aria-hidden="true" />
+                <span>{article.readTime}</span>
+              </div>
             </div>
-          </div>
+          </header>
 
-          <div className="hidden lg:block">
-            <div className="sticky top-20">
-              <div className="rounded-lg border bg-card p-4 shadow-sm">
-                <h3 className="mb-4 font-medium">Innehåll</h3>
-                <TableOfContents article={article} />
-              </div>
+          <Separator className="my-6" />
 
-              <div className="mt-6 rounded-lg border bg-card p-4 shadow-sm">
-                <h3 className="mb-4 font-medium">Relaterade artiklar</h3>
-                <div className="space-y-4">
-                  {articles
-                    .filter((a) => a.slug !== article.slug)
-                    .slice(0, 3)
-                    .map((relatedArticle) => (
-                      <div key={relatedArticle.slug} className="space-y-1">
-                        <Link
-                          href={`/nyheter/${relatedArticle.slug}`}
-                          className="line-clamp-2 font-medium hover:text-[#4683FF]"
-                        >
-                          {relatedArticle.title}
-                        </Link>
-                        <p className="text-xs text-muted-foreground">
-                          {relatedArticle.date}
-                        </p>
-                      </div>
+          <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_250px]">
+            <div className="article-content">
+              <figure>
+                <ArticleImage
+                  src={article.imageUrl}
+                  alt={article.imageAlt || article.title}
+                  width={1200}
+                  height={600}
+                />
+                {article.imageAlt && (
+                  <figcaption className="mt-2 text-sm text-muted-foreground text-center">
+                    {article.imageAlt}
+                  </figcaption>
+                )}
+              </figure>
+
+              <div className="prose prose-lg max-w-none" itemProp="articleBody">
+                {article.content.map((section, index) => (
+                  <section key={index} id={section.id}>
+                    {section.title && (
+                      <h2 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+                        {section.title}
+                      </h2>
+                    )}
+                    {section.paragraphs.map((paragraph, pIndex) => (
+                      <p key={pIndex}>{paragraph}</p>
                     ))}
-                </div>
+                  </section>
+                ))}
               </div>
+
+              <footer className="mt-10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-4">
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage
+                        src={article.author.avatar}
+                        alt={article.author.name}
+                      />
+                      <AvatarFallback>
+                        {article.author.name.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="text-sm font-medium">Skriven av</p>
+                      <p className="font-semibold">{article.author.name}</p>
+                    </div>
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2"
+                    aria-label="Dela artikel"
+                  >
+                    <Share2 className="h-4 w-4" aria-hidden="true" />
+                    Dela
+                  </Button>
+                </div>
+              </footer>
             </div>
+
+            <aside className="hidden lg:block">
+              <div className="sticky top-20">
+                <nav
+                  className="rounded-lg border bg-card p-4 shadow-sm"
+                  aria-label="Innehållsförteckning"
+                >
+                  <h2 className="mb-4 font-medium">Innehåll</h2>
+                  <TableOfContents article={article} />
+                </nav>
+
+                <section className="mt-6 rounded-lg border bg-card p-4 shadow-sm">
+                  <h2 className="mb-4 font-medium">Relaterade artiklar</h2>
+                  <div className="space-y-4">
+                    {articles
+                      .filter((a) => a.slug !== article.slug)
+                      .slice(0, 3)
+                      .map((relatedArticle) => (
+                        <article
+                          key={relatedArticle.slug}
+                          className="space-y-1"
+                        >
+                          <Link
+                            href={`/nyheter/${relatedArticle.slug}`}
+                            className="line-clamp-2 font-medium hover:text-[#4683FF]"
+                          >
+                            {relatedArticle.title}
+                          </Link>
+                          <time
+                            dateTime={new Date(
+                              relatedArticle.date
+                            ).toISOString()}
+                            className="block text-xs text-muted-foreground"
+                          >
+                            {relatedArticle.date}
+                          </time>
+                        </article>
+                      ))}
+                  </div>
+                </section>
+              </div>
+            </aside>
           </div>
-        </div>
+        </article>
       </main>
     </>
   );
