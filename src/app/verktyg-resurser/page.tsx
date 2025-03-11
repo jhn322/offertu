@@ -20,6 +20,17 @@ export const metadata: Metadata = {
     title: 'Verktyg och resurser för offerthantering',
     description:
       'Upptäck Offertus smarta verktyg för offertberäkningar, marginalanalys och kostnadsfördelning.',
+    images: [
+      {
+        url: 'https://images.unsplash.com/reserve/oIpwxeeSPy1cnwYpqJ1w_Dufer%20Collateral%20test.jpg?q=80&w=1615&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Replace with actual image URL
+        width: 1200,
+        height: 630,
+        alt: 'Verktyg och resurser för offerthantering',
+      },
+    ],
+  },
+  alternates: {
+    canonical: '/verktyg-resurser',
   },
 };
 
@@ -55,87 +66,89 @@ export default function ToolsPage() {
   ];
 
   return (
-    <main id="main-content" className="flex flex-col min-h-screen">
-      <div className="flex items-center justify-center py-20">
-        <div className="max-w-4xl w-full px-4">
-          <h1 id="tools-heading" className="text-3xl font-bold mb-6">
+    <main
+      id="main-content"
+      className="container py-12 flex flex-col min-h-screen"
+    >
+      <div className="flex flex-col gap-6">
+        <div className="space-y-4">
+          <h1
+            id="tools-heading"
+            className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
+          >
             Verktyg och resurser
           </h1>
-          <div className="space-y-4">
-            <p className="text-xl text-muted-foreground">
-              Snabba och enkla verktyg för grundläggande offertberäkningar.
-            </p>
-          </div>
-          <Separator className="my-4" role="presentation" />
-
-          <section aria-labelledby="interest-heading">
-            <h2 id="interest-heading" className="sr-only">
-              Anmäl intresse för verktyg
-            </h2>
-            <div className="mx-auto max-w-[580px] w-full">
-              <Card>
-                <CardHeader className="space-y-2">
-                  <CardTitle className="text-xl font-semibold">
-                    Anmäl intresse
-                  </CardTitle>
-                  <p className="text-muted-foreground">
-                    Våra verktyg är fortfarande under konstruktion, lämna din
-                    e-postadress så skickar vi dig ett meddelande när de är
-                    lanserade.
-                  </p>
-                </CardHeader>
-                <CardContent>
-                  <LeadForm category="tools" showPhone={false} />
-                </CardContent>
-              </Card>
-            </div>
-          </section>
-
-          <section aria-labelledby="tools-list-heading">
-            <h2
-              id="tools-list-heading"
-              className="invisible text-2xl font-semibold "
-            >
-              Tillgängliga verktyg
-            </h2>
-            <div className="grid gap-6 mt-8 md:grid-cols-2 lg:grid-cols-3">
-              {tools.map((tool) => (
-                <article key={tool.title} className="flex flex-col">
-                  <Card className="h-full flex flex-col">
-                    <CardHeader>
-                      <div className="mb-4" aria-hidden="true">
-                        {tool.icon}
-                        <span className="sr-only">{tool.iconAlt}</span>
-                      </div>
-                      <CardTitle>
-                        <h3>{tool.title}</h3>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-muted-foreground">
-                        {tool.description}
-                      </p>
-                    </CardContent>
-                    <CardFooter className="mt-auto pt-4">
-                      <Button asChild className="ml-auto">
-                        <Link
-                          href="#"
-                          aria-label={`Öppna ${tool.title} verktyget`}
-                        >
-                          Öppna verktyg{' '}
-                          <ArrowRight
-                            className="ml-2 h-4 w-4"
-                            aria-hidden="true"
-                          />
-                        </Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </article>
-              ))}
-            </div>
-          </section>
+          <p className="text-xl text-muted-foreground">
+            Snabba och enkla verktyg för grundläggande offertberäkningar.
+          </p>
         </div>
+        <Separator className="my-4" role="presentation" />
+
+        <section aria-labelledby="interest-heading">
+          <h2 id="interest-heading" className="sr-only">
+            Anmäl intresse för verktyg
+          </h2>
+          <div className="mx-auto max-w-[580px] w-full">
+            <Card>
+              <CardHeader className="space-y-2">
+                <CardTitle className="text-xl font-semibold">
+                  Anmäl intresse
+                </CardTitle>
+                <p className="text-muted-foreground">
+                  Våra verktyg är fortfarande under konstruktion, lämna din
+                  e-postadress så skickar vi dig ett meddelande när de är
+                  lanserade.
+                </p>
+              </CardHeader>
+              <CardContent>
+                <LeadForm category="tools" showPhone={false} />
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+
+        <section aria-labelledby="tools-list-heading" className="mt-16">
+          <h2
+            id="tools-list-heading"
+            className="invisible text-2xl font-semibold"
+          >
+            Tillgängliga verktyg
+          </h2>
+          <div className="grid gap-8 md:grid-cols-3">
+            {tools.map((tool) => (
+              <article key={tool.title} className="flex flex-col">
+                <Card className="h-full flex flex-col relative overflow-hidden">
+                  <CardHeader>
+                    <div className="mb-4" aria-hidden="true">
+                      {tool.icon}
+                      <span className="sr-only">{tool.iconAlt}</span>
+                    </div>
+                    <CardTitle>
+                      <h3>{tool.title}</h3>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground">{tool.description}</p>
+                  </CardContent>
+                  <CardFooter className="mt-auto pt-4">
+                    <Button asChild className="w-full">
+                      <Link
+                        href="#"
+                        aria-label={`Öppna ${tool.title} verktyget`}
+                      >
+                        Öppna verktyg{' '}
+                        <ArrowRight
+                          className="ml-2 h-4 w-4"
+                          aria-hidden="true"
+                        />
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              </article>
+            ))}
+          </div>
+        </section>
       </div>
     </main>
   );
