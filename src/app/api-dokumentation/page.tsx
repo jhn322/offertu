@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     'Effektivisera din verksamhet genom att integrera våra tjänster direkt i dina system. Ansök om API-tillgång och skräddarsy lösningen efter dina behov.',
   openGraph: {
-    title: 'API Dokumentation | Offertu',
+    title: 'Offertu | API Dokumentation',
     description:
       'Effektivisera din verksamhet genom att integrera våra tjänster direkt i dina system. Ansök om API-tillgång och skräddarsy lösningen efter dina behov.',
   },

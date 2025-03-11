@@ -2,7 +2,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { CardContent, CardTitle, CardDescription } from '@/components/ui/card';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
