@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 export function LeadsOverviewSkeleton() {
   return (
     <div className="grid gap-4">
-      <Card>
+      <Card className="h-full">
         <CardHeader className="pb-3">
           <div className="flex items-center gap-2">
             <div className="h-4 w-4 bg-muted animate-pulse rounded" />
@@ -11,8 +11,8 @@ export function LeadsOverviewSkeleton() {
           </div>
           <div className="h-4 w-48 bg-muted animate-pulse rounded" />
         </CardHeader>
-        <CardContent>
-          <div className="grid gap-4">
+        <CardContent className="h-[450px] flex flex-col justify-between">
+          <div className="grid gap-6">
             <div className="grid grid-cols-2 gap-3">
               {[...Array(2)].map((_, i) => (
                 <div key={i} className="rounded-lg border p-3">

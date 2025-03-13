@@ -28,11 +28,19 @@ interface LeadsOverviewProps {
 export function LeadsOverview({ leads }: LeadsOverviewProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [dataReady, setDataReady] = useState(false);
 
   useEffect(() => {
-    // Only handle loading state if no leads are provided yet
+    // Check if leads data is available and has categories
     if (leads.length > 0) {
-      setIsLoading(false);
+      const hasCategories = leads.some((lead) => lead.category);
+
+      if (hasCategories) {
+        setDataReady(true);
+        setIsLoading(false);
+      } else {
+        setDataReady(false);
+      }
     } else {
       async function fetchLeadData() {
         try {
@@ -55,7 +63,7 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
     }
   }, [leads]);
 
-  if (isLoading) return <LeadsOverviewSkeleton />;
+  if (isLoading || !dataReady) return <LeadsOverviewSkeleton />;
   if (error) return <div>Error: {error}</div>;
 
   // Get the most recent lead
@@ -81,7 +89,9 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
 
   // Calculate category counts and percentages
   const categoryCounts = leads.reduce((acc, lead) => {
-    acc[lead.category] = (acc[lead.category] || 0) + 1;
+    if (lead.category) {
+      acc[lead.category] = (acc[lead.category] || 0) + 1;
+    }
     return acc;
   }, {} as Record<string, number>);
 
@@ -99,6 +109,11 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
   const recentLeads = leads.filter(
     (lead) => new Date(lead.createdAt) > thirtyDaysAgo
   ).length;
+
+  // If we have no category data, show skeleton
+  if (categoryPercentages.length === 0) {
+    return <LeadsOverviewSkeleton />;
+  }
 
   return (
     <div className="grid gap-4">

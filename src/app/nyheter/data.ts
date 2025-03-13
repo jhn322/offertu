@@ -7,13 +7,16 @@ export const articles = [
     date: '18 februari 2025',
     readTime: '5 min',
     category: 'Trender',
-    imageUrl: '/nyheter/offerering.jpg',
-    imageAlt: 'Trender inom offerering 2025',
-    metaDescription: 'Lär dig om de fem viktigaste trenderna inom offerering för 2025: AI-driven prisoptimering, realtidssamarbete, mobil offerering, interaktiva offerter och automatiserad uppföljning.',
-    ogImageUrl: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&h=600&auto=format&fit=crop',
+    imageUrl: '/nyheter/pencil-on-drawing.webp',
+    imageAlt: 'Penna på ett papper',
+    metaDescription:
+      'Lär dig om de fem viktigaste trenderna inom offerering för 2025: AI-driven prisoptimering, realtidssamarbete, mobil offerering, interaktiva offerter och automatiserad uppföljning.',
+    ogImageUrl:
+      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&h=600&auto=format&fit=crop',
     author: {
       name: 'Anna Lindberg',
-      avatar: '/nyheter/placeholder-avatar1.jpg',
+      avatar: '/nyheter/blonde-girl-avatar.webp',
+      avatarAlt: 'Tjej med blont hår och solglasögon',
     },
     content: [
       {
@@ -82,13 +85,16 @@ export const articles = [
     date: '15 februari 2025',
     readTime: '8 min',
     category: 'Guide',
-    imageUrl: '/nyheter/projektkalkylering.jpg',
-    imageAlt: 'Projektkalkylering och optimering',
-    metaDescription: 'Lär dig optimera din projektkalkylering genom strukturerad arbetsuppdelning, historisk dataanalys och riskbaserad kalkylering för att skapa mer exakta och lönsamma offerter.',
-    ogImageUrl: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&h=600&auto=format&fit=crop',
+    imageUrl: '/nyheter/wood-letters.webp',
+    imageAlt: 'Träbokstavär på ett bord',
+    metaDescription:
+      'Lär dig optimera din projektkalkylering genom strukturerad arbetsuppdelning, historisk dataanalys och riskbaserad kalkylering för att skapa mer exakta och lönsamma offerter.',
+    ogImageUrl:
+      'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?q=80&w=1200&h=600&auto=format&fit=crop',
     author: {
       name: 'Erik Johansson',
-      avatar: '/nyheter/placeholder-avatar2.jpg',
+      avatar: '/nyheter/ginger-man-avatar.webp',
+      avatarAlt: 'Man med mörkt rött hår och skägg',
     },
     content: [
       {
@@ -165,13 +171,16 @@ export const articles = [
     date: '10 februari 2025',
     readTime: '6 min',
     category: 'Digitalisering',
-    imageUrl: '/nyheter/digitalisering.jpg',
-    imageAlt: 'Digital transformation av offertprocessen',
-    metaDescription: 'Upptäck hur digitalisering kan revolutionera din offertprocess: automatiserade beräkningar, förbättrat samarbete, personaliserade offerter och datadriven analys för att öka effektivitet och precision.',
-    ogImageUrl: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?q=80&w=1200&h=600&auto=format&fit=crop',
+    imageUrl: '/nyheter/green-white-imac.webp',
+    imageAlt: 'En grön vit iMac dator',
+    metaDescription:
+      'Upptäck hur digitalisering kan revolutionera din offertprocess: automatiserade beräkningar, förbättrat samarbete, personaliserade offerter och datadriven analys för att öka effektivitet och precision.',
+    ogImageUrl:
+      'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?q=80&w=1200&h=600&auto=format&fit=crop',
     author: {
       name: 'Maria Svensson',
-      avatar: '/nyheter/placeholder-avatar3.jpg',
+      avatar: '/nyheter/darkbrown-girl-avatar.webp',
+      avatarAlt: 'Tjej med mörkt hår och glasögon',
     },
     content: [
       {
