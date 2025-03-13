@@ -29,9 +29,6 @@ export const metadata: Metadata = {
       },
     ],
   },
-  alternates: {
-    canonical: '/verktyg-resurser',
-  },
 };
 
 export default function ToolsPage() {
@@ -71,7 +68,7 @@ export default function ToolsPage() {
       className="container py-12 flex flex-col min-h-screen"
     >
       <div className="flex flex-col gap-6">
-        <div className="space-y-4">
+        <header className="space-y-4">
           <h1
             id="tools-heading"
             className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl"
@@ -81,7 +78,7 @@ export default function ToolsPage() {
           <p className="text-xl text-muted-foreground">
             Snabba och enkla verktyg för grundläggande offertberäkningar.
           </p>
-        </div>
+        </header>
         <Separator className="my-4" role="presentation" />
 
         <section aria-labelledby="interest-heading">

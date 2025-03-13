@@ -20,15 +20,6 @@ export const metadata: Metadata = {
   title: 'Karriär hos Offertu | Lediga tjänster',
   description:
     'Utforska karriärmöjligheter hos Offertu. Vi söker engagerade talanger som vill vara med och revolutionera hur företag hanterar offerter och kalkyler.',
-  keywords: [
-    'karriär',
-    'jobb',
-    'lediga tjänster',
-    'offertu',
-    'tech-jobb',
-    'utvecklare',
-    'projektledare',
-  ],
   openGraph: {
     title: 'Karriärmöjligheter hos Offertu',
     description:
@@ -42,9 +33,6 @@ export const metadata: Metadata = {
       },
     ],
     type: 'website',
-  },
-  alternates: {
-    canonical: '/karriarer',
   },
 };
 
@@ -60,7 +48,7 @@ export default function Career() {
 
       <main className="container py-12">
         <article>
-          <div className="flex flex-col gap-6 mb-6">
+          <header className="flex flex-col gap-6 mb-6">
             <div className="space-y-4">
               <h1 className="text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
                 Karriär hos oss
@@ -71,7 +59,7 @@ export default function Career() {
               </p>
             </div>
             <Separator className="my-4" />
-          </div>
+          </header>
 
           <section aria-label="Lediga tjänster" className="grid gap-6">
             {jobs.map((job) => {
