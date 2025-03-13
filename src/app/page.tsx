@@ -12,7 +12,9 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main id="main-content" className="flex flex-col min-h-screen">
-      <Hero />
+      <header>
+        <Hero />
+      </header>
       <ApiSection />
       <CareerSection />
       <ResourcesSection />
