@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="flex space-x-6 h-12">
             <div className="w-24 h-12">
               <Image
-                src="/logo1.png"
+                src="/logo1.webp"
                 alt="Logo 1"
                 width={96}
                 height={48}
@@ -25,7 +25,7 @@ export default function Footer() {
             </div>
             <div className="w-24 h-12">
               <Image
-                src="/logo2.png"
+                src="/logo2.webp"
                 alt="Logo 2"
                 width={96}
                 height={48}

@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/nyheter/sharpy-paper-ruler-keyboard.jpg',
+        url: '/nyheter/sharpy-paper-ruler-keyboard.webp',
         width: 1200,
         height: 630,
         alt: 'Penna på ett papper med en linjal och ett tangentbord',
