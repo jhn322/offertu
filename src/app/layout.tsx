@@ -25,13 +25,6 @@ export const metadata: Metadata = {
   },
   description:
     'Offertu hjälper företag att effektivisera offertprocessen med smarta verktyg för projektkalkylering, offerthantering och uppföljning.',
-  keywords: [
-    'offert',
-    'projektkalkylering',
-    'offerthantering',
-    'kalkylatorer',
-    'affärssystem',
-  ],
   authors: [{ name: 'Offertu Team' }],
   creator: 'Offertu AB',
   publisher: 'Offertu AB',
@@ -40,12 +33,9 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://offertu.vercel.app'), // Ändra till er faktiska domän
+  metadataBase: new URL('https://offertu.vercel.app'),
   alternates: {
-    canonical: '/',
-    languages: {
-      'sv-SE': '/',
-    },
+    canonical: './',
   },
   openGraph: {
     type: 'website',
@@ -89,7 +79,9 @@ export default function RootLayout({
   return (
     <html lang="sv" className={`${geistSans.variable} ${geistMono.variable}`}>
       <body className="antialiased">
-        <Navbar />
+        <header>
+          <Navbar />
+        </header>
         {children}
         <Footer />
       </body>

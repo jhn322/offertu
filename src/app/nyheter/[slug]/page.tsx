@@ -231,7 +231,7 @@ export default async function ArticlePage({
               </footer>
             </div>
 
-            <aside className="hidden lg:block">
+            <div className="hidden lg:block">
               <div className="sticky top-20">
                 <nav
                   className="rounded-lg border bg-card p-4 shadow-sm"
@@ -241,37 +241,39 @@ export default async function ArticlePage({
                   <TableOfContents article={article} />
                 </nav>
 
-                <section className="mt-6 rounded-lg border bg-card p-4 shadow-sm">
-                  <h2 className="mb-4 font-medium">Relaterade artiklar</h2>
-                  <div className="space-y-4">
-                    {articles
-                      .filter((a) => a.slug !== article.slug)
-                      .slice(0, 3)
-                      .map((relatedArticle) => (
-                        <article
-                          key={relatedArticle.slug}
-                          className="space-y-1"
-                        >
-                          <Link
-                            href={`/nyheter/${relatedArticle.slug}`}
-                            className="line-clamp-2 font-medium hover:text-[#4683FF]"
+                <aside aria-label="Relaterat innehåll" className="mt-6">
+                  <section className="rounded-lg border bg-card p-4 shadow-sm">
+                    <h2 className="mb-4 font-medium">Relaterade artiklar</h2>
+                    <div className="space-y-4">
+                      {articles
+                        .filter((a) => a.slug !== article.slug)
+                        .slice(0, 3)
+                        .map((relatedArticle) => (
+                          <article
+                            key={relatedArticle.slug}
+                            className="space-y-1"
                           >
-                            {relatedArticle.title}
-                          </Link>
-                          <time
-                            dateTime={new Date(
-                              relatedArticle.date
-                            ).toISOString()}
-                            className="block text-xs text-muted-foreground"
-                          >
-                            {relatedArticle.date}
-                          </time>
-                        </article>
-                      ))}
-                  </div>
-                </section>
+                            <Link
+                              href={`/nyheter/${relatedArticle.slug}`}
+                              className="line-clamp-2 font-medium hover:text-[#4683FF]"
+                            >
+                              {relatedArticle.title}
+                            </Link>
+                            <time
+                              dateTime={new Date(
+                                relatedArticle.date
+                              ).toISOString()}
+                              className="block text-xs text-muted-foreground"
+                            >
+                              {relatedArticle.date}
+                            </time>
+                          </article>
+                        ))}
+                    </div>
+                  </section>
+                </aside>
               </div>
-            </aside>
+            </div>
           </div>
         </article>
       </main>

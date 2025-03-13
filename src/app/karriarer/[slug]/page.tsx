@@ -40,17 +40,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${job.title} | Karriär på Offertu`,
     description: job.metaDescription || job.description,
-
-    // Add more structured metadata for job posts
-    keywords: [
-      job.title,
-      job.department,
-      'karriär',
-      'jobb',
-      'Offertu',
-      ...(job.skills || []),
-    ],
-
     openGraph: {
       title: `${job.title} - ${job.department}`,
       description: job.metaDescription || job.description,
@@ -65,11 +54,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       type: 'website',
       siteName: 'Karriär på Offertu',
       locale: 'sv_SE',
-    },
-
-    // Add alternates for proper linking
-    alternates: {
-      canonical: `/karriarer/${job.slug}`,
     },
   };
 }
