@@ -24,10 +24,10 @@ export const metadata: Metadata = {
     type: 'website',
     images: [
       {
-        url: '/nyheter/placeholder.jpg',
+        url: '/nyheter/sharpy-paper-ruler-keyboard.jpg',
         width: 1200,
         height: 630,
-        alt: 'Offertu Nyheter',
+        alt: 'Penna på ett papper med en linjal och ett tangentbord',
       },
     ],
   },
