@@ -2,6 +2,7 @@
 
 import { TrendingUp } from 'lucide-react';
 import { PieChart, Pie, Cell, Sector } from 'recharts';
+import React from 'react';
 
 import {
   Card,
@@ -32,6 +33,14 @@ interface RadialChartProps {
   leads: LeadResponse[];
 }
 
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{
+    name: string;
+    value: number;
+  }>;
+}
+
 const categoryColors: Record<string, string> = {
   service: '#FFAE00',
   templates: '#4683FF',
@@ -45,7 +54,7 @@ const chartConfig: ChartConfig = {
   categories: categoryColors,
 } satisfies ChartConfig;
 
-const CustomTooltip = ({ active, payload }: any) => {
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
     return (
       <div className="rounded-lg border bg-background p-2 shadow-sm">
@@ -81,7 +90,15 @@ const CustomTooltip = ({ active, payload }: any) => {
   return null;
 };
 
-const renderActiveShape = (props: any) => {
+const renderActiveShape = (props: {
+  cx: number;
+  cy: number;
+  innerRadius: number;
+  outerRadius: number;
+  startAngle: number;
+  endAngle: number;
+  fill: string;
+}) => {
   const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } =
     props;
 
@@ -146,7 +163,7 @@ export function RadialChart({ leads }: RadialChartProps) {
 
   const currentMonthName = format(now, 'MMMM yyyy', { locale: sv });
 
-  const onPieEnter = (_: any, index: number) => {
+  const onPieEnter = (_: unknown, index: number) => {
     setActiveIndex(index);
   };
 
@@ -179,6 +196,7 @@ export function RadialChart({ leads }: RadialChartProps) {
               dataKey="value"
               nameKey="name"
               activeIndex={activeIndex !== null ? activeIndex : undefined}
+              // @ts-expect-error - Unsolvable Recharts typing incompatibility, works fine.
               activeShape={renderActiveShape}
               onMouseEnter={onPieEnter}
               onMouseLeave={onPieLeave}
