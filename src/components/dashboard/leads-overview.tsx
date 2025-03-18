@@ -14,12 +14,7 @@ import { LeadResponse } from '@/types';
 import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
 import { RadialChart } from './leads-radial';
 import { categoryTranslations } from '@/lib/constants';
-import {
-  UsersIcon,
-  ClockIcon,
-  TrendingUpIcon,
-  BarChartIcon,
-} from 'lucide-react';
+import { UsersIcon, ClockIcon, TrendingUpIcon } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { getCategoryColorValue } from './leads-charts';
 

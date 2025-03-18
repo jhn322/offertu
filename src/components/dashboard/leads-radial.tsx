@@ -15,7 +15,6 @@ import {
   ChartConfig,
   ChartContainer,
   ChartTooltip,
-  ChartTooltipContent,
 } from '@/components/ui/chart';
 import { categoryTranslations } from '@/lib/constants';
 import { LeadResponse } from '@/types';
@@ -163,7 +162,7 @@ export function RadialChart({ leads }: RadialChartProps) {
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
-          className="mx-auto aspect-auto w-full h-[180px] sm:h-[220px]"
+          className="mx-auto aspect-auto w-full -mb-16 h-[180px] sm:h-[220px]"
           config={chartConfig}
         >
           <PieChart margin={{ top: 30, right: 20, bottom: 30, left: 20 }}>
@@ -175,7 +174,7 @@ export function RadialChart({ leads }: RadialChartProps) {
               startAngle={180}
               endAngle={0}
               innerRadius={50}
-              outerRadius={90}
+              outerRadius={100}
               paddingAngle={1}
               dataKey="value"
               nameKey="name"
