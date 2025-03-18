@@ -5,14 +5,25 @@ import { LeadsOverview } from '@/components/dashboard/leads-overview';
 import { LeadsOverviewSkeleton } from '@/components/dashboard/leads-overview-skeleton';
 import { LeadsTableSkeleton } from '@/components/dashboard/leads-table-skeleton';
 import { LeadsCharts } from '@/components/dashboard/leads-charts';
+import { LeadsChartsSkeleton } from '@/components/dashboard/leads-charts-skeleton';
 import { DashboardShell } from '@/components/dashboard/shell';
 import { Suspense, useState, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { LeadResponse } from '@/types';
 import Script from 'next/script';
+import { DateRange } from 'react-day-picker';
 
 export function DashboardContent() {
   const [leads, setLeads] = useState<LeadResponse[]>([]);
+  const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
+    const now = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    return {
+      from: thirtyDaysAgo,
+      to: now,
+    };
+  });
 
   // Initial fetch of leads
   useEffect(() => {
@@ -37,6 +48,11 @@ export function DashboardContent() {
   // Handler for updating leads
   const handleLeadsUpdate = (newLeads: LeadResponse[]) => {
     setLeads(newLeads);
+  };
+
+  // Handler for updating date range
+  const handleDateRangeChange = (newRange: DateRange | undefined) => {
+    setDateRange(newRange);
   };
 
   // Schema.org structured data for Dashboard
@@ -65,20 +81,16 @@ export function DashboardContent() {
           <div className="grid gap-4 md:grid-cols-2">
             <section aria-label="Leads statistik">
               <Suspense fallback={<LeadsOverviewSkeleton />}>
-                <LeadsOverview leads={leads} />
+                <LeadsOverview
+                  leads={leads}
+                  dateRange={dateRange}
+                  onDateRangeChange={handleDateRangeChange}
+                />
               </Suspense>
             </section>
             <section aria-label="Leads diagram">
-              <Suspense
-                fallback={
-                  <div
-                    className="h-[300px] animate-pulse"
-                    role="progressbar"
-                    aria-label="Laddar diagram"
-                  />
-                }
-              >
-                <LeadsCharts leads={leads} />
+              <Suspense fallback={<LeadsChartsSkeleton />}>
+                <LeadsCharts leads={leads} dateRange={dateRange} />
               </Suspense>
             </section>
           </div>

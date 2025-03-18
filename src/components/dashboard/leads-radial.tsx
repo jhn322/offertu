@@ -1,13 +1,12 @@
 'use client';
 
-import { TrendingUp } from 'lucide-react';
+// import { TrendingUp } from 'lucide-react';
 import { PieChart, Pie, Cell, Sector } from 'recharts';
 import React from 'react';
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -19,9 +18,10 @@ import {
 } from '@/components/ui/chart';
 import { categoryTranslations } from '@/lib/constants';
 import { LeadResponse } from '@/types';
-import { format, startOfMonth, subMonths } from 'date-fns';
+import { format, startOfMonth, subMonths, formatDistance } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useState } from 'react';
+import { DateRange } from 'react-day-picker';
 
 interface CategoryData {
   name: string;
@@ -31,6 +31,7 @@ interface CategoryData {
 
 interface RadialChartProps {
   leads: LeadResponse[];
+  dateRange?: DateRange;
 }
 
 interface CustomTooltipProps {
@@ -117,7 +118,7 @@ const renderActiveShape = (props: {
   );
 };
 
-export function RadialChart({ leads }: RadialChartProps) {
+export function RadialChart({ leads, dateRange }: RadialChartProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   // Get category distribution data
@@ -139,29 +140,63 @@ export function RadialChart({ leads }: RadialChartProps) {
     0
   );
 
-  // Calculate trend
+  // Calculate trend - adjusted based on date range
   const now = new Date();
   const currentMonth = startOfMonth(now);
   const previousMonth = startOfMonth(subMonths(now, 1));
 
-  const currentMonthLeads = leads.filter(
-    (lead) =>
-      startOfMonth(new Date(lead.createdAt)).getTime() ===
-      currentMonth.getTime()
-  ).length;
+  // Filter leads for current and previous periods based on date range
+  let currentPeriodLeads;
+  let previousPeriodLeads;
+  let periodLabel;
 
-  const previousMonthLeads = leads.filter(
-    (lead) =>
-      startOfMonth(new Date(lead.createdAt)).getTime() ===
-      previousMonth.getTime()
-  ).length;
+  if (dateRange?.from && dateRange?.to) {
+    // Current period leads
+    currentPeriodLeads = leads.length;
 
+    previousPeriodLeads = 0; // This would require more complex & additional API calls
+
+    // Create a descriptive label for the selected period
+    periodLabel = formatDistance(dateRange.from, dateRange.to, {
+      locale: sv,
+      addSuffix: false,
+    });
+
+    if (
+      dateRange.from.getMonth() === dateRange.to.getMonth() &&
+      dateRange.from.getFullYear() === dateRange.to.getFullYear()
+    ) {
+      // Same month
+      periodLabel = format(dateRange.from, 'MMMM yyyy', { locale: sv });
+    } else {
+      // Different months
+      periodLabel = `${format(dateRange.from, 'd MMM', {
+        locale: sv,
+      })} - ${format(dateRange.to, 'd MMM yyyy', { locale: sv })}`;
+    }
+  } else {
+    // Default to monthly comparison if no date range is selected
+    currentPeriodLeads = leads.filter(
+      (lead) =>
+        startOfMonth(new Date(lead.createdAt)).getTime() ===
+        currentMonth.getTime()
+    ).length;
+
+    previousPeriodLeads = leads.filter(
+      (lead) =>
+        startOfMonth(new Date(lead.createdAt)).getTime() ===
+        previousMonth.getTime()
+    ).length;
+
+    periodLabel = format(now, 'MMMM yyyy', { locale: sv });
+  }
+
+  // ! Hör till trends funktionen i <CardFooter />
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const trend =
-    previousMonthLeads > 0
-      ? ((currentMonthLeads - previousMonthLeads) / previousMonthLeads) * 100
+    previousPeriodLeads > 0
+      ? ((currentPeriodLeads - previousPeriodLeads) / previousPeriodLeads) * 100
       : 0;
-
-  const currentMonthName = format(now, 'MMMM yyyy', { locale: sv });
 
   const onPieEnter = (_: unknown, index: number) => {
     setActiveIndex(index);
@@ -175,7 +210,6 @@ export function RadialChart({ leads }: RadialChartProps) {
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Leads kategorifördelning</CardTitle>
-        <CardDescription>{currentMonthName}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
@@ -222,13 +256,14 @@ export function RadialChart({ leads }: RadialChartProps) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
+        {/* Det här skulle kräva extra/nya API endpoints eller parametrar för att hämta historisk data */}
+        {/* <div className="flex items-center gap-2 font-medium leading-none">
           {trend >= 0 ? 'Ökning med ' : 'Minskning med '}
-          {Math.abs(trend).toFixed(1)}% jämfört med förra månaden{' '}
+          {Math.abs(trend).toFixed(1)}% jämfört med förra perioden{' '}
           <TrendingUp className={`h-4 w-4 ${trend < 0 ? 'rotate-180' : ''}`} />
-        </div>
+        </div> */}
         <div className="leading-none text-muted-foreground">
-          Visar alla leads kategorier för {currentMonthName}
+          Visar alla leads kategorier för {periodLabel}
         </div>
       </CardFooter>
     </Card>

@@ -25,9 +25,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LeadsChartsSkeleton } from './leads-charts-skeleton';
 import { useState, useEffect } from 'react';
 import { categoryTranslations } from '@/lib/constants';
+import { DateRange } from 'react-day-picker';
 
 interface LeadsChartsProps {
   leads: LeadResponse[];
+  dateRange?: DateRange;
 }
 
 interface MonthlyData {
@@ -69,7 +71,7 @@ export const getCategoryColorValue = (category: string): string => {
   return colorMap[categoryColors[category] || 'muted'];
 };
 
-export function LeadsCharts({ leads }: LeadsChartsProps) {
+export function LeadsCharts({ leads, dateRange }: LeadsChartsProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -77,6 +79,22 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
       setIsLoading(false);
     }
   }, [leads]);
+
+  // Filter leads based on date range
+  const filteredLeads = React.useMemo(() => {
+    if (!dateRange?.from) return leads;
+
+    const from = new Date(dateRange.from);
+    from.setHours(0, 0, 0, 0);
+
+    const to = dateRange.to ? new Date(dateRange.to) : new Date();
+    to.setHours(23, 59, 59, 999);
+
+    return leads.filter((lead) => {
+      const leadDate = new Date(lead.createdAt);
+      return leadDate >= from && leadDate <= to;
+    });
+  }, [leads, dateRange]);
 
   // Get monthly data for the past 12 months
   const monthlyData = React.useMemo(() => {
@@ -88,7 +106,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
 
     const monthlyLeads = monthsInterval.map((month) => {
       const monthStart = startOfMonth(month);
-      const count = leads.filter((lead) => {
+      const count = filteredLeads.filter((lead) => {
         const leadDate = new Date(lead.createdAt);
         return startOfMonth(leadDate).getTime() === monthStart.getTime();
       }).length;
@@ -100,11 +118,11 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
     });
 
     return monthlyLeads;
-  }, [leads]);
+  }, [filteredLeads]);
 
   // Get category distribution data
   const categoryData = React.useMemo(() => {
-    const categoryCounts = leads.reduce((acc, lead) => {
+    const categoryCounts = filteredLeads.reduce((acc, lead) => {
       acc[lead.category] = (acc[lead.category] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
@@ -114,7 +132,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
       value: count,
       color: getCategoryColorValue(category),
     }));
-  }, [leads]);
+  }, [filteredLeads]);
 
   if (isLoading) return <LeadsChartsSkeleton />;
 
@@ -194,17 +212,17 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Statistik</CardTitle>
+        <CardTitle>Leads statistik</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="monthly" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="monthly">Månadsvis</TabsTrigger>
+            <TabsTrigger value="monthly">Linjediagram</TabsTrigger>
             <TabsTrigger value="category">Stapeldiagram</TabsTrigger>
             <TabsTrigger value="pie">Cirkeldiagram</TabsTrigger>
           </TabsList>
           <TabsContent value="monthly">
-            <div className="h-[500px] pt-4">
+            <div className="h-[520px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={monthlyData}>
                   <XAxis
@@ -238,7 +256,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
             </div>
           </TabsContent>
           <TabsContent value="category">
-            <div className="h-[500px] pt-4">
+            <div className="h-[520px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={categoryData}>
                   <XAxis
@@ -270,7 +288,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
             </div>
           </TabsContent>
           <TabsContent value="pie">
-            <div className="h-[500px] pt-4">
+            <div className="h-[520px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
