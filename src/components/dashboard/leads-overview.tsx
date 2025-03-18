@@ -12,6 +12,7 @@ import { sv } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
 import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
+import { RadialChart } from './leads-radial';
 import { categoryTranslations } from '@/lib/constants';
 import {
   UsersIcon,
@@ -20,6 +21,7 @@ import {
   BarChartIcon,
 } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
+import { getCategoryColorValue } from './leads-charts';
 
 interface LeadsOverviewProps {
   leads: LeadResponse[];
@@ -95,11 +97,11 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
     return acc;
   }, {} as Record<string, number>);
 
-  const categoryPercentages = Object.entries(categoryCounts).map(
+  const categoryData = Object.entries(categoryCounts).map(
     ([category, count]) => ({
-      category,
-      count,
-      percentage: (count / totalLeads) * 100,
+      name: categoryTranslations[category] || category,
+      value: count,
+      color: getCategoryColorValue(category),
     })
   );
 
@@ -111,7 +113,7 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
   ).length;
 
   // If we have no category data, show skeleton
-  if (categoryPercentages.length === 0) {
+  if (categoryData.length === 0) {
     return <LeadsOverviewSkeleton />;
   }
 
@@ -184,27 +186,8 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
             </div>
 
             {/* Category Distribution */}
-            <div className="rounded-lg border p-3">
-              <div className="flex items-center gap-2">
-                <BarChartIcon className="h-4 w-4 text-muted-foreground" />
-                <span className="text-sm text-muted-foreground">
-                  Kategorifördelning
-                </span>
-              </div>
-              <div className="mt-3 space-y-2">
-                {categoryPercentages.map(({ category, count, percentage }) => (
-                  <div key={category} className="space-y-0.5">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="capitalize">
-                        {categoryTranslations[category] || category}
-                      </span>
-                      <span className="font-medium">{count}</span>
-                    </div>
-                    <Progress value={percentage} className="h-1" />
-                  </div>
-                ))}
-              </div>
-            </div>
+
+            <RadialChart leads={leads} />
           </div>
         </CardContent>
       </Card>
