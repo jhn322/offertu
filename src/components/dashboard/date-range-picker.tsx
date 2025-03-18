@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Check, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DateRange } from 'react-day-picker';
@@ -26,9 +26,46 @@ export function DateRangePicker({
   dateRange,
   onDateRangeChange,
 }: DateRangePickerProps) {
+  // Control the popover and prevent it from closing automatically
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [currentMonth, setCurrentMonth] = React.useState<Date | undefined>(
+    dateRange?.from || new Date()
+  );
+
+  const [tempDateRange, setTempDateRange] = React.useState<
+    DateRange | undefined
+  >(dateRange);
+
+  React.useEffect(() => {
+    if (dateRange?.from) {
+      setCurrentMonth(dateRange.from);
+    }
+
+    setTempDateRange(dateRange);
+  }, [dateRange]);
+
+  // Handle date range selection without applying it yet
+  const handleSelect = (range: DateRange | undefined) => {
+    setTempDateRange(range);
+  };
+
+  const handleApply = () => {
+    onDateRangeChange(tempDateRange);
+    setIsOpen(false);
+  };
+
+  const handleCancel = () => {
+    setTempDateRange(dateRange);
+    setIsOpen(false);
+  };
+
+  const handleButtonClick = () => {
+    setIsOpen(true);
+  };
+
   return (
     <div className={cn('grid gap-2', className)}>
-      <Popover>
+      <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
             id="date"
@@ -37,6 +74,7 @@ export function DateRangePicker({
               'w-full justify-start text-left font-normal',
               !dateRange && 'text-muted-foreground'
             )}
+            onClick={handleButtonClick}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
             {dateRange?.from ? (
@@ -57,15 +95,40 @@ export function DateRangePicker({
           className="w-auto p-0 bg-white rounded-lg"
           align="start"
         >
-          <Calendar
-            initialFocus
-            mode="range"
-            defaultMonth={dateRange?.from}
-            selected={dateRange}
-            onSelect={onDateRangeChange}
-            numberOfMonths={2}
-            locale={sv}
-          />
+          <div className="flex flex-col">
+            <Calendar
+              initialFocus
+              mode="range"
+              defaultMonth={dateRange?.from}
+              month={currentMonth}
+              onMonthChange={setCurrentMonth}
+              selected={tempDateRange}
+              onSelect={handleSelect}
+              numberOfMonths={2}
+              locale={sv}
+            />
+
+            <div className="flex justify-between p-3 border-t">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleCancel}
+                className="flex items-center hover:bg-destructive hover:text-destructive-foreground"
+              >
+                <X className="h-4 w-4 mr-1" />
+                Avbryt
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                onClick={handleApply}
+                className="flex items-center"
+              >
+                <Check className="h-4 w-4 mr-1" />
+                Tillämpa
+              </Button>
+            </div>
+          </div>
         </PopoverContent>
       </Popover>
     </div>
