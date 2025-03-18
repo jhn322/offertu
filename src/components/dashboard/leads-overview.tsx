@@ -79,7 +79,7 @@ export function LeadsOverview({
 
       fetchLeadData();
     }
-  }, [leads.length]);
+  }, [leads.length, leads]);
 
   // Update local dateRange when prop changes
   useEffect(() => {
