@@ -1,7 +1,7 @@
 'use client';
 
 import { TrendingUp } from 'lucide-react';
-import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from 'recharts';
+import { PieChart, Pie, Cell, Sector } from 'recharts';
 
 import {
   Card,
@@ -21,6 +21,7 @@ import { categoryTranslations } from '@/lib/constants';
 import { LeadResponse } from '@/types';
 import { format, startOfMonth, subMonths } from 'date-fns';
 import { sv } from 'date-fns/locale';
+import { useState } from 'react';
 
 interface CategoryData {
   name: string;
@@ -45,7 +46,64 @@ const chartConfig: ChartConfig = {
   categories: categoryColors,
 } satisfies ChartConfig;
 
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="rounded-lg border bg-background p-3 shadow-sm">
+        <div className="mb-2">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="text-sm font-medium text-muted-foreground">
+                KATEGORI
+              </div>
+            </div>
+            <div>
+              <div className="text-sm font-medium text-muted-foreground">
+                ANTAL
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <div className="text-xl font-semibold text-muted-foreground">
+                {payload[0].name}
+              </div>
+            </div>
+            <div>
+              <div className="text-xl font-semibold">{payload[0].value}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
+
+const renderActiveShape = (props: any) => {
+  const { cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill } =
+    props;
+
+  return (
+    <g>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius + 5}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+    </g>
+  );
+};
+
 export function RadialChart({ leads }: RadialChartProps) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
   // Get category distribution data
   const categoryData: CategoryData[] = Object.entries(
     leads.reduce((acc, lead) => {
@@ -89,6 +147,14 @@ export function RadialChart({ leads }: RadialChartProps) {
 
   const currentMonthName = format(now, 'MMMM yyyy', { locale: sv });
 
+  const onPieEnter = (_: any, index: number) => {
+    setActiveIndex(index);
+  };
+
+  const onPieLeave = () => {
+    setActiveIndex(null);
+  };
+
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -97,60 +163,49 @@ export function RadialChart({ leads }: RadialChartProps) {
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
-          className="mx-auto aspect-square w-full max-w-[250px]"
+          className="mx-auto aspect-auto w-full h-[240px] sm:h-[260px]"
           config={chartConfig}
         >
-          <RadialBarChart
-            data={categoryData}
-            startAngle={180}
-            endAngle={0}
-            innerRadius={80}
-            outerRadius={130}
-            barSize={20}
-          >
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent hideLabel />}
-            />
-            <PolarRadiusAxis tick={false} tickLine={false} axisLine={false}>
-              <Label
-                content={({ viewBox }) => {
-                  if (viewBox && 'cx' in viewBox && 'cy' in viewBox) {
-                    return (
-                      <text x={viewBox.cx} y={viewBox.cy} textAnchor="middle">
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) - 16}
-                          className="fill-foreground text-2xl font-bold"
-                        >
-                          {totalLeads.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 4}
-                          className="fill-muted-foreground"
-                        >
-                          Leads
-                        </tspan>
-                      </text>
-                    );
-                  }
-                }}
-              />
-            </PolarRadiusAxis>
-            {categoryData.map((category, index) => (
-              <RadialBar
-                key={index}
-                dataKey="value"
-                stackId="a"
-                data={[category]}
-                cornerRadius={5}
-                fill={category.color}
-                className="stroke-transparent stroke-2"
-                name={category.name}
-              />
-            ))}
-          </RadialBarChart>
+          <PieChart margin={{ top: 30, right: 20, bottom: 20, left: 20 }}>
+            <ChartTooltip content={<CustomTooltip />} />
+            <Pie
+              data={categoryData}
+              cx="50%"
+              cy="60%"
+              startAngle={180}
+              endAngle={0}
+              innerRadius={50}
+              outerRadius={90}
+              paddingAngle={1}
+              dataKey="value"
+              nameKey="name"
+              activeIndex={activeIndex !== null ? activeIndex : undefined}
+              activeShape={renderActiveShape}
+              onMouseEnter={onPieEnter}
+              onMouseLeave={onPieLeave}
+              label={false}
+            >
+              {categoryData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Pie>
+            <text x="50%" y="60%" textAnchor="middle" dominantBaseline="middle">
+              <tspan
+                x="50%"
+                y="calc(60% - 12px)"
+                className="fill-foreground text-2xl font-bold"
+              >
+                {totalLeads.toLocaleString()}
+              </tspan>
+              <tspan
+                x="50%"
+                y="calc(60% + 14px)"
+                className="fill-muted-foreground text-xs"
+              >
+                Leads
+              </tspan>
+            </text>
+          </PieChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
