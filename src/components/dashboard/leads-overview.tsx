@@ -46,6 +46,41 @@ export function LeadsOverview({
   });
   const [filteredLeads, setFilteredLeads] = useState<LeadResponse[]>(leads);
 
+  // Check if leads data is available and has categories
+  useEffect(() => {
+    if (leads.length > 0) {
+      const hasCategories = leads.some((lead) => lead.category);
+      setDataReady(hasCategories);
+      setIsLoading(false);
+    } else {
+      async function fetchLeadData() {
+        try {
+          const response = await fetch('/api/leads');
+          if (!response.ok) throw new Error('Failed to fetch leads');
+
+          const data = await response.json();
+          if (!data.success) {
+            throw new Error(data.error || 'Failed to fetch leads');
+          }
+
+          if (data.data?.length > 0) {
+            const hasCategories = data.data.some(
+              (lead: LeadResponse) => lead.category
+            );
+            setDataReady(hasCategories);
+          }
+        } catch (error) {
+          console.error('Error fetching leads:', error);
+          setError('Could not load leads data');
+        } finally {
+          setIsLoading(false);
+        }
+      }
+
+      fetchLeadData();
+    }
+  }, [leads.length, leads]);
+
   // Update local dateRange when prop changes
   useEffect(() => {
     if (propDateRange) {
@@ -83,41 +118,9 @@ export function LeadsOverview({
     setFilteredLeads(filtered);
   }, [leads, dateRange]);
 
-  useEffect(() => {
-    // Check if leads data is available and has categories
-    if (leads.length > 0) {
-      const hasCategories = leads.some((lead) => lead.category);
-
-      if (hasCategories) {
-        setDataReady(true);
-        setIsLoading(false);
-      } else {
-        setDataReady(false);
-      }
-    } else {
-      async function fetchLeadData() {
-        try {
-          const response = await fetch('/api/leads');
-          if (!response.ok) throw new Error('Failed to fetch leads');
-
-          const data = await response.json();
-          if (!data.success) {
-            throw new Error(data.error || 'Failed to fetch leads');
-          }
-        } catch (error) {
-          console.error('Error fetching leads:', error);
-          setError('Could not load leads data');
-        } finally {
-          setIsLoading(false);
-        }
-      }
-
-      fetchLeadData();
-    }
-  }, [leads]);
-
-  if (isLoading || !dataReady) return <LeadsOverviewSkeleton />;
+  if (isLoading) return <LeadsOverviewSkeleton />;
   if (error) return <div>Error: {error}</div>;
+  if (!dataReady && leads.length === 0) return <LeadsOverviewSkeleton />;
 
   // Get the most recent lead
   const mostRecentLead =
@@ -163,10 +166,8 @@ export function LeadsOverview({
     })
   );
 
-  // If we have no category data, show skeleton
-  if (categoryData.length === 0) {
-    return <LeadsOverviewSkeleton />;
-  }
+  // If we filtered to no category data, show a fallback message instead of skeleton
+  const hasCategoryData = categoryData.length > 0;
 
   return (
     <div className="grid gap-4">
@@ -239,14 +240,20 @@ export function LeadsOverview({
               <div className="mt-3 flex items-center gap-2 text-sm">
                 <div className="h-2.5 w-2.5 rounded-full bg-primary"></div>
                 <span className="text-muted-foreground">
-                  {Math.round((filteredLeadsCount / totalLeads) * 100)}% av
+                  {Math.round((filteredLeadsCount / totalLeads) * 100) || 0}% av
                   totala leads ({totalLeads})
                 </span>
               </div>
             </div>
 
             {/* Category Distribution */}
-            <RadialChart leads={filteredLeads} dateRange={dateRange} />
+            {hasCategoryData ? (
+              <RadialChart leads={filteredLeads} dateRange={dateRange} />
+            ) : (
+              <div className="rounded-lg border p-5 text-center text-muted-foreground">
+                Ingen kategoridata tillgänglig för valt datumintervall
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
