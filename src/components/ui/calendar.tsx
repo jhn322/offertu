@@ -9,6 +9,12 @@ import { buttonVariants } from '@/components/ui/button';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
+// Custom type for the Chevron component props
+type ChevronProps = {
+  orientation?: 'left' | 'right';
+  className?: string;
+};
+
 function Calendar({
   className,
   classNames,
@@ -54,12 +60,13 @@ function Calendar({
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => (
-          <ChevronLeft className="h-4 w-4" {...props} />
-        ),
-        IconRight: ({ ...props }) => (
-          <ChevronRight className="h-4 w-4" {...props} />
-        ),
+        // @ts-expect-error - The Chevron component is a valid component in react-day-picker v8
+        Chevron: (props: ChevronProps) => {
+          if (props.orientation === 'left') {
+            return <ChevronLeft className={cn('h-4 w-4', props.className)} />;
+          }
+          return <ChevronRight className={cn('h-4 w-4', props.className)} />;
+        },
       }}
       {...props}
     />
