@@ -7,7 +7,6 @@ import React from 'react';
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -211,7 +210,6 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle>Leads kategorifördelning</CardTitle>
-        <CardDescription>{periodLabel}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer

@@ -212,17 +212,17 @@ export function LeadsCharts({ leads, dateRange }: LeadsChartsProps) {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Statistik</CardTitle>
+        <CardTitle>Leads statistik</CardTitle>
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="monthly" className="w-full">
           <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="monthly">Månadsvis</TabsTrigger>
+            <TabsTrigger value="monthly">Linjediagram</TabsTrigger>
             <TabsTrigger value="category">Stapeldiagram</TabsTrigger>
             <TabsTrigger value="pie">Cirkeldiagram</TabsTrigger>
           </TabsList>
           <TabsContent value="monthly">
-            <div className="h-[500px] pt-4">
+            <div className="h-[520px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={monthlyData}>
                   <XAxis
@@ -256,7 +256,7 @@ export function LeadsCharts({ leads, dateRange }: LeadsChartsProps) {
             </div>
           </TabsContent>
           <TabsContent value="category">
-            <div className="h-[500px] pt-4">
+            <div className="h-[520px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={categoryData}>
                   <XAxis
@@ -288,7 +288,7 @@ export function LeadsCharts({ leads, dateRange }: LeadsChartsProps) {
             </div>
           </TabsContent>
           <TabsContent value="pie">
-            <div className="h-[500px] pt-4">
+            <div className="h-[520px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie

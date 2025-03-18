@@ -15,7 +15,6 @@ import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
 import { RadialChart } from './leads-radial';
 import { categoryTranslations } from '@/lib/constants';
 import { UsersIcon, ClockIcon, TrendingUpIcon } from 'lucide-react';
-import { Progress } from '@/components/ui/progress';
 import { getCategoryColorValue } from './leads-charts';
 import { DateRangePicker } from './date-range-picker';
 import { DateRange } from 'react-day-picker';
@@ -177,7 +176,7 @@ export function LeadsOverview({
             Leads Översikt
           </CardTitle>
           <CardDescription className="text-sm">
-            Statistik och analys leads
+            Statistik och analys av leads
           </CardDescription>
           <div className="mt-2">
             <DateRangePicker
@@ -237,10 +236,13 @@ export function LeadsOverview({
                 <span className="text-xl font-bold">{filteredLeadsCount}</span>
                 <span className="text-sm text-muted-foreground">leads</span>
               </div>
-              <Progress
-                value={(filteredLeadsCount / totalLeads) * 100}
-                className="mt-1.5 h-1"
-              />
+              <div className="mt-3 flex items-center gap-2 text-sm">
+                <div className="h-2.5 w-2.5 rounded-full bg-primary"></div>
+                <span className="text-muted-foreground">
+                  {Math.round((filteredLeadsCount / totalLeads) * 100)}% av
+                  totala leads ({totalLeads})
+                </span>
+              </div>
             </div>
 
             {/* Category Distribution */}
