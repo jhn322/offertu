@@ -179,7 +179,7 @@ export function RadialChart({ leads }: RadialChartProps) {
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
-          className="mx-auto aspect-auto w-full -mb-16 h-[180px] sm:h-[220px]"
+          className="mx-auto aspect-auto w-full -mb-8 h-[180px] sm:h-[220px]"
           config={chartConfig}
         >
           <PieChart margin={{ top: 30, right: 20, bottom: 30, left: 20 }}>
@@ -209,16 +209,12 @@ export function RadialChart({ leads }: RadialChartProps) {
             <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
               <tspan
                 x="50%"
-                y="calc(50% - 10px)"
+                y="50%"
                 className="fill-foreground text-2xl font-bold"
               >
                 {totalLeads.toLocaleString()}
               </tspan>
-              <tspan
-                x="50%"
-                y="calc(60% + 20px)"
-                className="fill-muted-foreground text-xs"
-              >
+              <tspan x="50%" y="70%" className="fill-muted-foreground text-xs">
                 Leads
               </tspan>
             </text>
