@@ -40,6 +40,10 @@ export default {
           DEFAULT: 'hsl(var(--destructive))',
           foreground: 'hsl(var(--destructive-foreground))',
         },
+        dark: {
+          DEFAULT: '#282828',
+          foreground: '#ffffff',
+        },
         muted: {
           DEFAULT: '#E4E4E4',
           foreground: '#555555',
