@@ -186,7 +186,6 @@ export function LeadsOverview({ leads }: LeadsOverviewProps) {
             </div>
 
             {/* Category Distribution */}
-
             <RadialChart leads={leads} />
           </div>
         </CardContent>

@@ -49,30 +49,30 @@ const chartConfig: ChartConfig = {
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="rounded-lg border bg-background p-3 shadow-sm">
-        <div className="mb-2">
-          <div className="grid grid-cols-2 gap-4">
+      <div className="rounded-lg border bg-background p-2 shadow-sm">
+        <div>
+          <div className="grid grid-cols-2 gap-2">
             <div>
-              <div className="text-sm font-medium text-muted-foreground">
+              <div className="text-[0.70rem] font-medium text-muted-foreground">
                 KATEGORI
               </div>
             </div>
             <div>
-              <div className="text-sm font-medium text-muted-foreground">
+              <div className="text-[0.70rem] font-medium text-muted-foreground">
                 ANTAL
               </div>
             </div>
           </div>
         </div>
         <div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-2">
             <div>
-              <div className="text-xl font-semibold text-muted-foreground">
+              <div className="text-lg font-bold text-muted-foreground">
                 {payload[0].name}
               </div>
             </div>
             <div>
-              <div className="text-xl font-semibold">{payload[0].value}</div>
+              <div className="text-lg font-bold">{payload[0].value}</div>
             </div>
           </div>
         </div>
@@ -158,15 +158,15 @@ export function RadialChart({ leads }: RadialChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Inkomna leads per kategori</CardTitle>
+        <CardTitle>Leads kategorifördelning</CardTitle>
         <CardDescription>{currentMonthName}</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
-          className="mx-auto aspect-auto w-full h-[240px] sm:h-[260px]"
+          className="mx-auto aspect-auto w-full h-[180px] sm:h-[220px]"
           config={chartConfig}
         >
-          <PieChart margin={{ top: 30, right: 20, bottom: 20, left: 20 }}>
+          <PieChart margin={{ top: 30, right: 20, bottom: 30, left: 20 }}>
             <ChartTooltip content={<CustomTooltip />} />
             <Pie
               data={categoryData}
@@ -189,17 +189,17 @@ export function RadialChart({ leads }: RadialChartProps) {
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>
-            <text x="50%" y="60%" textAnchor="middle" dominantBaseline="middle">
+            <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
               <tspan
                 x="50%"
-                y="calc(60% - 12px)"
+                y="calc(50% - 10px)"
                 className="fill-foreground text-2xl font-bold"
               >
                 {totalLeads.toLocaleString()}
               </tspan>
               <tspan
                 x="50%"
-                y="calc(60% + 14px)"
+                y="calc(60% + 20px)"
                 className="fill-muted-foreground text-xs"
               >
                 Leads
