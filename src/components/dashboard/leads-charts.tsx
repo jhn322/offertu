@@ -204,7 +204,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
             <TabsTrigger value="pie">Cirkeldiagram</TabsTrigger>
           </TabsList>
           <TabsContent value="monthly">
-            <div className="h-[400px] pt-4">
+            <div className="h-[500px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={monthlyData}>
                   <XAxis
@@ -238,7 +238,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
             </div>
           </TabsContent>
           <TabsContent value="category">
-            <div className="h-[400px] pt-4">
+            <div className="h-[470px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={categoryData}>
                   <XAxis
@@ -270,7 +270,7 @@ export function LeadsCharts({ leads }: LeadsChartsProps) {
             </div>
           </TabsContent>
           <TabsContent value="pie">
-            <div className="h-[400px] pt-4">
+            <div className="h-[470px] pt-4">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
