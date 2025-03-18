@@ -11,7 +11,7 @@ export function LeadsOverviewSkeleton() {
           </div>
           <div className="h-4 w-48 bg-muted animate-pulse rounded" />
         </CardHeader>
-        <CardContent className="h-[450px] flex flex-col justify-between">
+        <CardContent className="h-[540px] flex flex-col justify-between">
           <div className="grid gap-6">
             <div className="grid grid-cols-2 gap-3">
               {[...Array(2)].map((_, i) => (

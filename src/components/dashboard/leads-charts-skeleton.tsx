@@ -7,7 +7,7 @@ export function LeadsChartsSkeleton() {
       <CardHeader>
         <div className="h-6 w-24 bg-muted animate-pulse rounded" />
       </CardHeader>
-      <CardContent className="h-[450px]">
+      <CardContent className="h-[540px]">
         <Tabs defaultValue="monthly" className="w-full h-full">
           <TabsList className="grid w-full grid-cols-2">
             <div className="h-9 w-full bg-muted animate-pulse rounded" />
