@@ -52,11 +52,13 @@ export function RadialChart({ leads }: RadialChartProps) {
       acc[lead.category] = (acc[lead.category] || 0) + 1;
       return acc;
     }, {} as Record<string, number>)
-  ).map(([category, count]) => ({
-    name: categoryTranslations[category] || category,
-    value: count,
-    color: categoryColors[category] || '#E4E4E4',
-  }));
+  )
+    .map(([category, count]) => ({
+      name: categoryTranslations[category] || category,
+      value: count,
+      color: categoryColors[category] || '#E4E4E4',
+    }))
+    .sort((a, b) => b.value - a.value);
 
   const totalLeads = categoryData.reduce(
     (sum, category) => sum + category.value,
@@ -100,9 +102,11 @@ export function RadialChart({ leads }: RadialChartProps) {
         >
           <RadialBarChart
             data={categoryData}
-            endAngle={180}
+            startAngle={180}
+            endAngle={0}
             innerRadius={80}
             outerRadius={130}
+            barSize={20}
           >
             <ChartTooltip
               cursor={false}
@@ -139,6 +143,7 @@ export function RadialChart({ leads }: RadialChartProps) {
                 key={index}
                 dataKey="value"
                 stackId="a"
+                data={[category]}
                 cornerRadius={5}
                 fill={category.color}
                 className="stroke-transparent stroke-2"
