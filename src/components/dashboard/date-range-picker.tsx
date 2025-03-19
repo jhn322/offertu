@@ -1,7 +1,7 @@
 'use client';
 
 import * as React from 'react';
-import { CalendarIcon, Check, X } from 'lucide-react';
+import { CalendarIcon, Check, X, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { DateRange } from 'react-day-picker';
@@ -95,6 +95,12 @@ export function DateRangePicker({
             ) : (
               <span>Välj datumintervall</span>
             )}
+            <ChevronDown
+              className={cn(
+                'ml-auto h-4 w-4 transition-transform duration-200',
+                isOpen && 'transform rotate-180'
+              )}
+            />
           </Button>
         </PopoverTrigger>
         <PopoverContent
@@ -120,7 +126,7 @@ export function DateRangePicker({
                 variant="outline"
                 size="sm"
                 onClick={handleCancel}
-                className="flex items-center"
+                className="flex items-center hover:bg-destructive hover:text-destructive-foreground"
               >
                 <X className="h-4 w-4 mr-1" />
                 Avbryt

@@ -1,5 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
+import { ChevronsLeft, ChevronsRight } from 'lucide-react';
 
 interface LeadsPaginationProps {
   currentPage: number;
@@ -21,6 +22,14 @@ export function LeadsPagination({
         <Button
           variant="outline"
           size="sm"
+          onClick={() => onPageChange(1)}
+          disabled={currentPage <= 1}
+        >
+          <ChevronsLeft className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
         >
@@ -34,7 +43,15 @@ export function LeadsPagination({
           disabled={currentPage >= totalPages}
         >
           Nästa
-          <ChevronRightIcon className="h-4 w-4 " />
+          <ChevronRightIcon className="h-4 w-4" />
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => onPageChange(totalPages)}
+          disabled={currentPage >= totalPages}
+        >
+          <ChevronsRight className="h-4 w-4" />
         </Button>
       </div>
     </div>

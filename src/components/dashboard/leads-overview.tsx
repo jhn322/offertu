@@ -239,7 +239,7 @@ export function LeadsOverview({
               </div>
               <div className="mt-3 flex items-center gap-2 text-sm">
                 <div className="h-2.5 w-2.5 rounded-full bg-primary"></div>
-                <span className="text-muted-foreground">
+                <span className="text-muted-foreground text-xs">
                   {Math.round((filteredLeadsCount / totalLeads) * 100) || 0}% av
                   totala leads ({totalLeads})
                 </span>

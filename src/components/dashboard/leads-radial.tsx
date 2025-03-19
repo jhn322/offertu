@@ -262,7 +262,7 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
           {Math.abs(trend).toFixed(1)}% jämfört med förra perioden{' '}
           <TrendingUp className={`h-4 w-4 ${trend < 0 ? 'rotate-180' : ''}`} />
         </div> */}
-        <div className="leading-none text-muted-foreground">
+        <div className="leading-none text-muted-foreground text-xs">
           Visar alla leads kategorier för {periodLabel}
         </div>
       </CardFooter>
