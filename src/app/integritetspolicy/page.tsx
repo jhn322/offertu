@@ -120,64 +120,74 @@ export default function IntegrityPolicy() {
                   <ul className="list-disc pl-5 space-y-2">
                     <li>
                       Alphabet (Google Analytics, Google Ads, Google reCAPTCHA)
+                      <ul className="list-disc pl-5 space-y-2 mt-2">
+                        <li>
+                          <a href="https://policies.google.com/privacy?hl=sv">
+                            Googles integritetspolicy
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://policies.google.com/terms?hl=sv">
+                            Googles användarvillkor
+                          </a>
+                        </li>
+                        <li>
+                          <a href="https://business.safety.google/intl/sv/privacy/">
+                            Googles ansvar för företagsinformation
+                          </a>
+                        </li>
+                      </ul>
                     </li>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>
-                        <a href="https://policies.google.com/privacy?hl=sv">
-                          Googles integritetspolicy
-                        </a>
-                      </li>
-                      <li>
-                        <a href="https://policies.google.com/terms?hl=sv">
-                          Googles användarvillkor
-                        </a>
-                      </li>
-                      <li>
-                        <a href="https://business.safety.google/intl/sv/privacy/">
-                          Googles ansvar för företagsinformation
-                        </a>
-                      </li>
-                    </ul>
-                    <li>Meta (Facebook, Instagram, etc.)</li>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>
-                        <a href="https://www.facebook.com/privacy/policy/">
-                          Metas Integritetspolicy
-                        </a>
-                      </li>
-                    </ul>
-                    <li>Microsoft Advertising</li>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>
-                        <a href="https://privacy.microsoft.com/sv-se/privacystatement">
-                          Microsofts Integritetspolicy
-                        </a>
-                      </li>
-                    </ul>
-                    <li>Pinterest</li>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>
-                        <a href="https://policy.pinterest.com/sv/privacy-policy">
-                          Pinterests Integritetspolicy
-                        </a>
-                      </li>
-                    </ul>
-                    <li>TikTok</li>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>
-                        <a href="https://www.tiktok.com/legal/privacy-policy-eea">
-                          TikToks Integritetspolicy
-                        </a>
-                      </li>
-                    </ul>
-                    <li>Klarna</li>
-                    <ul className="list-disc pl-5 space-y-2">
-                      <li>
-                        <a href="https://www.klarna.com/se/dataskydd/">
-                          Klarnas Integritetspolicy
-                        </a>
-                      </li>
-                    </ul>
+                    <li>
+                      Meta (Facebook, Instagram, etc.)
+                      <ul className="list-disc pl-5 space-y-2 mt-2">
+                        <li>
+                          <a href="https://www.facebook.com/privacy/policy/">
+                            Metas Integritetspolicy
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      Microsoft Advertising
+                      <ul className="list-disc pl-5 space-y-2 mt-2">
+                        <li>
+                          <a href="https://privacy.microsoft.com/sv-se/privacystatement">
+                            Microsofts Integritetspolicy
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      Pinterest
+                      <ul className="list-disc pl-5 space-y-2 mt-2">
+                        <li>
+                          <a href="https://policy.pinterest.com/sv/privacy-policy">
+                            Pinterests Integritetspolicy
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      TikTok
+                      <ul className="list-disc pl-5 space-y-2 mt-2">
+                        <li>
+                          <a href="https://www.tiktok.com/legal/privacy-policy-eea">
+                            TikToks Integritetspolicy
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li>
+                      Klarna
+                      <ul className="list-disc pl-5 space-y-2 mt-2">
+                        <li>
+                          <a href="https://www.klarna.com/se/dataskydd/">
+                            Klarnas Integritetspolicy
+                          </a>
+                        </li>
+                      </ul>
+                    </li>
                   </ul>
                 </section>
 
