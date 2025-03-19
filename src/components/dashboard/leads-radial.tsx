@@ -209,7 +209,7 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Leads kategorifördelning</CardTitle>
+        <CardTitle className="text-xl">Leads kategorifördelning</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
