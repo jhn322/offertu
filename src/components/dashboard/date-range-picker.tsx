@@ -37,7 +37,7 @@ export function DateRangePicker({
   showComparison = false,
   onComparisonToggle,
 }: DateRangePickerProps) {
-  // Add state to control the popover and prevent it from closing automatically
+  // State to control the popover and prevent it from closing automatically
   const [isOpen, setIsOpen] = React.useState(false);
   const [currentMonth, setCurrentMonth] = React.useState<Date | undefined>(
     dateRange?.from || new Date()
@@ -80,7 +80,6 @@ export function DateRangePicker({
     setTempComparisonDateRange(range);
   };
 
-  // Toggle comparison mode
   const handleComparisonToggle = () => {
     const newValue = !isComparisonMode;
     setIsComparisonMode(newValue);
@@ -105,7 +104,7 @@ export function DateRangePicker({
           defaultComparisonStart.getDate() - daysDiff
         );
       } else {
-        // Default to 30 days
+        // Default to 1 month
         defaultComparisonStart.setDate(defaultComparisonStart.getDate() - 30);
       }
 
@@ -137,7 +136,6 @@ export function DateRangePicker({
     setIsOpen(false);
   };
 
-  // Handle button click to open the popover
   const handleButtonClick = () => {
     setIsOpen(true);
   };
@@ -195,7 +193,7 @@ export function DateRangePicker({
         >
           <div className="flex flex-col">
             <div className="p-3 border-b">
-              <h3 className="font-medium mb-2">Primärt datumintervall</h3>
+              <h3 className="font-medium mb-2">Aktuell datumintervall</h3>
               <Calendar
                 initialFocus
                 mode="range"

@@ -209,7 +209,6 @@ export function LeadsCharts({
     return monthlyLeads;
   }, [filteredLeads, comparisonLeads, hasComparison]);
 
-  // Get category distribution data
   const categoryData = React.useMemo(() => {
     // Primary category counts
     const categoryCounts = filteredLeads.reduce((acc, lead) => {

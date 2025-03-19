@@ -117,7 +117,6 @@ export function LeadsOverview({
   // Handle date range change
   const handleDateRangeChange = (newRange: DateRange | undefined) => {
     setDateRange(newRange);
-    // Call the parent handler if provided
     if (onDateRangeChange) {
       onDateRangeChange(newRange);
     }
@@ -126,7 +125,6 @@ export function LeadsOverview({
   // Handle comparison date range change
   const handleComparisonDateRangeChange = (newRange: DateRange | undefined) => {
     setComparisonDateRange(newRange);
-    // Call the parent handler if provided
     if (onComparisonDateRangeChange) {
       onComparisonDateRangeChange(newRange);
     }
@@ -207,7 +205,6 @@ export function LeadsOverview({
       })
     : 'Ingen data';
 
-  // Get total leads count
   const totalLeads = leads.length;
   const filteredLeadsCount = filteredLeads.length;
 

@@ -45,7 +45,6 @@ const LeadsCharts = dynamic(
   }
 );
 
-// Memoize handlers
 const useLeadsData = () => {
   const [leads, setLeads] = useState<LeadResponse[]>([]);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {

@@ -1,6 +1,5 @@
 'use client';
 
-// import { TrendingUp } from 'lucide-react';
 import { PieChart, Pie, Cell, Sector } from 'recharts';
 import React from 'react';
 
@@ -61,7 +60,7 @@ const chartConfig: ChartConfig = {
 
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
-    // Check if this is a comparison tooltip (has both current and comparison data)
+    // Check if this is a comparison tooltip
     const hasComparison =
       payload.length > 1 || (payload[0] && payload[0].dataKey === 'comparison');
     const currentPayload =
@@ -232,7 +231,6 @@ export function RadialChart({
       ? ((totalLeads - totalComparisonLeads) / totalComparisonLeads) * 100
       : 0;
 
-  // Calculate period label
   let periodLabel;
   let comparisonPeriodLabel = '';
 

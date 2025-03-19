@@ -62,8 +62,10 @@ export function LeadsTableSkeleton() {
         <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 px-2 pt-2">
           <div className="h-4 sm:h-5 w-24 sm:w-32 bg-muted animate-pulse rounded" />
           <div className="flex space-x-2">
+            <div className="h-8 sm:h-9 w-8 sm:w-9 bg-muted animate-pulse rounded" />
             <div className="h-8 sm:h-9 w-24 sm:w-28 bg-muted animate-pulse rounded" />
             <div className="h-8 sm:h-9 w-24 sm:w-28 bg-muted animate-pulse rounded" />
+            <div className="h-8 sm:h-9 w-8 sm:w-9 bg-muted animate-pulse rounded" />
           </div>
         </div>
       </div>
