@@ -14,7 +14,12 @@ import { LeadResponse } from '@/types';
 import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
 import { RadialChart } from './leads-radial';
 import { categoryTranslations } from '@/lib/constants';
-import { UsersIcon, ClockIcon, TrendingUpIcon } from 'lucide-react';
+import {
+  UsersIcon,
+  ClockIcon,
+  TrendingUpIcon,
+  TrendingDownIcon,
+} from 'lucide-react';
 import { getCategoryColorValue } from './leads-charts';
 import { DateRangePicker } from './date-range-picker';
 import { DateRange } from 'react-day-picker';
@@ -236,14 +241,6 @@ export function LeadsOverview({
     return acc;
   }, {} as Record<string, number>);
 
-  const comparisonCategoryData = Object.entries(comparisonCategoryCounts).map(
-    ([category, count]) => ({
-      name: categoryTranslations[category] || category,
-      value: count,
-      color: getCategoryColorValue(category),
-    })
-  );
-
   // Calculate comparison metrics
   const comparisonLeadsCount = comparisonLeads.length;
   const leadsTrend =
@@ -330,17 +327,32 @@ export function LeadsOverview({
                 <span className="text-sm text-muted-foreground">leads</span>
                 {showComparison && comparisonLeadsCount > 0 && (
                   <span
-                    className={`text-xs ${
+                    className={`ml-1 text-xs flex items-center ${
                       leadsTrend >= 0 ? 'text-green-600' : 'text-red-600'
                     }`}
                   >
-                    {leadsTrend >= 0 ? '+' : ''}
-                    {leadsTrend.toFixed(1)}%
+                    {leadsTrend >= 0 ? (
+                      <>
+                        <TrendingUpIcon className="h-3 w-3 mr-0.5" />+
+                        {leadsTrend.toFixed(1)}%
+                      </>
+                    ) : (
+                      <>
+                        <TrendingDownIcon className="h-3 w-3 mr-0.5" />
+                        {leadsTrend.toFixed(1)}%
+                      </>
+                    )}
                   </span>
                 )}
               </div>
+              {showComparison && comparisonLeadsCount > 0 && (
+                <div className="mt-1 text-xs text-muted-foreground">
+                  {leadsTrend >= 0 ? 'Ökning' : 'Minskning'} jämfört med
+                  föregående period
+                </div>
+              )}
               <div className="mt-3 flex items-center gap-2 text-sm">
-                <div className="h-2.5 w-2.5 rounded-full bg-primary"></div>
+                <div className="h-2.5 w-2.5 rounded-full bg-amber-500"></div>
                 <span className="text-muted-foreground text-xs">
                   {Math.round((filteredLeadsCount / totalLeads) * 100) || 0}% av
                   totala leads ({totalLeads})
@@ -348,7 +360,7 @@ export function LeadsOverview({
               </div>
               {showComparison && comparisonLeadsCount > 0 && (
                 <div className="mt-1 flex items-center gap-2 text-sm">
-                  <div className="h-2.5 w-2.5 rounded-full bg-blue-300"></div>
+                  <div className="h-2.5 w-2.5 rounded-full bg-purple-500"></div>
                   <span className="text-muted-foreground text-xs">
                     Jämförelseperiod: {comparisonLeadsCount} leads
                     {comparisonDateRange?.from && comparisonDateRange?.to && (

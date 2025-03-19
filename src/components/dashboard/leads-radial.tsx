@@ -1,7 +1,7 @@
 'use client';
 
 // import { TrendingUp } from 'lucide-react';
-import { PieChart, Pie, Cell, Sector, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Sector } from 'recharts';
 import React from 'react';
 
 import {
@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/chart';
 import { categoryTranslations } from '@/lib/constants';
 import { LeadResponse } from '@/types';
-import { format, startOfMonth, subMonths, formatDistance } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
@@ -85,7 +85,7 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
     }
 
     return (
-      <div className="rounded-lg border bg-background p-2 shadow-sm">
+      <div className="rounded-lg border bg-background p-2 shadow-sm max-w-[280px]">
         <div>
           <div className="grid grid-cols-2 gap-2">
             <div>
@@ -95,7 +95,7 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
             </div>
             <div>
               <div className="text-[0.70rem] font-medium text-muted-foreground">
-                {hasComparison ? 'AKTUELL PERIOD' : 'ANTAL'}
+                AKTUELL PERIOD
               </div>
             </div>
           </div>
@@ -113,25 +113,38 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
           </div>
           {hasComparison && comparisonValue > 0 && (
             <div className="mt-2 pt-2 border-t">
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <div className="text-[0.70rem] font-medium text-muted-foreground">
-                    JÄMFÖRELSEPERIOD
+              <div className="grid grid-cols-1 gap-2">
+                <div className="flex justify-between items-baseline">
+                  <div>
+                    <div className="text-[0.70rem] font-medium text-muted-foreground">
+                      JÄMFÖRELSEPERIOD
+                    </div>
+                    <div className="text-sm font-medium">
+                      {comparisonValue} leads
+                    </div>
                   </div>
-                  <div className="text-sm">{comparisonValue} leads</div>
+                  <div>
+                    <div className="text-[0.70rem] font-medium text-muted-foreground">
+                      FÖRÄNDRING
+                    </div>
+                    <div
+                      className={`text-sm font-medium ${
+                        percentChange >= 0 ? 'text-green-600' : 'text-red-600'
+                      }`}
+                    >
+                      {percentChange >= 0 ? '+' : ''}
+                      {percentChange.toFixed(1)}%
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-[0.70rem] font-medium text-muted-foreground">
-                    FÖRÄNDRING
-                  </div>
-                  <div
-                    className={`text-sm font-medium ${
-                      percentChange >= 0 ? 'text-green-600' : 'text-red-600'
-                    }`}
-                  >
-                    {percentChange >= 0 ? '+' : ''}
-                    {percentChange.toFixed(1)}%
-                  </div>
+                <div className="text-[0.65rem] text-muted-foreground font-normal mt-1">
+                  {Math.abs(percentChange) > 0
+                    ? `${
+                        percentChange >= 0 ? 'Ökning' : 'Minskning'
+                      } med ${Math.abs(percentChange).toFixed(
+                        1
+                      )}% från jämförelseperioden`
+                    : 'Ingen förändring mellan perioderna'}
                 </div>
               </div>
             </div>
@@ -276,14 +289,6 @@ export function RadialChart({
     setActiveIndex(null);
   };
 
-  // Prepare data for the chart
-  const chartData = categoryData.map((category) => ({
-    name: category.name,
-    current: category.value,
-    comparison: comparisonCategoryData[category.name.toLowerCase()] || 0,
-    color: category.color,
-  }));
-
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
@@ -291,9 +296,9 @@ export function RadialChart({
         {hasComparison && (
           <div className="flex items-center gap-1.5 mt-1 text-sm text-muted-foreground">
             <span>Jämför:</span>
-            <span className="font-medium text-primary">{periodLabel}</span>
-            <span>vs</span>
-            <span className="font-medium text-blue-500">
+            <span className="font-medium text-amber-600">{periodLabel}</span>
+            <span>mot</span>
+            <span className="font-medium text-purple-600">
               {comparisonPeriodLabel}
             </span>
           </div>
@@ -331,22 +336,22 @@ export function RadialChart({
             <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
               <tspan
                 x="50%"
-                y="50%"
+                y="45%"
                 className="fill-foreground text-2xl font-bold"
               >
                 {totalLeads.toLocaleString()}
               </tspan>
-              <tspan x="50%" y="70%" className="fill-muted-foreground text-xs">
+              <tspan x="50%" y="60%" className="fill-muted-foreground text-xs">
                 Leads
               </tspan>
               {hasComparison && (
                 <tspan
                   x="50%"
-                  y="85%"
-                  className="fill-blue-500 text-xs font-medium"
+                  y="75%"
+                  className="fill-purple-500 text-xs font-normal"
                 >
                   {totalComparisonLeads > 0
-                    ? `vs ${totalComparisonLeads} tidigare`
+                    ? `jämfört med ${totalComparisonLeads} tidigare`
                     : ''}
                 </tspan>
               )}
@@ -357,12 +362,26 @@ export function RadialChart({
       <CardFooter className="flex-col gap-2 text-sm">
         {hasComparison && (
           <div className="flex items-center gap-2 font-medium leading-none">
-            {trend >= 0 ? 'Ökning med ' : 'Minskning med '}
-            {Math.abs(trend).toFixed(1)}% jämfört med förra perioden{' '}
             {trend >= 0 ? (
-              <TrendingUp className="h-4 w-4 text-green-600" />
+              <>
+                <span className="text-green-600">
+                  {Math.abs(trend).toFixed(1)}% ökning
+                </span>
+                <TrendingUp className="h-4 w-4 text-green-600" />
+                <span className="text-xs text-muted-foreground font-normal">
+                  (jämfört med tidigare period)
+                </span>
+              </>
             ) : (
-              <TrendingDown className="h-4 w-4 text-red-600" />
+              <>
+                <span className="text-red-600">
+                  {Math.abs(trend).toFixed(1)}% minskning
+                </span>
+                <TrendingDown className="h-4 w-4 text-red-600" />
+                <span className="text-xs text-muted-foreground font-normal">
+                  (jämfört med tidigare period)
+                </span>
+              </>
             )}
           </div>
         )}

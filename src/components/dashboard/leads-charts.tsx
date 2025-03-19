@@ -24,15 +24,8 @@ import {
   Cell,
   Legend,
   PieLabelRenderProps,
-  ReferenceLine,
 } from 'recharts';
-import {
-  format,
-  startOfMonth,
-  eachMonthOfInterval,
-  subMonths,
-  formatDistance,
-} from 'date-fns';
+import { format, startOfMonth, eachMonthOfInterval, subMonths } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LeadsChartsSkeleton } from './leads-charts-skeleton';
@@ -267,7 +260,7 @@ export function LeadsCharts({
           : 0;
 
       return (
-        <div className="rounded-lg border bg-background p-2 shadow-sm">
+        <div className="rounded-lg border bg-background p-2 shadow-sm max-w-[280px]">
           <div className="grid grid-cols-2 gap-2">
             <div className="flex flex-col">
               <span className="text-[0.70rem] uppercase text-muted-foreground">
@@ -279,7 +272,7 @@ export function LeadsCharts({
             </div>
             <div className="flex flex-col">
               <span className="text-[0.70rem] uppercase text-muted-foreground">
-                {showComparison ? 'Aktuell period' : 'Antal'}
+                Aktuell period
               </span>
               <span className="font-bold">{primaryValue}</span>
             </div>
@@ -287,25 +280,36 @@ export function LeadsCharts({
 
           {showComparison && comparisonValue !== undefined && (
             <div className="mt-2 pt-2 border-t">
-              <div className="grid grid-cols-2 gap-2">
-                <div className="flex flex-col">
-                  <span className="text-[0.70rem] uppercase text-muted-foreground">
-                    Jämförelseperiod
-                  </span>
-                  <span className="font-medium">{comparisonValue}</span>
+              <div className="grid grid-cols-1 gap-2">
+                <div className="flex justify-between items-baseline">
+                  <div>
+                    <span className="text-[0.70rem] uppercase text-muted-foreground">
+                      Jämförelseperiod
+                    </span>
+                    <div className="font-medium">{comparisonValue}</div>
+                  </div>
+                  <div>
+                    <span className="text-[0.70rem] uppercase text-muted-foreground">
+                      Förändring
+                    </span>
+                    <div
+                      className={`font-medium ${
+                        percentChange >= 0 ? 'text-green-600' : 'text-red-600'
+                      }`}
+                    >
+                      {percentChange >= 0 ? '+' : ''}
+                      {percentChange.toFixed(1)}%
+                    </div>
+                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <span className="text-[0.70rem] uppercase text-muted-foreground">
-                    Förändring
-                  </span>
-                  <span
-                    className={`font-medium ${
-                      percentChange >= 0 ? 'text-green-600' : 'text-red-600'
-                    }`}
-                  >
-                    {percentChange >= 0 ? '+' : ''}
-                    {percentChange.toFixed(1)}%
-                  </span>
+                <div className="text-[0.65rem] text-muted-foreground font-normal mt-1">
+                  {Math.abs(percentChange) > 0
+                    ? `${
+                        percentChange >= 0 ? 'Ökning' : 'Minskning'
+                      } med ${Math.abs(percentChange).toFixed(
+                        1
+                      )}% från jämförelseperioden`
+                    : 'Ingen förändring mellan perioderna'}
                 </div>
               </div>
             </div>
@@ -369,11 +373,17 @@ export function LeadsCharts({
         <CardTitle>Leads statistik</CardTitle>
         {hasComparison && (
           <CardDescription className="flex items-center gap-2">
-            <div className="flex items-center gap-1.5">
-              <Badge variant="outline" className="bg-primary/10 text-xs">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <Badge
+                variant="outline"
+                className="bg-amber-100 text-amber-800 text-xs border-amber-200"
+              >
                 Aktuell: {primaryDateLabel}
               </Badge>
-              <Badge variant="outline" className="bg-blue-100 text-xs">
+              <Badge
+                variant="outline"
+                className="bg-purple-100 text-purple-800 text-xs border-purple-200"
+              >
                 Jämförelse: {comparisonDateLabel}
               </Badge>
             </div>
@@ -391,7 +401,7 @@ export function LeadsCharts({
             <div className="h-[520px] pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
-                  <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                  <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                   <span className="text-muted-foreground">
                     Diagrammet visar data från båda perioderna - hållet musen
                     över linjen för att se detaljerad jämförelse
@@ -432,13 +442,30 @@ export function LeadsCharts({
                       type="monotone"
                       dataKey="comparisonCount"
                       name="Jämförelseperiod"
-                      stroke="#2252B1"
+                      stroke="#8B5CF6"
                       strokeWidth={2}
                       strokeDasharray="5 5"
                       dot={true}
                     />
                   )}
-                  <Legend />
+                  <Legend
+                    wrapperStyle={{ paddingTop: '10px' }}
+                    formatter={(value) => {
+                      return (
+                        <span
+                          className="text-xs font-medium text-foreground px-2 py-1 rounded-sm"
+                          style={{
+                            backgroundColor:
+                              value === 'Aktuell period'
+                                ? '#FFF3D6'
+                                : '#F3E8FF',
+                          }}
+                        >
+                          {value}
+                        </span>
+                      );
+                    }}
+                  />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -447,7 +474,7 @@ export function LeadsCharts({
             <div className="h-[520px] pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
-                  <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                  <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                   <span className="text-muted-foreground">
                     Diagrammet visar data från båda perioderna - prickade
                     staplar representerar jämförelseperioden
@@ -482,6 +509,7 @@ export function LeadsCharts({
                     dataKey="value"
                     name="Aktuell period"
                     radius={[4, 4, 0, 0]}
+                    barSize={30}
                   >
                     {categoryData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
@@ -491,14 +519,32 @@ export function LeadsCharts({
                     <Bar
                       dataKey="comparisonValue"
                       name="Jämförelseperiod"
-                      fill="#8884d8"
+                      fill="#8B5CF6"
                       radius={[4, 4, 0, 0]}
-                      fillOpacity={0.6}
-                      stroke="#8884d8"
+                      fillOpacity={0.7}
+                      stroke="#8B5CF6"
                       strokeDasharray="3 3"
+                      barSize={30}
                     />
                   )}
-                  <Legend />
+                  <Legend
+                    wrapperStyle={{ paddingTop: '10px' }}
+                    formatter={(value) => {
+                      return (
+                        <span
+                          className="text-xs font-medium text-foreground px-2 py-1 rounded-sm"
+                          style={{
+                            backgroundColor:
+                              value === 'Aktuell period'
+                                ? '#FFF3D6'
+                                : '#F3E8FF',
+                          }}
+                        >
+                          {value}
+                        </span>
+                      );
+                    }}
+                  />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -507,7 +553,7 @@ export function LeadsCharts({
             <div className="h-[520px] pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
-                  <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                  <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
                   <span className="text-muted-foreground">
                     Cirkeldiagrammet visar kategorifördelning för aktuell period
                     - för detaljerad jämförelse, håll musen över en sektion
@@ -543,9 +589,16 @@ export function LeadsCharts({
                     align="center"
                     iconType="circle"
                     iconSize={10}
+                    wrapperStyle={{ paddingTop: '10px' }}
                     formatter={(value) => {
                       return (
-                        <span style={{ color: '#282828', marginRight: 10 }}>
+                        <span
+                          className="text-xs font-medium text-foreground px-2 py-1 rounded-sm"
+                          style={{
+                            backgroundColor: '#FFF3D6',
+                            marginRight: 10,
+                          }}
+                        >
                           {value}
                         </span>
                       );
