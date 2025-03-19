@@ -116,12 +116,17 @@ export function LeadsCharts({
 
   // Filter comparison leads
   const comparisonLeads = React.useMemo(() => {
-    if (!hasComparison) return [];
+    if (
+      !hasComparison ||
+      !comparisonDateRange?.from ||
+      !comparisonDateRange?.to
+    )
+      return [];
 
-    const from = new Date(comparisonDateRange?.from!);
+    const from = new Date(comparisonDateRange.from);
     from.setHours(0, 0, 0, 0);
 
-    const to = new Date(comparisonDateRange?.to!);
+    const to = new Date(comparisonDateRange.to);
     to.setHours(23, 59, 59, 999);
 
     return leads.filter((lead) => {
@@ -149,23 +154,26 @@ export function LeadsCharts({
   }, [dateRange]);
 
   const comparisonDateLabel = React.useMemo(() => {
-    if (!hasComparison) return '';
-
-    // We already checked that comparisonDateRange has from and to in hasComparison check
-    const fromDate = comparisonDateRange?.from!;
-    const toDate = comparisonDateRange?.to!;
+    if (
+      !hasComparison ||
+      !comparisonDateRange?.from ||
+      !comparisonDateRange?.to
+    )
+      return '';
 
     if (
-      fromDate.getMonth() === toDate.getMonth() &&
-      fromDate.getFullYear() === toDate.getFullYear()
+      comparisonDateRange.from.getMonth() ===
+        comparisonDateRange.to.getMonth() &&
+      comparisonDateRange.from.getFullYear() ===
+        comparisonDateRange.to.getFullYear()
     ) {
       // Same month
-      return format(fromDate, 'MMMM yyyy', { locale: sv });
+      return format(comparisonDateRange.from, 'MMMM yyyy', { locale: sv });
     } else {
       // Different months
-      return `${format(fromDate, 'd MMM', {
+      return `${format(comparisonDateRange.from, 'd MMM', {
         locale: sv,
-      })} - ${format(toDate, 'd MMM yyyy', { locale: sv })}`;
+      })} - ${format(comparisonDateRange.to, 'd MMM yyyy', { locale: sv })}`;
     }
   }, [comparisonDateRange, hasComparison]);
 

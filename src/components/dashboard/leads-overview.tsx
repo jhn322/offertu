@@ -233,14 +233,6 @@ export function LeadsOverview({
     })
   );
 
-  // Calculate comparison category counts if needed
-  const comparisonCategoryCounts = comparisonLeads.reduce((acc, lead) => {
-    if (lead.category) {
-      acc[lead.category] = (acc[lead.category] || 0) + 1;
-    }
-    return acc;
-  }, {} as Record<string, number>);
-
   // Calculate comparison metrics
   const comparisonLeadsCount = comparisonLeads.length;
   const leadsTrend =
