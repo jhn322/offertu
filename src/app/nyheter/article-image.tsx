@@ -42,15 +42,20 @@ export function ArticleImage({
         alt={alt}
         width={width}
         height={height}
-        quality={85} // Slightly reduced quality for better performance while maintaining good looks
+        quality={85}
         priority={priority}
+        loading={priority ? 'eager' : 'lazy'}
+        placeholder="blur"
+        blurDataURL={`data:image/svg+xml;base64,${Buffer.from(
+          '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#CCCCCC"/></svg>'
+        ).toString('base64')}`}
         className={`h-full w-full object-cover transition-opacity duration-300 ${
           isLoading ? 'opacity-0' : 'opacity-100'
         }`}
         onLoadingComplete={() => setIsLoading(false)}
         sizes="(max-width: 640px) 640px, (max-width: 768px) 768px, (max-width: 1024px) 1024px, 1200px"
         itemProp="image"
-        fetchPriority="high"
+        fetchPriority={priority ? 'high' : 'low'}
       />
     </div>
   );
