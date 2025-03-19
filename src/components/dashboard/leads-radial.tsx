@@ -44,9 +44,9 @@ interface CustomTooltipProps {
 
 const categoryColors: Record<string, string> = {
   service: '#FFAE00',
-  templates: '#4683FF',
-  api: '#10B981',
-  careers: '#EF4444',
+  templates: '#2252B1',
+  api: '#06643D',
+  careers: '#AB2222',
   tools: '#030712',
   news: '#E4E4E4',
 };
@@ -209,7 +209,7 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
-        <CardTitle>Leads kategorifördelning</CardTitle>
+        <CardTitle className="text-xl">Leads kategorifördelning</CardTitle>
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer

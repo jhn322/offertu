@@ -29,16 +29,20 @@ export default {
           foreground: '#282828',
         },
         secondary: {
-          DEFAULT: '#4683FF',
+          DEFAULT: '#2252B1',
           foreground: '#ffffff',
         },
         accent: {
           DEFAULT: '#FF7164',
           foreground: '#ffffff',
         },
+        tertiary: {
+          DEFAULT: '#030712',
+          foreground: '#ffffff',
+        },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: '#AB2222',
+          foreground: '#ffffff',
         },
         dark: {
           DEFAULT: '#282828',
@@ -50,6 +54,10 @@ export default {
         },
         card: {
           DEFAULT: '#F1F1F1',
+          foreground: '#282828',
+        },
+        success: {
+          DEFAULT: '#06643D',
           foreground: '#282828',
         },
       },

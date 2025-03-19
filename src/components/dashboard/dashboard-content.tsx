@@ -1,19 +1,52 @@
 'use client';
 
-import { LeadsTable } from '@/components/dashboard/leads-table';
-import { LeadsOverview } from '@/components/dashboard/leads-overview';
-import { LeadsOverviewSkeleton } from '@/components/dashboard/leads-overview-skeleton';
-import { LeadsTableSkeleton } from '@/components/dashboard/leads-table-skeleton';
-import { LeadsCharts } from '@/components/dashboard/leads-charts';
-import { LeadsChartsSkeleton } from '@/components/dashboard/leads-charts-skeleton';
-import { DashboardShell } from '@/components/dashboard/shell';
 import { Suspense, useState, useEffect } from 'react';
 import { Toaster } from 'sonner';
 import { LeadResponse } from '@/types';
 import Script from 'next/script';
 import { DateRange } from 'react-day-picker';
+import dynamic from 'next/dynamic';
+import { DashboardShell } from '@/components/dashboard/shell';
+import { LeadsOverviewSkeleton } from '@/components/dashboard/leads-overview-skeleton';
+import { LeadsChartsSkeleton } from '@/components/dashboard/leads-charts-skeleton';
+import { LeadsTableSkeleton } from '@/components/dashboard/leads-table-skeleton';
 
-export function DashboardContent() {
+// Dynamically import heavy components
+const LeadsTable = dynamic(
+  () =>
+    import('@/components/dashboard/leads-table').then((mod) => ({
+      default: mod.LeadsTable,
+    })),
+  {
+    loading: () => <LeadsTableSkeleton />,
+    ssr: false,
+  }
+);
+
+const LeadsOverview = dynamic(
+  () =>
+    import('@/components/dashboard/leads-overview').then((mod) => ({
+      default: mod.LeadsOverview,
+    })),
+  {
+    loading: () => <LeadsOverviewSkeleton />,
+    ssr: false,
+  }
+);
+
+const LeadsCharts = dynamic(
+  () =>
+    import('@/components/dashboard/leads-charts').then((mod) => ({
+      default: mod.LeadsCharts,
+    })),
+  {
+    loading: () => <LeadsChartsSkeleton />,
+    ssr: false,
+  }
+);
+
+// Memoize handlers
+const useLeadsData = () => {
   const [leads, setLeads] = useState<LeadResponse[]>([]);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
     const now = new Date();
@@ -27,6 +60,8 @@ export function DashboardContent() {
 
   // Initial fetch of leads
   useEffect(() => {
+    let isMounted = true;
+
     async function fetchInitialLeads() {
       try {
         const response = await fetch('/api/leads');
@@ -36,24 +71,25 @@ export function DashboardContent() {
         if (!data.success) {
           throw new Error(data.error || 'Failed to fetch leads');
         }
-        setLeads(data.data);
+        if (isMounted) {
+          setLeads(data.data);
+        }
       } catch (error) {
         console.error('Error fetching initial leads:', error);
       }
     }
 
     fetchInitialLeads();
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
-  // Handler for updating leads
-  const handleLeadsUpdate = (newLeads: LeadResponse[]) => {
-    setLeads(newLeads);
-  };
+  return { leads, setLeads, dateRange, setDateRange };
+};
 
-  // Handler for updating date range
-  const handleDateRangeChange = (newRange: DateRange | undefined) => {
-    setDateRange(newRange);
-  };
+export function DashboardContent() {
+  const { leads, setLeads, dateRange, setDateRange } = useLeadsData();
 
   // Schema.org structured data for Dashboard
   const dashboardSchema = {
@@ -84,7 +120,7 @@ export function DashboardContent() {
                 <LeadsOverview
                   leads={leads}
                   dateRange={dateRange}
-                  onDateRangeChange={handleDateRangeChange}
+                  onDateRangeChange={setDateRange}
                 />
               </Suspense>
             </section>
@@ -96,7 +132,7 @@ export function DashboardContent() {
           </div>
           <section aria-label="Leads tabell">
             <Suspense fallback={<LeadsTableSkeleton />}>
-              <LeadsTable onLeadsUpdate={handleLeadsUpdate} />
+              <LeadsTable onLeadsUpdate={setLeads} />
             </Suspense>
           </section>
         </div>

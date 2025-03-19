@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function ResourcesSection() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-[#E4E4E4]">
+    <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">
         <h2
           id="resources-heading"
@@ -25,7 +25,7 @@ export default function ResourcesSection() {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div
-                    className="rounded-lg bg-[#282828] p-2"
+                    className="rounded-lg bg-bg-primary-foreground p-2"
                     aria-hidden="true"
                   >
                     <Newspaper className="h-6 w-6 text-white" />
@@ -34,7 +34,7 @@ export default function ResourcesSection() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   Ta del av de senaste trenderna, expertråden och
                   branschnyheterna inom offerering och projektkalkylering.
                 </p>
@@ -61,7 +61,7 @@ export default function ResourcesSection() {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div
-                    className="rounded-lg bg-[#282828] p-2"
+                    className="rounded-lg bg-primary-foreground p-2"
                     aria-hidden="true"
                   >
                     <Tool className="h-6 w-6 text-white" />
@@ -70,7 +70,7 @@ export default function ResourcesSection() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   Snabba och enkla verktyg för grundläggande offertberäkningar.
                 </p>
                 <Button
@@ -96,7 +96,7 @@ export default function ResourcesSection() {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div
-                    className="rounded-lg bg-[#282828] p-2"
+                    className="rounded-lg bg-primary-foreground p-2"
                     aria-hidden="true"
                   >
                     <FileText className="h-6 w-6 text-white" />
@@ -105,12 +105,12 @@ export default function ResourcesSection() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="list-inside list-disc space-y-2 text-gray-500">
+                <ul className="list-inside list-disc space-y-2 text-muted-foreground">
                   <li>Professionella offertmallar</li>
                   <li>Juridiskt granskade kontraktmallar</li>
                   <li>Checklistor för offertgenomgång</li>
                 </ul>
-                <Button asChild className="bg-[#FFAE00] hover:bg-[#FFAE00]/90">
+                <Button asChild className="bg-primary hover:bg-primary/90">
                   <Link
                     href="/mallar"
                     className="inline-flex items-center gap-2"

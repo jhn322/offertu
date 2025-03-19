@@ -122,15 +122,26 @@ export default function NewsPage() {
                 >
                   <CardHeader>
                     <figure className="relative aspect-[16/9] w-full mb-4">
+                      <div className="absolute inset-0 bg-muted animate-pulse rounded-lg" />
                       <Image
                         src={article.imageUrl}
                         alt={article.imageAlt || article.title}
                         fill
-                        className="absolute inset-0 object-cover rounded-lg"
+                        className="absolute inset-0 object-cover rounded-lg transition-opacity duration-300"
                         sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         priority={articles.indexOf(article) < 2}
+                        loading={
+                          articles.indexOf(article) < 2 ? 'eager' : 'lazy'
+                        }
                         quality={75}
+                        placeholder="blur"
+                        blurDataURL={`data:image/svg+xml;base64,${Buffer.from(
+                          '<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg"><rect width="400" height="300" fill="#CCCCCC"/></svg>'
+                        ).toString('base64')}`}
                         itemProp="image"
+                        fetchPriority={
+                          articles.indexOf(article) < 2 ? 'high' : 'low'
+                        }
                       />
                     </figure>
                     <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -167,7 +178,14 @@ export default function NewsPage() {
                           width={40}
                           height={40}
                           className="rounded-full"
+                          loading="lazy"
+                          quality={75}
+                          placeholder="blur"
+                          blurDataURL={`data:image/svg+xml;base64,${Buffer.from(
+                            '<svg width="40" height="40" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="20" fill="#CCCCCC"/></svg>'
+                          ).toString('base64')}`}
                           itemProp="image"
+                          fetchPriority="low"
                         />
                         <span itemProp="name" className="text-sm font-medium">
                           {article.author.name}
@@ -178,9 +196,12 @@ export default function NewsPage() {
                 </Link>
                 <CardFooter className="mt-auto pt-4">
                   <div className="ml-auto">
-                    <Link href={`/nyheter/${article.slug}`}>
-                      <Button className="bg-[#FFAE00] text-primary-foreground hover:bg-[#FFAE00]/90">
-                        Läs mer{' '}
+                    <Link
+                      href={`/nyheter/${article.slug}`}
+                      aria-label={`Läs hela artikeln: ${article.title}`}
+                    >
+                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                        Läs hela artikeln{' '}
                         <ArrowRight
                           className="ml-2 h-4 w-4"
                           aria-hidden="true"
