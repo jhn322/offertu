@@ -45,7 +45,6 @@ const LeadsCharts = dynamic(
   }
 );
 
-// Memoize handlers
 const useLeadsData = () => {
   const [leads, setLeads] = useState<LeadResponse[]>([]);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(() => {
@@ -57,6 +56,10 @@ const useLeadsData = () => {
       to: now,
     };
   });
+
+  const [comparisonDateRange, setComparisonDateRange] = useState<
+    DateRange | undefined
+  >(undefined);
 
   // Initial fetch of leads
   useEffect(() => {
@@ -85,11 +88,25 @@ const useLeadsData = () => {
     };
   }, []);
 
-  return { leads, setLeads, dateRange, setDateRange };
+  return {
+    leads,
+    setLeads,
+    dateRange,
+    setDateRange,
+    comparisonDateRange,
+    setComparisonDateRange,
+  };
 };
 
 export function DashboardContent() {
-  const { leads, setLeads, dateRange, setDateRange } = useLeadsData();
+  const {
+    leads,
+    setLeads,
+    dateRange,
+    setDateRange,
+    comparisonDateRange,
+    setComparisonDateRange,
+  } = useLeadsData();
 
   // Schema.org structured data for Dashboard
   const dashboardSchema = {
@@ -121,12 +138,18 @@ export function DashboardContent() {
                   leads={leads}
                   dateRange={dateRange}
                   onDateRangeChange={setDateRange}
+                  comparisonDateRange={comparisonDateRange}
+                  onComparisonDateRangeChange={setComparisonDateRange}
                 />
               </Suspense>
             </section>
             <section aria-label="Leads diagram">
               <Suspense fallback={<LeadsChartsSkeleton />}>
-                <LeadsCharts leads={leads} dateRange={dateRange} />
+                <LeadsCharts
+                  leads={leads}
+                  dateRange={dateRange}
+                  comparisonDateRange={comparisonDateRange}
+                />
               </Suspense>
             </section>
           </div>

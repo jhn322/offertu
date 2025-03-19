@@ -1,6 +1,5 @@
 'use client';
 
-// import { TrendingUp } from 'lucide-react';
 import { PieChart, Pie, Cell, Sector } from 'recharts';
 import React from 'react';
 
@@ -18,10 +17,11 @@ import {
 } from '@/components/ui/chart';
 import { categoryTranslations } from '@/lib/constants';
 import { LeadResponse } from '@/types';
-import { format, startOfMonth, subMonths, formatDistance } from 'date-fns';
+import { format, formatDistance } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface CategoryData {
   name: string;
@@ -32,6 +32,8 @@ interface CategoryData {
 interface RadialChartProps {
   leads: LeadResponse[];
   dateRange?: DateRange;
+  comparisonLeads?: LeadResponse[];
+  comparisonDateRange?: DateRange;
 }
 
 interface CustomTooltipProps {
@@ -39,6 +41,7 @@ interface CustomTooltipProps {
   payload?: Array<{
     name: string;
     value: number;
+    dataKey?: string;
   }>;
 }
 
@@ -57,8 +60,31 @@ const chartConfig: ChartConfig = {
 
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
+    // Check if this is a comparison tooltip
+    const hasComparison =
+      payload.length > 1 || (payload[0] && payload[0].dataKey === 'comparison');
+    const currentPayload =
+      payload.find((p) => p.dataKey === 'current') || payload[0];
+    const comparisonPayload = payload.find((p) => p.dataKey === 'comparison');
+
+    // Get the category name and values
+    const categoryName = currentPayload.name;
+    const currentValue = currentPayload.value;
+
+    // Calculate percentage change if comparison data exists
+    let percentChange = 0;
+    let comparisonValue = 0;
+
+    if (comparisonPayload) {
+      comparisonValue = comparisonPayload.value;
+      if (comparisonValue > 0) {
+        percentChange =
+          ((currentValue - comparisonValue) / comparisonValue) * 100;
+      }
+    }
+
     return (
-      <div className="rounded-lg border bg-background p-2 shadow-sm">
+      <div className="rounded-lg border bg-background p-2 shadow-sm max-w-[280px]">
         <div>
           <div className="grid grid-cols-2 gap-2">
             <div>
@@ -68,7 +94,7 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
             </div>
             <div>
               <div className="text-[0.70rem] font-medium text-muted-foreground">
-                ANTAL
+                AKTUELL PERIOD
               </div>
             </div>
           </div>
@@ -77,13 +103,51 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
           <div className="grid grid-cols-2 gap-2">
             <div>
               <div className="text-lg font-bold text-muted-foreground">
-                {payload[0].name}
+                {categoryName}
               </div>
             </div>
             <div>
-              <div className="text-lg font-bold">{payload[0].value}</div>
+              <div className="text-lg font-bold">{currentValue}</div>
             </div>
           </div>
+          {hasComparison && comparisonValue > 0 && (
+            <div className="mt-2 pt-2 border-t">
+              <div className="grid grid-cols-1 gap-2">
+                <div className="flex justify-between items-baseline">
+                  <div>
+                    <div className="text-[0.70rem] font-medium text-muted-foreground">
+                      JÄMFÖRELSEPERIOD
+                    </div>
+                    <div className="text-sm font-medium">
+                      {comparisonValue} leads
+                    </div>
+                  </div>
+                  <div>
+                    <div className="text-[0.70rem] font-medium text-muted-foreground">
+                      FÖRÄNDRING
+                    </div>
+                    <div
+                      className={`text-sm font-medium ${
+                        percentChange >= 0 ? 'text-green-600' : 'text-red-600'
+                      }`}
+                    >
+                      {percentChange >= 0 ? '+' : ''}
+                      {percentChange.toFixed(1)}%
+                    </div>
+                  </div>
+                </div>
+                <div className="text-[0.65rem] text-muted-foreground font-normal mt-1">
+                  {Math.abs(percentChange) > 0
+                    ? `${
+                        percentChange >= 0 ? 'Ökning' : 'Minskning'
+                      } med ${Math.abs(percentChange).toFixed(
+                        1
+                      )}% från jämförelseperioden`
+                    : 'Ingen förändring mellan perioderna'}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -118,8 +182,14 @@ const renderActiveShape = (props: {
   );
 };
 
-export function RadialChart({ leads, dateRange }: RadialChartProps) {
+export function RadialChart({
+  leads,
+  dateRange,
+  comparisonLeads,
+  comparisonDateRange,
+}: RadialChartProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const hasComparison = !!comparisonLeads && comparisonLeads.length > 0;
 
   // Get category distribution data
   const categoryData: CategoryData[] = Object.entries(
@@ -135,27 +205,36 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
     }))
     .sort((a, b) => b.value - a.value);
 
+  // Get comparison category distribution data
+  const comparisonCategoryData: Record<string, number> = hasComparison
+    ? comparisonLeads.reduce((acc, lead) => {
+        acc[lead.category] = (acc[lead.category] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>)
+    : {};
+
   const totalLeads = categoryData.reduce(
     (sum, category) => sum + category.value,
     0
   );
 
-  // Calculate trend - adjusted based on date range
-  const now = new Date();
-  const currentMonth = startOfMonth(now);
-  const previousMonth = startOfMonth(subMonths(now, 1));
+  const totalComparisonLeads = hasComparison
+    ? Object.values(comparisonCategoryData).reduce(
+        (acc, count) => acc + count,
+        0
+      )
+    : 0;
 
-  // Filter leads for current and previous periods based on date range
-  let currentPeriodLeads;
-  let previousPeriodLeads;
+  // Calculate trend based on total leads
+  const trend =
+    totalComparisonLeads > 0
+      ? ((totalLeads - totalComparisonLeads) / totalComparisonLeads) * 100
+      : 0;
+
   let periodLabel;
+  let comparisonPeriodLabel = '';
 
   if (dateRange?.from && dateRange?.to) {
-    // Current period leads
-    currentPeriodLeads = leads.length;
-
-    previousPeriodLeads = 0; // This would require more complex & additional API calls
-
     // Create a descriptive label for the selected period
     periodLabel = formatDistance(dateRange.from, dateRange.to, {
       locale: sv,
@@ -174,29 +253,31 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
         locale: sv,
       })} - ${format(dateRange.to, 'd MMM yyyy', { locale: sv })}`;
     }
+
+    // Create comparison period label if applicable
+    if (hasComparison && comparisonDateRange?.from && comparisonDateRange?.to) {
+      if (
+        comparisonDateRange.from.getMonth() ===
+          comparisonDateRange.to.getMonth() &&
+        comparisonDateRange.from.getFullYear() ===
+          comparisonDateRange.to.getFullYear()
+      ) {
+        // Same month
+        comparisonPeriodLabel = format(comparisonDateRange.from, 'MMMM yyyy', {
+          locale: sv,
+        });
+      } else {
+        // Different months
+        comparisonPeriodLabel = `${format(comparisonDateRange.from, 'd MMM', {
+          locale: sv,
+        })} - ${format(comparisonDateRange.to, 'd MMM yyyy', { locale: sv })}`;
+      }
+    }
   } else {
     // Default to monthly comparison if no date range is selected
-    currentPeriodLeads = leads.filter(
-      (lead) =>
-        startOfMonth(new Date(lead.createdAt)).getTime() ===
-        currentMonth.getTime()
-    ).length;
-
-    previousPeriodLeads = leads.filter(
-      (lead) =>
-        startOfMonth(new Date(lead.createdAt)).getTime() ===
-        previousMonth.getTime()
-    ).length;
-
+    const now = new Date();
     periodLabel = format(now, 'MMMM yyyy', { locale: sv });
   }
-
-  // ! Hör till trends funktionen i <CardFooter />
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const trend =
-    previousPeriodLeads > 0
-      ? ((currentPeriodLeads - previousPeriodLeads) / previousPeriodLeads) * 100
-      : 0;
 
   const onPieEnter = (_: unknown, index: number) => {
     setActiveIndex(index);
@@ -210,6 +291,16 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle className="text-xl">Leads kategorifördelning</CardTitle>
+        {hasComparison && (
+          <div className="flex items-center gap-1.5 mt-1 text-sm text-muted-foreground">
+            <span>Jämför:</span>
+            <span className="font-medium text-amber-600">{periodLabel}</span>
+            <span>mot</span>
+            <span className="font-medium text-purple-600">
+              {comparisonPeriodLabel}
+            </span>
+          </div>
+        )}
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
@@ -243,27 +334,65 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
             <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle">
               <tspan
                 x="50%"
-                y="50%"
+                y="45%"
                 className="fill-foreground text-2xl font-bold"
               >
                 {totalLeads.toLocaleString()}
               </tspan>
-              <tspan x="50%" y="70%" className="fill-muted-foreground text-xs">
+              <tspan x="50%" y="60%" className="fill-muted-foreground text-xs">
                 Leads
               </tspan>
+              {hasComparison && (
+                <tspan
+                  x="50%"
+                  y="75%"
+                  className="fill-purple-500 text-xs font-normal"
+                >
+                  {totalComparisonLeads > 0
+                    ? `jämfört med ${totalComparisonLeads} tidigare`
+                    : ''}
+                </tspan>
+              )}
             </text>
           </PieChart>
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        {/* Det här skulle kräva extra/nya API endpoints eller parametrar för att hämta historisk data */}
-        {/* <div className="flex items-center gap-2 font-medium leading-none">
-          {trend >= 0 ? 'Ökning med ' : 'Minskning med '}
-          {Math.abs(trend).toFixed(1)}% jämfört med förra perioden{' '}
-          <TrendingUp className={`h-4 w-4 ${trend < 0 ? 'rotate-180' : ''}`} />
-        </div> */}
-        <div className="leading-none text-muted-foreground">
-          Visar alla leads kategorier för {periodLabel}
+        {hasComparison && (
+          <div className="flex items-center gap-2 font-medium leading-none">
+            {trend >= 0 ? (
+              <>
+                <span className="text-green-600">
+                  {Math.abs(trend).toFixed(1)}% ökning
+                </span>
+                <TrendingUp className="h-4 w-4 text-green-600" />
+                <span className="text-xs text-muted-foreground font-normal">
+                  (jämfört med tidigare period)
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="text-red-600">
+                  {Math.abs(trend).toFixed(1)}% minskning
+                </span>
+                <TrendingDown className="h-4 w-4 text-red-600" />
+                <span className="text-xs text-muted-foreground font-normal">
+                  (jämfört med tidigare period)
+                </span>
+              </>
+            )}
+          </div>
+        )}
+        <div className="leading-none text-muted-foreground text-xs">
+          {hasComparison ? (
+            <>
+              Jämför leads kategorier för{' '}
+              <span className="font-medium">{periodLabel}</span> med{' '}
+              <span className="font-medium">{comparisonPeriodLabel}</span>
+            </>
+          ) : (
+            <>Visar alla leads kategorier för {periodLabel}</>
+          )}
         </div>
       </CardFooter>
     </Card>

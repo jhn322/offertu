@@ -143,7 +143,7 @@ function Calendar({
     props.rangeEndClassName
   );
   const _rangeMiddleClassName = cn(
-    'bg-secondary !text-foreground [&>button]:bg-transparent [&>button]:!text-foreground [&>button]:hover:bg-transparent [&>button]:hover:!text-foreground',
+    'bg-secondary !text-secondary-foreground [&>button]:bg-transparent [&>button]:!text-secondary-foreground [&>button]:hover:bg-transparent [&>button]:hover:!text-secondary-foreground',
     props.rangeMiddleClassName
   );
   const _selectedClassName = cn(
@@ -155,7 +155,7 @@ function Calendar({
     props.todayClassName
   );
   const _outsideClassName = cn(
-    'day-outside text-muted-foreground opacity-50 aria-selected:bg-secondary/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
+    'day-outside text-muted-foreground opacity-60 aria-selected:bg-secondary/60 aria-selected:text-muted-foreground aria-selected:opacity-60',
     props.outsideClassName
   );
   const _disabledClassName = cn(
