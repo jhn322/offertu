@@ -1,7 +1,7 @@
 'use client';
 
 // import { TrendingUp } from 'lucide-react';
-import { PieChart, Pie, Cell, Sector } from 'recharts';
+import { PieChart, Pie, Cell, Sector, Legend } from 'recharts';
 import React from 'react';
 
 import {
@@ -22,6 +22,7 @@ import { format, startOfMonth, subMonths, formatDistance } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useState } from 'react';
 import { DateRange } from 'react-day-picker';
+import { TrendingUp, TrendingDown } from 'lucide-react';
 
 interface CategoryData {
   name: string;
@@ -32,6 +33,8 @@ interface CategoryData {
 interface RadialChartProps {
   leads: LeadResponse[];
   dateRange?: DateRange;
+  comparisonLeads?: LeadResponse[];
+  comparisonDateRange?: DateRange;
 }
 
 interface CustomTooltipProps {
@@ -39,6 +42,7 @@ interface CustomTooltipProps {
   payload?: Array<{
     name: string;
     value: number;
+    dataKey?: string;
   }>;
 }
 
@@ -57,6 +61,13 @@ const chartConfig: ChartConfig = {
 
 const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
   if (active && payload && payload.length) {
+    // Check if this is a comparison tooltip (has both current and comparison data)
+    const hasComparison =
+      payload.length > 1 || (payload[0] && payload[0].dataKey === 'comparison');
+    const currentPayload =
+      payload.find((p) => p.dataKey === 'current') || payload[0];
+    const comparisonPayload = payload.find((p) => p.dataKey === 'comparison');
+
     return (
       <div className="rounded-lg border bg-background p-2 shadow-sm">
         <div>
@@ -77,13 +88,27 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
           <div className="grid grid-cols-2 gap-2">
             <div>
               <div className="text-lg font-bold text-muted-foreground">
-                {payload[0].name}
+                {currentPayload.name}
               </div>
             </div>
             <div>
-              <div className="text-lg font-bold">{payload[0].value}</div>
+              <div className="text-lg font-bold">{currentPayload.value}</div>
             </div>
           </div>
+          {hasComparison && comparisonPayload && (
+            <div className="grid grid-cols-2 gap-2 mt-1 border-t pt-1">
+              <div>
+                <div className="text-sm text-muted-foreground">
+                  Jämförelseperiod
+                </div>
+              </div>
+              <div>
+                <div className="text-sm font-medium">
+                  {comparisonPayload.value}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     );
@@ -118,8 +143,14 @@ const renderActiveShape = (props: {
   );
 };
 
-export function RadialChart({ leads, dateRange }: RadialChartProps) {
+export function RadialChart({
+  leads,
+  dateRange,
+  comparisonLeads,
+  comparisonDateRange,
+}: RadialChartProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const hasComparison = !!comparisonLeads && comparisonLeads.length > 0;
 
   // Get category distribution data
   const categoryData: CategoryData[] = Object.entries(
@@ -135,27 +166,37 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
     }))
     .sort((a, b) => b.value - a.value);
 
+  // Get comparison category distribution data
+  const comparisonCategoryData: Record<string, number> = hasComparison
+    ? comparisonLeads.reduce((acc, lead) => {
+        acc[lead.category] = (acc[lead.category] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>)
+    : {};
+
   const totalLeads = categoryData.reduce(
     (sum, category) => sum + category.value,
     0
   );
 
-  // Calculate trend - adjusted based on date range
-  const now = new Date();
-  const currentMonth = startOfMonth(now);
-  const previousMonth = startOfMonth(subMonths(now, 1));
+  const totalComparisonLeads = hasComparison
+    ? Object.values(comparisonCategoryData).reduce(
+        (acc, count) => acc + count,
+        0
+      )
+    : 0;
 
-  // Filter leads for current and previous periods based on date range
-  let currentPeriodLeads;
-  let previousPeriodLeads;
+  // Calculate trend based on total leads
+  const trend =
+    totalComparisonLeads > 0
+      ? ((totalLeads - totalComparisonLeads) / totalComparisonLeads) * 100
+      : 0;
+
+  // Calculate period label
   let periodLabel;
+  let comparisonPeriodLabel = '';
 
   if (dateRange?.from && dateRange?.to) {
-    // Current period leads
-    currentPeriodLeads = leads.length;
-
-    previousPeriodLeads = 0; // This would require more complex & additional API calls
-
     // Create a descriptive label for the selected period
     periodLabel = formatDistance(dateRange.from, dateRange.to, {
       locale: sv,
@@ -174,29 +215,31 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
         locale: sv,
       })} - ${format(dateRange.to, 'd MMM yyyy', { locale: sv })}`;
     }
+
+    // Create comparison period label if applicable
+    if (hasComparison && comparisonDateRange?.from && comparisonDateRange?.to) {
+      if (
+        comparisonDateRange.from.getMonth() ===
+          comparisonDateRange.to.getMonth() &&
+        comparisonDateRange.from.getFullYear() ===
+          comparisonDateRange.to.getFullYear()
+      ) {
+        // Same month
+        comparisonPeriodLabel = format(comparisonDateRange.from, 'MMMM yyyy', {
+          locale: sv,
+        });
+      } else {
+        // Different months
+        comparisonPeriodLabel = `${format(comparisonDateRange.from, 'd MMM', {
+          locale: sv,
+        })} - ${format(comparisonDateRange.to, 'd MMM yyyy', { locale: sv })}`;
+      }
+    }
   } else {
     // Default to monthly comparison if no date range is selected
-    currentPeriodLeads = leads.filter(
-      (lead) =>
-        startOfMonth(new Date(lead.createdAt)).getTime() ===
-        currentMonth.getTime()
-    ).length;
-
-    previousPeriodLeads = leads.filter(
-      (lead) =>
-        startOfMonth(new Date(lead.createdAt)).getTime() ===
-        previousMonth.getTime()
-    ).length;
-
+    const now = new Date();
     periodLabel = format(now, 'MMMM yyyy', { locale: sv });
   }
-
-  // ! Hör till trends funktionen i <CardFooter />
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const trend =
-    previousPeriodLeads > 0
-      ? ((currentPeriodLeads - previousPeriodLeads) / previousPeriodLeads) * 100
-      : 0;
 
   const onPieEnter = (_: unknown, index: number) => {
     setActiveIndex(index);
@@ -205,6 +248,14 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
   const onPieLeave = () => {
     setActiveIndex(null);
   };
+
+  // Prepare data for the chart
+  const chartData = categoryData.map((category) => ({
+    name: category.name,
+    current: category.value,
+    comparison: comparisonCategoryData[category.name.toLowerCase()] || 0,
+    color: category.color,
+  }));
 
   return (
     <Card className="flex flex-col">
@@ -256,14 +307,22 @@ export function RadialChart({ leads, dateRange }: RadialChartProps) {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        {/* Det här skulle kräva extra/nya API endpoints eller parametrar för att hämta historisk data */}
-        {/* <div className="flex items-center gap-2 font-medium leading-none">
-          {trend >= 0 ? 'Ökning med ' : 'Minskning med '}
-          {Math.abs(trend).toFixed(1)}% jämfört med förra perioden{' '}
-          <TrendingUp className={`h-4 w-4 ${trend < 0 ? 'rotate-180' : ''}`} />
-        </div> */}
+        {hasComparison && (
+          <div className="flex items-center gap-2 font-medium leading-none">
+            {trend >= 0 ? 'Ökning med ' : 'Minskning med '}
+            {Math.abs(trend).toFixed(1)}% jämfört med förra perioden{' '}
+            {trend >= 0 ? (
+              <TrendingUp className="h-4 w-4 text-green-600" />
+            ) : (
+              <TrendingDown className="h-4 w-4 text-red-600" />
+            )}
+          </div>
+        )}
         <div className="leading-none text-muted-foreground text-xs">
           Visar alla leads kategorier för {periodLabel}
+          {hasComparison && comparisonPeriodLabel && (
+            <> jämfört med {comparisonPeriodLabel}</>
+          )}
         </div>
       </CardFooter>
     </Card>

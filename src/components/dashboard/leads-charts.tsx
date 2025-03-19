@@ -30,6 +30,7 @@ import { DateRange } from 'react-day-picker';
 interface LeadsChartsProps {
   leads: LeadResponse[];
   dateRange?: DateRange;
+  comparisonDateRange?: DateRange;
 }
 
 interface MonthlyData {
@@ -71,7 +72,11 @@ export const getCategoryColorValue = (category: string): string => {
   return colorMap[categoryColors[category] || 'muted'];
 };
 
-export function LeadsCharts({ leads, dateRange }: LeadsChartsProps) {
+export function LeadsCharts({
+  leads,
+  dateRange,
+  comparisonDateRange,
+}: LeadsChartsProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
