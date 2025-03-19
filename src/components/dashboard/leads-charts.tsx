@@ -1,7 +1,13 @@
 'use client';
 
 import * as React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from '@/components/ui/card';
 import { LeadResponse } from '@/types';
 import {
   ResponsiveContainer,
@@ -18,14 +24,23 @@ import {
   Cell,
   Legend,
   PieLabelRenderProps,
+  ReferenceLine,
 } from 'recharts';
-import { format, startOfMonth, eachMonthOfInterval, subMonths } from 'date-fns';
+import {
+  format,
+  startOfMonth,
+  eachMonthOfInterval,
+  subMonths,
+  formatDistance,
+} from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LeadsChartsSkeleton } from './leads-charts-skeleton';
 import { useState, useEffect } from 'react';
 import { categoryTranslations } from '@/lib/constants';
 import { DateRange } from 'react-day-picker';
+import { Badge } from '@/components/ui/badge';
+import { InfoIcon } from 'lucide-react';
 
 interface LeadsChartsProps {
   leads: LeadResponse[];
@@ -36,16 +51,19 @@ interface LeadsChartsProps {
 interface MonthlyData {
   month: string;
   count: number;
+  comparisonCount?: number;
 }
 
 interface CategoryData {
   name: string;
   value: number;
+  comparisonValue?: number;
   color: string;
 }
 
 interface CustomTooltipProps extends TooltipProps<number, string> {
   type: 'monthly' | 'category';
+  showComparison: boolean;
 }
 
 // tailwind colors
@@ -78,6 +96,8 @@ export function LeadsCharts({
   comparisonDateRange,
 }: LeadsChartsProps) {
   const [isLoading, setIsLoading] = useState(true);
+  const hasComparison =
+    !!comparisonDateRange?.from && !!comparisonDateRange?.to;
 
   useEffect(() => {
     if (leads.length > 0) {
@@ -101,6 +121,61 @@ export function LeadsCharts({
     });
   }, [leads, dateRange]);
 
+  // Filter comparison leads
+  const comparisonLeads = React.useMemo(() => {
+    if (!hasComparison) return [];
+
+    const from = new Date(comparisonDateRange?.from!);
+    from.setHours(0, 0, 0, 0);
+
+    const to = new Date(comparisonDateRange?.to!);
+    to.setHours(23, 59, 59, 999);
+
+    return leads.filter((lead) => {
+      const leadDate = new Date(lead.createdAt);
+      return leadDate >= from && leadDate <= to;
+    });
+  }, [leads, comparisonDateRange, hasComparison]);
+
+  // Format date ranges for display
+  const primaryDateLabel = React.useMemo(() => {
+    if (!dateRange?.from || !dateRange?.to) return '';
+
+    if (
+      dateRange.from.getMonth() === dateRange.to.getMonth() &&
+      dateRange.from.getFullYear() === dateRange.to.getFullYear()
+    ) {
+      // Same month
+      return format(dateRange.from, 'MMMM yyyy', { locale: sv });
+    } else {
+      // Different months
+      return `${format(dateRange.from, 'd MMM', {
+        locale: sv,
+      })} - ${format(dateRange.to, 'd MMM yyyy', { locale: sv })}`;
+    }
+  }, [dateRange]);
+
+  const comparisonDateLabel = React.useMemo(() => {
+    if (!hasComparison) return '';
+
+    // We already checked that comparisonDateRange has from and to in hasComparison check
+    const fromDate = comparisonDateRange?.from!;
+    const toDate = comparisonDateRange?.to!;
+
+    if (
+      fromDate.getMonth() === toDate.getMonth() &&
+      fromDate.getFullYear() === toDate.getFullYear()
+    ) {
+      // Same month
+      return format(fromDate, 'MMMM yyyy', { locale: sv });
+    } else {
+      // Different months
+      return `${format(fromDate, 'd MMM', {
+        locale: sv,
+      })} - ${format(toDate, 'd MMM yyyy', { locale: sv })}`;
+    }
+  }, [comparisonDateRange, hasComparison]);
+
   // Get monthly data for the past 12 months
   const monthlyData = React.useMemo(() => {
     const now = new Date();
@@ -111,43 +186,85 @@ export function LeadsCharts({
 
     const monthlyLeads = monthsInterval.map((month) => {
       const monthStart = startOfMonth(month);
-      const count = filteredLeads.filter((lead) => {
+      const primaryCount = filteredLeads.filter((lead) => {
         const leadDate = new Date(lead.createdAt);
         return startOfMonth(leadDate).getTime() === monthStart.getTime();
       }).length;
 
+      const comparisonCount = hasComparison
+        ? comparisonLeads.filter((lead) => {
+            const leadDate = new Date(lead.createdAt);
+            return startOfMonth(leadDate).getTime() === monthStart.getTime();
+          }).length
+        : undefined;
+
       return {
         month: format(month, 'MMM yyyy', { locale: sv }),
-        count,
+        count: primaryCount,
+        ...(hasComparison && { comparisonCount }),
       };
     });
 
     return monthlyLeads;
-  }, [filteredLeads]);
+  }, [filteredLeads, comparisonLeads, hasComparison]);
 
   // Get category distribution data
   const categoryData = React.useMemo(() => {
+    // Primary category counts
     const categoryCounts = filteredLeads.reduce((acc, lead) => {
       acc[lead.category] = (acc[lead.category] || 0) + 1;
       return acc;
     }, {} as Record<string, number>);
 
+    // Comparison category counts if needed
+    const comparisonCategoryCounts = hasComparison
+      ? comparisonLeads.reduce((acc, lead) => {
+          acc[lead.category] = (acc[lead.category] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>)
+      : {};
+
+    // Combine data
     return Object.entries(categoryCounts).map(([category, count]) => ({
       name: categoryTranslations[category] || category,
       value: count,
+      comparisonValue: hasComparison
+        ? comparisonCategoryCounts[category] || 0
+        : undefined,
       color: getCategoryColorValue(category),
     }));
-  }, [filteredLeads]);
+  }, [filteredLeads, comparisonLeads, hasComparison]);
 
   if (isLoading) return <LeadsChartsSkeleton />;
 
-  const CustomTooltip = ({ active, payload, type }: CustomTooltipProps) => {
+  const CustomTooltip = ({
+    active,
+    payload,
+    type,
+    showComparison,
+  }: CustomTooltipProps) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
-      const displayValue =
-        type === 'monthly'
-          ? (data as MonthlyData).month
-          : (data as CategoryData).name;
+      let displayValue: string;
+      let primaryValue: number;
+      let comparisonValue: number | undefined;
+
+      if (type === 'monthly') {
+        const monthData = data as MonthlyData;
+        displayValue = monthData.month;
+        primaryValue = monthData.count;
+        comparisonValue = monthData.comparisonCount;
+      } else {
+        const categoryData = data as CategoryData;
+        displayValue = categoryData.name;
+        primaryValue = categoryData.value;
+        comparisonValue = categoryData.comparisonValue;
+      }
+
+      const percentChange =
+        comparisonValue && comparisonValue > 0
+          ? ((primaryValue - comparisonValue) / comparisonValue) * 100
+          : 0;
 
       return (
         <div className="rounded-lg border bg-background p-2 shadow-sm">
@@ -162,11 +279,37 @@ export function LeadsCharts({
             </div>
             <div className="flex flex-col">
               <span className="text-[0.70rem] uppercase text-muted-foreground">
-                Antal
+                {showComparison ? 'Aktuell period' : 'Antal'}
               </span>
-              <span className="font-bold">{payload[0].value}</span>
+              <span className="font-bold">{primaryValue}</span>
             </div>
           </div>
+
+          {showComparison && comparisonValue !== undefined && (
+            <div className="mt-2 pt-2 border-t">
+              <div className="grid grid-cols-2 gap-2">
+                <div className="flex flex-col">
+                  <span className="text-[0.70rem] uppercase text-muted-foreground">
+                    Jämförelseperiod
+                  </span>
+                  <span className="font-medium">{comparisonValue}</span>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[0.70rem] uppercase text-muted-foreground">
+                    Förändring
+                  </span>
+                  <span
+                    className={`font-medium ${
+                      percentChange >= 0 ? 'text-green-600' : 'text-red-600'
+                    }`}
+                  >
+                    {percentChange >= 0 ? '+' : ''}
+                    {percentChange.toFixed(1)}%
+                  </span>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       );
     }
@@ -176,7 +319,13 @@ export function LeadsCharts({
   const CustomTooltipWrapper = (
     props: TooltipProps<number, string> & { type: 'monthly' | 'category' }
   ) => {
-    return <CustomTooltip {...props} type={props.type} />;
+    return (
+      <CustomTooltip
+        {...props}
+        type={props.type}
+        showComparison={hasComparison}
+      />
+    );
   };
 
   const renderCustomizedLabel = ({
@@ -218,6 +367,18 @@ export function LeadsCharts({
     <Card className="h-full">
       <CardHeader>
         <CardTitle>Leads statistik</CardTitle>
+        {hasComparison && (
+          <CardDescription className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
+              <Badge variant="outline" className="bg-primary/10 text-xs">
+                Aktuell: {primaryDateLabel}
+              </Badge>
+              <Badge variant="outline" className="bg-blue-100 text-xs">
+                Jämförelse: {comparisonDateLabel}
+              </Badge>
+            </div>
+          </CardDescription>
+        )}
       </CardHeader>
       <CardContent>
         <Tabs defaultValue="monthly" className="w-full">
@@ -228,6 +389,15 @@ export function LeadsCharts({
           </TabsList>
           <TabsContent value="monthly">
             <div className="h-[520px] pt-4">
+              {hasComparison && (
+                <div className="mb-4 flex items-center gap-2 text-sm">
+                  <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">
+                    Diagrammet visar data från båda perioderna - hållet musen
+                    över linjen för att se detaljerad jämförelse
+                  </span>
+                </div>
+              )}
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={monthlyData}>
                   <XAxis
@@ -252,18 +422,43 @@ export function LeadsCharts({
                   <Line
                     type="monotone"
                     dataKey="count"
+                    name="Aktuell period"
                     stroke="#FFAE00"
                     strokeWidth={2}
-                    dot={false}
+                    dot={true}
                   />
+                  {hasComparison && (
+                    <Line
+                      type="monotone"
+                      dataKey="comparisonCount"
+                      name="Jämförelseperiod"
+                      stroke="#2252B1"
+                      strokeWidth={2}
+                      strokeDasharray="5 5"
+                      dot={true}
+                    />
+                  )}
+                  <Legend />
                 </LineChart>
               </ResponsiveContainer>
             </div>
           </TabsContent>
           <TabsContent value="category">
             <div className="h-[520px] pt-4">
+              {hasComparison && (
+                <div className="mb-4 flex items-center gap-2 text-sm">
+                  <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">
+                    Diagrammet visar data från båda perioderna - prickade
+                    staplar representerar jämförelseperioden
+                  </span>
+                </div>
+              )}
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={categoryData}>
+                <BarChart
+                  data={categoryData}
+                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                >
                   <XAxis
                     dataKey="name"
                     stroke="#282828"
@@ -283,17 +478,42 @@ export function LeadsCharts({
                       <CustomTooltipWrapper {...props} type="category" />
                     )}
                   />
-                  <Bar dataKey="value" radius={[4, 4, 0, 0]}>
+                  <Bar
+                    dataKey="value"
+                    name="Aktuell period"
+                    radius={[4, 4, 0, 0]}
+                  >
                     {categoryData.map((entry, index) => (
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Bar>
+                  {hasComparison && (
+                    <Bar
+                      dataKey="comparisonValue"
+                      name="Jämförelseperiod"
+                      fill="#8884d8"
+                      radius={[4, 4, 0, 0]}
+                      fillOpacity={0.6}
+                      stroke="#8884d8"
+                      strokeDasharray="3 3"
+                    />
+                  )}
+                  <Legend />
                 </BarChart>
               </ResponsiveContainer>
             </div>
           </TabsContent>
           <TabsContent value="pie">
             <div className="h-[520px] pt-4">
+              {hasComparison && (
+                <div className="mb-4 flex items-center gap-2 text-sm">
+                  <InfoIcon className="h-4 w-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">
+                    Cirkeldiagrammet visar kategorifördelning för aktuell period
+                    - för detaljerad jämförelse, håll musen över en sektion
+                  </span>
+                </div>
+              )}
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -305,6 +525,7 @@ export function LeadsCharts({
                     outerRadius={140}
                     fill="#8884d8"
                     dataKey="value"
+                    nameKey="name"
                     paddingAngle={2}
                   >
                     {categoryData.map((entry, index) => (

@@ -68,6 +68,22 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
       payload.find((p) => p.dataKey === 'current') || payload[0];
     const comparisonPayload = payload.find((p) => p.dataKey === 'comparison');
 
+    // Get the category name and values
+    const categoryName = currentPayload.name;
+    const currentValue = currentPayload.value;
+
+    // Calculate percentage change if comparison data exists
+    let percentChange = 0;
+    let comparisonValue = 0;
+
+    if (comparisonPayload) {
+      comparisonValue = comparisonPayload.value;
+      if (comparisonValue > 0) {
+        percentChange =
+          ((currentValue - comparisonValue) / comparisonValue) * 100;
+      }
+    }
+
     return (
       <div className="rounded-lg border bg-background p-2 shadow-sm">
         <div>
@@ -79,7 +95,7 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
             </div>
             <div>
               <div className="text-[0.70rem] font-medium text-muted-foreground">
-                ANTAL
+                {hasComparison ? 'AKTUELL PERIOD' : 'ANTAL'}
               </div>
             </div>
           </div>
@@ -88,23 +104,34 @@ const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
           <div className="grid grid-cols-2 gap-2">
             <div>
               <div className="text-lg font-bold text-muted-foreground">
-                {currentPayload.name}
+                {categoryName}
               </div>
             </div>
             <div>
-              <div className="text-lg font-bold">{currentPayload.value}</div>
+              <div className="text-lg font-bold">{currentValue}</div>
             </div>
           </div>
-          {hasComparison && comparisonPayload && (
-            <div className="grid grid-cols-2 gap-2 mt-1 border-t pt-1">
-              <div>
-                <div className="text-sm text-muted-foreground">
-                  Jämförelseperiod
+          {hasComparison && comparisonValue > 0 && (
+            <div className="mt-2 pt-2 border-t">
+              <div className="grid grid-cols-2 gap-2">
+                <div>
+                  <div className="text-[0.70rem] font-medium text-muted-foreground">
+                    JÄMFÖRELSEPERIOD
+                  </div>
+                  <div className="text-sm">{comparisonValue} leads</div>
                 </div>
-              </div>
-              <div>
-                <div className="text-sm font-medium">
-                  {comparisonPayload.value}
+                <div>
+                  <div className="text-[0.70rem] font-medium text-muted-foreground">
+                    FÖRÄNDRING
+                  </div>
+                  <div
+                    className={`text-sm font-medium ${
+                      percentChange >= 0 ? 'text-green-600' : 'text-red-600'
+                    }`}
+                  >
+                    {percentChange >= 0 ? '+' : ''}
+                    {percentChange.toFixed(1)}%
+                  </div>
                 </div>
               </div>
             </div>
@@ -261,6 +288,16 @@ export function RadialChart({
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">
         <CardTitle className="text-xl">Leads kategorifördelning</CardTitle>
+        {hasComparison && (
+          <div className="flex items-center gap-1.5 mt-1 text-sm text-muted-foreground">
+            <span>Jämför:</span>
+            <span className="font-medium text-primary">{periodLabel}</span>
+            <span>vs</span>
+            <span className="font-medium text-blue-500">
+              {comparisonPeriodLabel}
+            </span>
+          </div>
+        )}
       </CardHeader>
       <CardContent className="flex flex-1 items-center pb-0">
         <ChartContainer
@@ -302,6 +339,17 @@ export function RadialChart({
               <tspan x="50%" y="70%" className="fill-muted-foreground text-xs">
                 Leads
               </tspan>
+              {hasComparison && (
+                <tspan
+                  x="50%"
+                  y="85%"
+                  className="fill-blue-500 text-xs font-medium"
+                >
+                  {totalComparisonLeads > 0
+                    ? `vs ${totalComparisonLeads} tidigare`
+                    : ''}
+                </tspan>
+              )}
             </text>
           </PieChart>
         </ChartContainer>
@@ -319,9 +367,14 @@ export function RadialChart({
           </div>
         )}
         <div className="leading-none text-muted-foreground text-xs">
-          Visar alla leads kategorier för {periodLabel}
-          {hasComparison && comparisonPeriodLabel && (
-            <> jämfört med {comparisonPeriodLabel}</>
+          {hasComparison ? (
+            <>
+              Jämför leads kategorier för{' '}
+              <span className="font-medium">{periodLabel}</span> med{' '}
+              <span className="font-medium">{comparisonPeriodLabel}</span>
+            </>
+          ) : (
+            <>Visar alla leads kategorier för {periodLabel}</>
           )}
         </div>
       </CardFooter>

@@ -7,7 +7,7 @@ import {
   CardTitle,
   CardDescription,
 } from '@/components/ui/card';
-import { formatDistanceToNow, differenceInDays } from 'date-fns';
+import { formatDistanceToNow, differenceInDays, format } from 'date-fns';
 import { sv } from 'date-fns/locale';
 import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
@@ -320,7 +320,9 @@ export function LeadsOverview({
               <div className="flex items-center gap-2">
                 <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
-                  Senaste {dateRangePeriod} dagarna
+                  {showComparison && comparisonLeadsCount > 0
+                    ? 'Aktuell period'
+                    : `Senaste ${dateRangePeriod} dagarna`}
                 </span>
               </div>
               <div className="mt-1.5 flex items-baseline gap-1.5">
@@ -349,6 +351,20 @@ export function LeadsOverview({
                   <div className="h-2.5 w-2.5 rounded-full bg-blue-300"></div>
                   <span className="text-muted-foreground text-xs">
                     Jämförelseperiod: {comparisonLeadsCount} leads
+                    {comparisonDateRange?.from && comparisonDateRange?.to && (
+                      <>
+                        {' '}
+                        (
+                        {format(comparisonDateRange.from, 'd MMM', {
+                          locale: sv,
+                        })}{' '}
+                        -{' '}
+                        {format(comparisonDateRange.to, 'd MMM', {
+                          locale: sv,
+                        })}
+                        )
+                      </>
+                    )}
                   </span>
                 </div>
               )}
