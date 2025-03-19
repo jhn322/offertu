@@ -178,9 +178,12 @@ export default function NewsPage() {
                 </Link>
                 <CardFooter className="mt-auto pt-4">
                   <div className="ml-auto">
-                    <Link href={`/nyheter/${article.slug}`}>
-                      <Button className="bg-[#FFAE00] text-primary-foreground hover:bg-[#FFAE00]/90">
-                        Läs mer{' '}
+                    <Link
+                      href={`/nyheter/${article.slug}`}
+                      aria-label={`Läs hela artikeln: ${article.title}`}
+                    >
+                      <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
+                        Läs hela artikeln{' '}
                         <ArrowRight
                           className="ml-2 h-4 w-4"
                           aria-hidden="true"

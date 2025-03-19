@@ -49,9 +49,9 @@ export function TableOfContents({ article }: TableOfContentsProps) {
             key={section.id}
             href={`#${section.id}`}
             className={cn(
-              'block py-1 transition-colors hover:text-[#4683FF]',
+              'block py-1 transition-colors hover:text-secondary',
               activeSection === section.id
-                ? 'font-medium text-[#4683FF]'
+                ? 'font-medium text-secondary'
                 : 'text-muted-foreground'
             )}
             onClick={(e) => {

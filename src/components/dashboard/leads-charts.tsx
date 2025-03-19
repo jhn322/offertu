@@ -53,7 +53,7 @@ export const categoryColors: Record<string, string> = {
   templates: 'secondary',
   api: 'success',
   careers: 'destructive',
-  tools: 'dark',
+  tools: 'tertiary',
   news: 'outline',
 };
 
@@ -62,10 +62,10 @@ export const getCategoryColorValue = (category: string): string => {
     primary: '#FFAE00',
     secondary: '#2252B1',
     accent: '#FF7164',
+    tertiary: '#030712',
     destructive: '#AB2222',
     muted: '#E4E4E4',
     success: '#06643D',
-    dark: '#030712',
   };
 
   return colorMap[categoryColors[category] || 'muted'];

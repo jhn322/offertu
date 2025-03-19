@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function ApiSection() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-[#F1F1F1]">
+    <section className="w-full py-12 md:py-24 lg:py-32 bg-card">
       <div className="container px-4 md:px-6">
         <div className="flex flex-col items-center space-y-4 text-center">
           <div className="space-y-2">
@@ -53,7 +53,7 @@ export default function ApiSection() {
           </Card>
           <div className="relative hidden md:block">
             <div
-              className="absolute left-0 right-0 top-1/2 h-px max-w-full -translate-y-1/2 bg-gradient-to-r from-[#E4E4E4] via-[#555555] to-transparent"
+              className="absolute left-0 right-0 top-1/2 h-px max-w-full -translate-y-1/2 bg-gradient-to-r from-muted via-muted-foreground to-transparent"
               aria-hidden="true"
             />
           </div>

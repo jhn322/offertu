@@ -122,7 +122,7 @@ export default async function ArticlePage({
 
         <article itemScope itemType="https://schema.org/Article">
           <header className="mb-6">
-            <Badge className="mb-4 ml-2 bg-[#4683FF] hover:bg-[#4683FF]/90 text-white">
+            <Badge className="mb-4 ml-2 bg-secondary hover:bg-secondary/90 text-white">
               {article.category}
             </Badge>
 
@@ -255,7 +255,7 @@ export default async function ArticlePage({
                           >
                             <Link
                               href={`/nyheter/${relatedArticle.slug}`}
-                              className="line-clamp-2 font-medium hover:text-[#4683FF]"
+                              className="line-clamp-2 font-medium hover:text-secondary"
                             >
                               {relatedArticle.title}
                             </Link>

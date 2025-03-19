@@ -10,7 +10,7 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function ResourcesSection() {
   return (
-    <section className="w-full py-12 md:py-24 lg:py-32 bg-[#E4E4E4]">
+    <section className="w-full py-12 md:py-24 lg:py-32 bg-muted">
       <div className="container px-4 md:px-6">
         <h2
           id="resources-heading"
@@ -25,7 +25,7 @@ export default function ResourcesSection() {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div
-                    className="rounded-lg bg-[#282828] p-2"
+                    className="rounded-lg bg-bg-primary-foreground p-2"
                     aria-hidden="true"
                   >
                     <Newspaper className="h-6 w-6 text-white" />
@@ -61,7 +61,7 @@ export default function ResourcesSection() {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div
-                    className="rounded-lg bg-[#282828] p-2"
+                    className="rounded-lg bg-primary-foreground p-2"
                     aria-hidden="true"
                   >
                     <Tool className="h-6 w-6 text-white" />
@@ -96,7 +96,7 @@ export default function ResourcesSection() {
               <CardHeader>
                 <div className="flex items-center gap-4">
                   <div
-                    className="rounded-lg bg-[#282828] p-2"
+                    className="rounded-lg bg-primary-foreground p-2"
                     aria-hidden="true"
                   >
                     <FileText className="h-6 w-6 text-white" />

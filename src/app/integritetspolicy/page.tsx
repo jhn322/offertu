@@ -30,10 +30,10 @@ export default function IntegrityPolicy() {
               </CardHeader>
               <CardContent
                 className="prose prose-lg max-w-none
-    prose-a:text-[#4683FF] 
+    prose-a:text-secondary
     prose-a:underline 
     prose-a:underline-offset-2
-    hover:prose-a:text-[#4683FF]/80
+    hover:prose-a:text-secondary/80
     prose-li:marker:text-gray-600     
     prose-ul:list-disc
   "

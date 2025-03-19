@@ -21,9 +21,9 @@ const badgeVariants = cva(
           'border-transparent bg-accent text-accent-foreground hover:bg-accent/80',
         muted:
           'border-transparent bg-muted text-muted-foreground hover:bg-muted/80',
-        success:
-          'border-transparent bg-[#06643D] text-white hover:bg-[#06643D]/80',
-        dark: 'border-transparent bg-[#030712] text-white hover:bg-[#030712]/80',
+        success: 'border-transparent bg-success text-white hover:bg-success/80',
+        tertiary:
+          'border-transparent bg-tertiary text-white hover:bg-tertiary/80',
       },
     },
     defaultVariants: {

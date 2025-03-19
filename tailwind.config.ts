@@ -36,6 +36,10 @@ export default {
           DEFAULT: '#FF7164',
           foreground: '#ffffff',
         },
+        tertiary: {
+          DEFAULT: '#030712',
+          foreground: '#ffffff',
+        },
         destructive: {
           DEFAULT: '#AB2222',
           foreground: '#ffffff',
@@ -50,6 +54,10 @@ export default {
         },
         card: {
           DEFAULT: '#F1F1F1',
+          foreground: '#282828',
+        },
+        success: {
+          DEFAULT: '#06643D',
           foreground: '#282828',
         },
       },
