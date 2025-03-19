@@ -29,7 +29,7 @@ export default {
           foreground: '#282828',
         },
         secondary: {
-          DEFAULT: '#4683FF',
+          DEFAULT: '#2252B1',
           foreground: '#ffffff',
         },
         accent: {
@@ -37,8 +37,8 @@ export default {
           foreground: '#ffffff',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: '#AB2222',
+          foreground: '#ffffff',
         },
         dark: {
           DEFAULT: '#282828',

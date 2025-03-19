@@ -22,7 +22,7 @@ const badgeVariants = cva(
         muted:
           'border-transparent bg-muted text-muted-foreground hover:bg-muted/80',
         success:
-          'border-transparent bg-[#10B981] text-white hover:bg-[#10B981]/80',
+          'border-transparent bg-[#06643D] text-white hover:bg-[#06643D]/80',
         dark: 'border-transparent bg-[#030712] text-white hover:bg-[#030712]/80',
       },
     },

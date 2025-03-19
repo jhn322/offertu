@@ -16,7 +16,7 @@ export default function ApiSection() {
               Integrera Offertu i ditt system
             </h2>
             <div>
-              <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
+              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                 Effektivisera din verksamhet ytterligare genom att integrera
                 våra tjänster direkt i dina system. Ansök om API-tillgång och
                 skräddarsy lösningen efter dina behov.
@@ -25,21 +25,21 @@ export default function ApiSection() {
           </div>
         </div>
         <div className="mx-auto mt-12 grid items-center gap-6 md:mt-16 md:grid-cols-2 md:gap-12 lg:mt-24">
-          <Card className="border-2 border-[#FFAE00] bg-white">
+          <Card className="border-2 border-primary bg-white">
             <CardHeader>
               <div className="flex items-center gap-4">
-                <div className="rounded-lg bg-[#FFAE00] p-2" aria-hidden="true">
+                <div className="rounded-lg bg-primary p-2" aria-hidden="true">
                   <Code2 className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold">Vårt API</h3>
               </div>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-gray-500">
+              <p className="text-muted-foreground">
                 Få tillgång till vårt kraftfulla API och börja integrera våra
                 tjänster i ditt system redan idag.
               </p>
-              <Button asChild className="bg-[#FFAE00] hover:bg-primary/90">
+              <Button asChild className="bg-primary hover:bg-primary/90">
                 <Link
                   href="/api-dokumentation"
                   className="inline-flex items-center gap-2"

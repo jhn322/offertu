@@ -34,7 +34,7 @@ export default function ResourcesSection() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   Ta del av de senaste trenderna, expertråden och
                   branschnyheterna inom offerering och projektkalkylering.
                 </p>
@@ -70,7 +70,7 @@ export default function ResourcesSection() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p className="text-gray-500">
+                <p className="text-muted-foreground">
                   Snabba och enkla verktyg för grundläggande offertberäkningar.
                 </p>
                 <Button
@@ -105,12 +105,12 @@ export default function ResourcesSection() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
-                <ul className="list-inside list-disc space-y-2 text-gray-500">
+                <ul className="list-inside list-disc space-y-2 text-muted-foreground">
                   <li>Professionella offertmallar</li>
                   <li>Juridiskt granskade kontraktmallar</li>
                   <li>Checklistor för offertgenomgång</li>
                 </ul>
-                <Button asChild className="bg-[#FFAE00] hover:bg-[#FFAE00]/90">
+                <Button asChild className="bg-primary hover:bg-primary/90">
                   <Link
                     href="/mallar"
                     className="inline-flex items-center gap-2"

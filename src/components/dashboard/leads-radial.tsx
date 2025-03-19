@@ -44,9 +44,9 @@ interface CustomTooltipProps {
 
 const categoryColors: Record<string, string> = {
   service: '#FFAE00',
-  templates: '#4683FF',
-  api: '#10B981',
-  careers: '#EF4444',
+  templates: '#2252B1',
+  api: '#06643D',
+  careers: '#AB2222',
   tools: '#030712',
   news: '#E4E4E4',
 };

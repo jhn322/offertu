@@ -60,11 +60,11 @@ export const categoryColors: Record<string, string> = {
 export const getCategoryColorValue = (category: string): string => {
   const colorMap: Record<string, string> = {
     primary: '#FFAE00',
-    secondary: '#4683FF',
+    secondary: '#2252B1',
     accent: '#FF7164',
-    destructive: '#EF4444',
+    destructive: '#AB2222',
     muted: '#E4E4E4',
-    success: '#10B981',
+    success: '#06643D',
     dark: '#030712',
   };
 
