@@ -304,7 +304,9 @@ export function RadialChart({
   return (
     <Card className="flex flex-col w-full min-w-0 overflow-hidden">
       <CardHeader className="items-center pb-0 px-3 sm:px-6">
-        <CardTitle className="text-xl">Leads kategorifördelning</CardTitle>
+        <CardTitle className="text-md sm:text-xl">
+          Leads kategorifördelning
+        </CardTitle>
         {hasComparison && (
           <div className="flex items-center gap-1.5 mt-1 text-sm text-muted-foreground">
             <span>Jämför:</span>

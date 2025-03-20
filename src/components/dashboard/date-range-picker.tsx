@@ -58,6 +58,7 @@ export function DateRangePicker({
     React.useState(showComparison);
   const [comparisonMode, setComparisonMode] =
     React.useState<ComparisonMode>('previous-month');
+  const [isMobile, setIsMobile] = React.useState(false);
 
   // Keep track of temporary selection before applying
   const [tempDateRange, setTempDateRange] = React.useState<
@@ -67,6 +68,19 @@ export function DateRangePicker({
   const [tempComparisonDateRange, setTempComparisonDateRange] = React.useState<
     DateRange | undefined
   >(comparisonDateRange);
+
+  // Handle window resize for responsive calendar
+  React.useEffect(() => {
+    // Initial value
+    setIsMobile(window.innerWidth < 768);
+
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Update current month when dateRange.from changes
   React.useEffect(() => {
@@ -258,8 +272,8 @@ export function DateRangePicker({
           </Button>
         </PopoverTrigger>
         <PopoverContent
-          className="w-auto p-0 bg-white rounded-lg"
-          align="start"
+          className="w-auto p-0 bg-white rounded-lg max-w-[calc(100vw-32px)]"
+          align="center"
         >
           <div className="flex flex-col">
             <div className="p-3 border-b">
@@ -272,7 +286,7 @@ export function DateRangePicker({
                 onMonthChange={setCurrentMonth}
                 selected={tempDateRange}
                 onSelect={handleSelect}
-                numberOfMonths={2}
+                numberOfMonths={isMobile ? 1 : 2}
                 locale={sv}
                 todayClassName="bg-blue-100 text-blue-700 font-semibold border border-blue-300 hover:bg-blue-200 hover:text-blue-800"
               />
@@ -354,7 +368,7 @@ export function DateRangePicker({
                     }
                     selected={tempComparisonDateRange}
                     onSelect={handleComparisonSelect}
-                    numberOfMonths={2}
+                    numberOfMonths={isMobile ? 1 : 2}
                     locale={sv}
                     todayClassName="bg-blue-100 text-blue-700 font-semibold border border-blue-300 hover:bg-blue-200 hover:text-blue-800"
                   />

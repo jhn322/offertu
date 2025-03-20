@@ -300,7 +300,7 @@ export function LeadsOverview({
                   </span>
                 </div>
                 <div className="mt-1.5">
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium block truncate max-w-[140px] sm:max-w-full">
                     {mostRecentLead?.email || 'Ingen data'}
                   </span>
                   {mostRecentLead && (
