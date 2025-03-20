@@ -375,7 +375,7 @@ export function LeadsCharts({
   };
 
   return (
-    <Card className="h-full">
+    <Card className="h-full flex flex-col">
       <CardHeader>
         <CardTitle>Leads statistik</CardTitle>
         {hasComparison && (
@@ -397,15 +397,15 @@ export function LeadsCharts({
           </CardDescription>
         )}
       </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="monthly" className="w-full">
+      <CardContent className="flex-grow">
+        <Tabs defaultValue="monthly" className="w-full h-full flex flex-col">
           <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="monthly">Linjediagram</TabsTrigger>
             <TabsTrigger value="category">Stapeldiagram</TabsTrigger>
             <TabsTrigger value="pie">Cirkeldiagram</TabsTrigger>
           </TabsList>
           <TabsContent value="monthly">
-            <div className="h-[520px] pt-4">
+            <div className="min-h-[520px] h-full pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
                   <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
@@ -415,7 +415,7 @@ export function LeadsCharts({
                   </span>
                 </div>
               )}
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={500}>
                 <LineChart data={monthlyData}>
                   <XAxis
                     dataKey="month"
@@ -478,7 +478,7 @@ export function LeadsCharts({
             </div>
           </TabsContent>
           <TabsContent value="category">
-            <div className="h-[520px] pt-4">
+            <div className="min-h-[520px] h-full pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
                   <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
@@ -488,7 +488,7 @@ export function LeadsCharts({
                   </span>
                 </div>
               )}
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={500}>
                 <BarChart
                   data={categoryData}
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
@@ -557,7 +557,7 @@ export function LeadsCharts({
             </div>
           </TabsContent>
           <TabsContent value="pie">
-            <div className="h-[520px] pt-4">
+            <div className="min-h-[520px] h-full pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
                   <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
@@ -567,7 +567,7 @@ export function LeadsCharts({
                   </span>
                 </div>
               )}
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={500}>
                 <PieChart>
                   <Pie
                     data={categoryData}
