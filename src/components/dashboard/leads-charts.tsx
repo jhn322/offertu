@@ -375,8 +375,8 @@ export function LeadsCharts({
   };
 
   return (
-    <Card className="h-full flex flex-col">
-      <CardHeader>
+    <Card className="h-full flex flex-col w-full min-w-0 overflow-hidden">
+      <CardHeader className="px-3 sm:px-6">
         <CardTitle>Leads statistik</CardTitle>
         {hasComparison && (
           <CardDescription className="flex items-center gap-2">
@@ -397,12 +397,18 @@ export function LeadsCharts({
           </CardDescription>
         )}
       </CardHeader>
-      <CardContent className="flex-grow">
+      <CardContent className="flex-grow px-3 sm:px-6">
         <Tabs defaultValue="monthly" className="w-full h-full flex flex-col">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="monthly">Linjediagram</TabsTrigger>
-            <TabsTrigger value="category">Stapeldiagram</TabsTrigger>
-            <TabsTrigger value="pie">Cirkeldiagram</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 text-xs sm:text-sm">
+            <TabsTrigger value="monthly" className="px-1 sm:px-3">
+              Linjediagram
+            </TabsTrigger>
+            <TabsTrigger value="category" className="px-1 sm:px-3">
+              Stapeldiagram
+            </TabsTrigger>
+            <TabsTrigger value="pie" className="px-1 sm:px-3">
+              Cirkeldiagram
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="monthly">
             <div className="min-h-[520px] h-full pt-4">
@@ -420,9 +426,12 @@ export function LeadsCharts({
                   <XAxis
                     dataKey="month"
                     stroke="#282828"
-                    fontSize={12}
+                    fontSize={10}
                     tickLine={false}
                     axisLine={false}
+                    tick={{ fontSize: '10px' }}
+                    interval="preserveStartEnd"
+                    minTickGap={5}
                   />
                   <YAxis
                     stroke="#282828"
@@ -491,14 +500,19 @@ export function LeadsCharts({
               <ResponsiveContainer width="100%" height={500}>
                 <BarChart
                   data={categoryData}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
                 >
                   <XAxis
                     dataKey="name"
                     stroke="#282828"
-                    fontSize={12}
+                    fontSize={10}
                     tickLine={false}
                     axisLine={false}
+                    tick={{ fontSize: '10px' }}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={50}
                   />
                   <YAxis
                     stroke="#282828"

@@ -218,30 +218,30 @@ export function DateRangePicker({
             id="date"
             variant={'outline'}
             className={cn(
-              'w-full justify-start text-left font-normal',
+              'w-full justify-start text-left font-normal text-xs sm:text-sm truncate',
               !dateRange && 'text-muted-foreground'
             )}
             onClick={handleButtonClick}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <CalendarIcon className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0" />
             {dateRange?.from ? (
-              <span className="flex items-center gap-2">
-                <span>
+              <span className="flex items-center gap-1 sm:gap-2 w-full overflow-hidden">
+                <span className="truncate">
                   {dateRange.to ? (
                     <>
-                      {format(dateRange.from, 'PPP', { locale: sv })} -{' '}
-                      {format(dateRange.to, 'PPP', { locale: sv })}
+                      {format(dateRange.from, 'PP', { locale: sv })} -{' '}
+                      {format(dateRange.to, 'PP', { locale: sv })}
                     </>
                   ) : (
-                    format(dateRange.from, 'PPP', { locale: sv })
+                    format(dateRange.from, 'PP', { locale: sv })
                   )}
                 </span>
                 {showComparison && comparisonDateRange?.from && (
                   <Badge
                     variant="outline"
-                    className="ml-2 flex items-center gap-1 text-xs"
+                    className="ml-1 sm:ml-2 flex-shrink-0 flex items-center gap-1 text-[10px] sm:text-xs"
                   >
-                    <ClockIcon className="h-3 w-3" />
+                    <ClockIcon className="h-2 w-2 sm:h-3 sm:w-3" />
                     Jämför
                   </Badge>
                 )}
@@ -251,7 +251,7 @@ export function DateRangePicker({
             )}
             <ChevronDown
               className={cn(
-                'ml-auto h-4 w-4 transition-transform duration-200',
+                'ml-auto h-3 w-3 sm:h-4 sm:w-4 flex-shrink-0 transition-transform duration-200',
                 isOpen && 'transform rotate-180'
               )}
             />

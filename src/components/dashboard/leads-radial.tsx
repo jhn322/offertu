@@ -288,8 +288,8 @@ export function RadialChart({
   };
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
+    <Card className="flex flex-col w-full min-w-0 overflow-hidden">
+      <CardHeader className="items-center pb-0 px-3 sm:px-6">
         <CardTitle className="text-xl">Leads kategorifördelning</CardTitle>
         {hasComparison && (
           <div className="flex items-center gap-1.5 mt-1 text-sm text-muted-foreground">
@@ -302,12 +302,12 @@ export function RadialChart({
           </div>
         )}
       </CardHeader>
-      <CardContent className="flex flex-1 items-center pb-0">
+      <CardContent className="flex flex-1 items-center pb-0 px-3 sm:px-6">
         <ChartContainer
           className="mx-auto aspect-auto w-full -mb-8 h-[180px] sm:h-[220px]"
           config={chartConfig}
         >
-          <PieChart margin={{ top: 30, right: 20, bottom: 30, left: 20 }}>
+          <PieChart margin={{ top: 30, right: 5, bottom: 30, left: 5 }}>
             <ChartTooltip content={<CustomTooltip />} />
             <Pie
               data={categoryData}
