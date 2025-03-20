@@ -30,7 +30,7 @@ import { sv } from 'date-fns/locale';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LeadsChartsSkeleton } from './leads-charts-skeleton';
 import { useState, useEffect } from 'react';
-import { categoryTranslations } from '@/lib/constants';
+import { categoryTranslations, categoryOrder } from '@/lib/constants';
 import { DateRange } from 'react-day-picker';
 import { Badge } from '@/components/ui/badge';
 import { InfoIcon } from 'lucide-react';
@@ -62,22 +62,22 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
 // tailwind colors
 export const categoryColors: Record<string, string> = {
   service: 'primary',
-  templates: 'secondary',
   api: 'success',
   careers: 'destructive',
-  tools: 'tertiary',
+  templates: 'secondary',
   news: 'outline',
+  tools: 'tertiary',
 };
 
 export const getCategoryColorValue = (category: string): string => {
   const colorMap: Record<string, string> = {
     primary: '#FFAE00',
+    success: '#06643D',
+    destructive: '#AB2222',
     secondary: '#2252B1',
     accent: '#FF7164',
     tertiary: '#030712',
-    destructive: '#AB2222',
     muted: '#E4E4E4',
-    success: '#06643D',
   };
 
   return colorMap[categoryColors[category] || 'muted'];
@@ -225,14 +225,32 @@ export function LeadsCharts({
       : {};
 
     // Combine data
-    return Object.entries(categoryCounts).map(([category, count]) => ({
-      name: categoryTranslations[category] || category,
-      value: count,
-      comparisonValue: hasComparison
-        ? comparisonCategoryCounts[category] || 0
-        : undefined,
-      color: getCategoryColorValue(category),
-    }));
+    const unsortedData = Object.entries(categoryCounts).map(
+      ([category, count]) => ({
+        name: categoryTranslations[category] || category,
+        value: count,
+        comparisonValue: hasComparison
+          ? comparisonCategoryCounts[category] || 0
+          : undefined,
+        color: getCategoryColorValue(category),
+        category,
+      })
+    );
+
+    // Sort by the predefined order
+    return unsortedData.sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a.category);
+      const indexB = categoryOrder.indexOf(b.category);
+
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+
+      return b.value - a.value;
+    });
   }, [filteredLeads, comparisonLeads, hasComparison]);
 
   if (isLoading) return <LeadsChartsSkeleton />;

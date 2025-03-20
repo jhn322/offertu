@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { TrashIcon } from '@radix-ui/react-icons';
-import { categoryTranslations } from '@/lib/constants';
+import { categoryTranslations, categoryOrder } from '@/lib/constants';
 
 interface LeadsToolbarProps {
   searchQuery: string;
@@ -31,6 +31,24 @@ export function LeadsToolbar({
   selectedCount,
   onDeleteSelected,
 }: LeadsToolbarProps) {
+  // Sort categories based on the predefined order
+  const sortedCategories = [...categories].sort((a, b) => {
+    const indexA = categoryOrder.indexOf(a);
+    const indexB = categoryOrder.indexOf(b);
+
+    // If both categories are in the order array, sort by their position
+    if (indexA !== -1 && indexB !== -1) {
+      return indexA - indexB;
+    }
+
+    // If only one is in the array, prioritize the one in the array
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+
+    // If neither is in the array, maintain alphabetical order
+    return a.localeCompare(b);
+  });
+
   return (
     <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 mb-2 sm:mb-3">
       <div className="flex flex-1 flex-wrap gap-1 sm:gap-2">
@@ -48,7 +66,7 @@ export function LeadsToolbar({
             <SelectItem value="all" className="cursor-pointer">
               Alla kategorier
             </SelectItem>
-            {categories.map((category) => (
+            {sortedCategories.map((category) => (
               <SelectItem
                 key={category}
                 value={category}

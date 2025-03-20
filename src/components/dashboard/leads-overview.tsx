@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
 import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
 import { RadialChart } from './leads-radial';
-import { categoryTranslations } from '@/lib/constants';
+import { categoryTranslations, categoryOrder } from '@/lib/constants';
 import {
   UsersIcon,
   ClockIcon,
@@ -222,13 +222,26 @@ export function LeadsOverview({
     return acc;
   }, {} as Record<string, number>);
 
-  const categoryData = Object.entries(categoryCounts).map(
-    ([category, count]) => ({
+  const categoryData = Object.entries(categoryCounts)
+    .map(([category, count]) => ({
       name: categoryTranslations[category] || category,
       value: count,
       color: getCategoryColorValue(category),
-    })
-  );
+      category,
+    }))
+    .sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a.category);
+      const indexB = categoryOrder.indexOf(b.category);
+
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+
+      return b.value - a.value;
+    });
 
   // Calculate comparison metrics
   const comparisonLeadsCount = comparisonLeads.length;
