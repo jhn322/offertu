@@ -25,6 +25,7 @@ export function LeadsPagination({
           onClick={() => onPageChange(1)}
           disabled={currentPage <= 1}
           className="h-8 w-8 sm:h-9 sm:w-9"
+          aria-label="Gå till första sidan"
         >
           <ChevronsLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </Button>
@@ -34,6 +35,7 @@ export function LeadsPagination({
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
           className="h-8 px-2 sm:h-9 sm:px-3 text-xs sm:text-sm"
+          aria-label="Gå till föregående sida"
         >
           <ChevronLeftIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           <span className="hidden sm:inline ml-1">Föregående</span>
@@ -44,6 +46,7 @@ export function LeadsPagination({
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
           className="h-8 px-2 sm:h-9 sm:px-3 text-xs sm:text-sm"
+          aria-label="Gå till nästa sida"
         >
           <span className="hidden sm:inline mr-1">Nästa</span>
           <ChevronRightIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
@@ -54,6 +57,7 @@ export function LeadsPagination({
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage >= totalPages}
           className="h-8 w-8 sm:h-9 sm:w-9"
+          aria-label="Gå till sista sidan"
         >
           <ChevronsRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </Button>

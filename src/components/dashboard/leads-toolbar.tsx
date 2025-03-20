@@ -61,8 +61,11 @@ export function LeadsToolbar({
           className="h-8 min-w-[120px] flex-1 text-xs sm:text-sm sm:max-w-[250px]"
         />
         <Select value={categoryFilter} onValueChange={onCategoryChange}>
-          <SelectTrigger className="h-8 w-full text-xs sm:text-sm sm:w-[150px]">
-            <SelectValue placeholder="All categories" />
+          <SelectTrigger
+            className="h-8 w-full text-xs sm:text-sm sm:w-[150px]"
+            aria-label="Filtrera efter kategori"
+          >
+            <SelectValue placeholder="Alla kategorier" />
           </SelectTrigger>
           <SelectContent className="bg-white">
             <SelectItem value="all" className="cursor-pointer">

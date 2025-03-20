@@ -2,6 +2,7 @@
 
 import { PieChart, Pie, Cell, Sector } from 'recharts';
 import React from 'react';
+import dynamic from 'next/dynamic';
 
 import {
   Card,
@@ -19,7 +20,7 @@ import { categoryTranslations, categoryOrder } from '@/lib/constants';
 import { LeadResponse } from '@/types';
 import { format, formatDistance } from 'date-fns';
 import { sv } from 'date-fns/locale';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { DateRange } from 'react-day-picker';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 
@@ -183,12 +184,12 @@ const renderActiveShape = (props: {
   );
 };
 
-export function RadialChart({
+const RadialChartContent = ({
   leads,
   dateRange,
   comparisonLeads,
   comparisonDateRange,
-}: RadialChartProps) {
+}: RadialChartProps) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const hasComparison = !!comparisonLeads && comparisonLeads.length > 0;
 
@@ -413,4 +414,30 @@ export function RadialChart({
       </CardFooter>
     </Card>
   );
+};
+
+// Dynamically import the chart content with SSR disabled for better performance and loading
+const DynamicRadialChart = dynamic(() => Promise.resolve(RadialChartContent), {
+  ssr: false,
+});
+
+export function RadialChart(props: RadialChartProps) {
+  const [isClient, setIsClient] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+
+    const timer = setTimeout(() => {
+      setIsLoaded(true);
+    }, 100);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (!isClient || !isLoaded) {
+    return null;
+  }
+
+  return <DynamicRadialChart {...props} />;
 }
