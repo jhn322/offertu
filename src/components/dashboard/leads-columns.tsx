@@ -109,11 +109,14 @@ export const columns = ({
     header: (props) => {
       if (isCheckboxHeaderProps(props)) {
         return (
-          <Checkbox
-            checked={props.checked}
-            onCheckedChange={props.onCheckedChange}
-            aria-label="Select all"
-          />
+          <div className="flex items-center sm:space-x-1 md:space-x-2">
+            <Checkbox
+              checked={props.checked}
+              onCheckedChange={props.onCheckedChange}
+              aria-label="Select all"
+              className="mr-2 sm:mr-3 md:mr-4"
+            />
+          </div>
         );
       }
       return null;
@@ -121,11 +124,14 @@ export const columns = ({
     cell: (props: CellProps) => {
       if ('checked' in props) {
         return (
-          <Checkbox
-            checked={props.checked}
-            onCheckedChange={props.onCheckedChange}
-            aria-label="Select row"
-          />
+          <div className="flex items-center sm:space-x-1 md:space-x-2">
+            <Checkbox
+              checked={props.checked}
+              onCheckedChange={props.onCheckedChange}
+              aria-label="Select row"
+              className="mr-2 sm:mr-3 md:mr-4"
+            />
+          </div>
         );
       }
       return null;
