@@ -235,6 +235,10 @@ export function LeadsTable({
     openDeleteDialog(Array.from(selectedLeads));
   };
 
+  const handleDeselectAll = () => {
+    setSelectedLeads(new Set());
+  };
+
   useEffect(() => {
     async function fetchLeadData() {
       try {
@@ -284,6 +288,7 @@ export function LeadsTable({
             categories={categories}
             selectedCount={selectedLeads.size}
             onDeleteSelected={deleteSelectedLeads}
+            onDeselectAll={handleDeselectAll}
           />
           <div className="rounded-md border w-full overflow-x-auto">
             <Table>

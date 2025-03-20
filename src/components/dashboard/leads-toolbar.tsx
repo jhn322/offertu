@@ -20,6 +20,7 @@ interface LeadsToolbarProps {
   categories: string[];
   selectedCount: number;
   onDeleteSelected: () => void;
+  onDeselectAll: () => void;
 }
 
 export function LeadsToolbar({
@@ -30,6 +31,7 @@ export function LeadsToolbar({
   categories,
   selectedCount,
   onDeleteSelected,
+  onDeselectAll,
 }: LeadsToolbarProps) {
   // Sort categories based on the predefined order
   const sortedCategories = [...categories].sort((a, b) => {
@@ -80,16 +82,29 @@ export function LeadsToolbar({
       </div>
       <div className="flex h-8 items-center">
         {selectedCount > 0 ? (
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={onDeleteSelected}
-            className="flex items-center"
-            aria-label={`Ta bort ${selectedCount} valda leads`}
-          >
-            <TrashIcon className="h-4 w-4 mr-2" />
-            Ta bort ({selectedCount})
-          </Button>
+          <div className="flex gap-2">
+            {selectedCount > 1 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={onDeselectAll}
+                className="flex items-center"
+                aria-label="Avmarkera alla valda leads"
+              >
+                Avmarkera
+              </Button>
+            )}
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={onDeleteSelected}
+              className="flex items-center"
+              aria-label={`Ta bort ${selectedCount} valda leads`}
+            >
+              <TrashIcon className="h-4 w-4 mr-2" />
+              Ta bort ({selectedCount})
+            </Button>
+          </div>
         ) : (
           <div className="w-[100px]" />
         )}
