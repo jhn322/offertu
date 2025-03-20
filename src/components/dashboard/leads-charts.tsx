@@ -30,7 +30,7 @@ import { sv } from 'date-fns/locale';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LeadsChartsSkeleton } from './leads-charts-skeleton';
 import { useState, useEffect } from 'react';
-import { categoryTranslations } from '@/lib/constants';
+import { categoryTranslations, categoryOrder } from '@/lib/constants';
 import { DateRange } from 'react-day-picker';
 import { Badge } from '@/components/ui/badge';
 import { InfoIcon } from 'lucide-react';
@@ -62,22 +62,22 @@ interface CustomTooltipProps extends TooltipProps<number, string> {
 // tailwind colors
 export const categoryColors: Record<string, string> = {
   service: 'primary',
-  templates: 'secondary',
   api: 'success',
   careers: 'destructive',
-  tools: 'tertiary',
+  templates: 'secondary',
   news: 'outline',
+  tools: 'tertiary',
 };
 
 export const getCategoryColorValue = (category: string): string => {
   const colorMap: Record<string, string> = {
     primary: '#FFAE00',
+    success: '#06643D',
+    destructive: '#AB2222',
     secondary: '#2252B1',
     accent: '#FF7164',
     tertiary: '#030712',
-    destructive: '#AB2222',
     muted: '#E4E4E4',
-    success: '#06643D',
   };
 
   return colorMap[categoryColors[category] || 'muted'];
@@ -225,14 +225,32 @@ export function LeadsCharts({
       : {};
 
     // Combine data
-    return Object.entries(categoryCounts).map(([category, count]) => ({
-      name: categoryTranslations[category] || category,
-      value: count,
-      comparisonValue: hasComparison
-        ? comparisonCategoryCounts[category] || 0
-        : undefined,
-      color: getCategoryColorValue(category),
-    }));
+    const unsortedData = Object.entries(categoryCounts).map(
+      ([category, count]) => ({
+        name: categoryTranslations[category] || category,
+        value: count,
+        comparisonValue: hasComparison
+          ? comparisonCategoryCounts[category] || 0
+          : undefined,
+        color: getCategoryColorValue(category),
+        category,
+      })
+    );
+
+    // Sort by the predefined order
+    return unsortedData.sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a.category);
+      const indexB = categoryOrder.indexOf(b.category);
+
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+
+      return b.value - a.value;
+    });
   }, [filteredLeads, comparisonLeads, hasComparison]);
 
   if (isLoading) return <LeadsChartsSkeleton />;
@@ -375,8 +393,8 @@ export function LeadsCharts({
   };
 
   return (
-    <Card className="h-full">
-      <CardHeader>
+    <Card className="h-full flex flex-col w-full min-w-0 overflow-hidden">
+      <CardHeader className="px-3 sm:px-6">
         <CardTitle>Leads statistik</CardTitle>
         {hasComparison && (
           <CardDescription className="flex items-center gap-2">
@@ -397,15 +415,21 @@ export function LeadsCharts({
           </CardDescription>
         )}
       </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="monthly" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="monthly">Linjediagram</TabsTrigger>
-            <TabsTrigger value="category">Stapeldiagram</TabsTrigger>
-            <TabsTrigger value="pie">Cirkeldiagram</TabsTrigger>
+      <CardContent className="flex-grow px-3 sm:px-6">
+        <Tabs defaultValue="monthly" className="w-full h-full flex flex-col">
+          <TabsList className="grid w-full grid-cols-3 text-xs sm:text-sm">
+            <TabsTrigger value="monthly" className="px-1 sm:px-3">
+              Linjediagram
+            </TabsTrigger>
+            <TabsTrigger value="category" className="px-1 sm:px-3">
+              Stapeldiagram
+            </TabsTrigger>
+            <TabsTrigger value="pie" className="px-1 sm:px-3">
+              Cirkeldiagram
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="monthly">
-            <div className="h-[520px] pt-4">
+            <div className="min-h-[520px] h-full pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
                   <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
@@ -415,14 +439,17 @@ export function LeadsCharts({
                   </span>
                 </div>
               )}
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={500}>
                 <LineChart data={monthlyData}>
                   <XAxis
                     dataKey="month"
                     stroke="#282828"
-                    fontSize={12}
+                    fontSize={10}
                     tickLine={false}
                     axisLine={false}
+                    tick={{ fontSize: '10px' }}
+                    interval="preserveStartEnd"
+                    minTickGap={5}
                   />
                   <YAxis
                     stroke="#282828"
@@ -478,7 +505,7 @@ export function LeadsCharts({
             </div>
           </TabsContent>
           <TabsContent value="category">
-            <div className="h-[520px] pt-4">
+            <div className="min-h-[520px] h-full pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
                   <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
@@ -488,17 +515,22 @@ export function LeadsCharts({
                   </span>
                 </div>
               )}
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={500}>
                 <BarChart
                   data={categoryData}
-                  margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                  margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
                 >
                   <XAxis
                     dataKey="name"
                     stroke="#282828"
-                    fontSize={12}
+                    fontSize={10}
                     tickLine={false}
                     axisLine={false}
+                    tick={{ fontSize: '10px' }}
+                    interval={0}
+                    angle={-45}
+                    textAnchor="end"
+                    height={50}
                   />
                   <YAxis
                     stroke="#282828"
@@ -557,7 +589,7 @@ export function LeadsCharts({
             </div>
           </TabsContent>
           <TabsContent value="pie">
-            <div className="h-[520px] pt-4">
+            <div className="min-h-[520px] h-full pt-4">
               {hasComparison && (
                 <div className="mb-4 flex items-center gap-2 text-sm">
                   <InfoIcon className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
@@ -567,7 +599,7 @@ export function LeadsCharts({
                   </span>
                 </div>
               )}
-              <ResponsiveContainer width="100%" height="100%">
+              <ResponsiveContainer width="100%" height={500}>
                 <PieChart>
                   <Pie
                     data={categoryData}

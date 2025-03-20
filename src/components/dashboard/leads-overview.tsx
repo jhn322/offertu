@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { LeadResponse } from '@/types';
 import { LeadsOverviewSkeleton } from './leads-overview-skeleton';
 import { RadialChart } from './leads-radial';
-import { categoryTranslations } from '@/lib/constants';
+import { categoryTranslations, categoryOrder } from '@/lib/constants';
 import {
   UsersIcon,
   ClockIcon,
@@ -222,13 +222,26 @@ export function LeadsOverview({
     return acc;
   }, {} as Record<string, number>);
 
-  const categoryData = Object.entries(categoryCounts).map(
-    ([category, count]) => ({
+  const categoryData = Object.entries(categoryCounts)
+    .map(([category, count]) => ({
       name: categoryTranslations[category] || category,
       value: count,
       color: getCategoryColorValue(category),
-    })
-  );
+      category,
+    }))
+    .sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a.category);
+      const indexB = categoryOrder.indexOf(b.category);
+
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+
+      return b.value - a.value;
+    });
 
   // Calculate comparison metrics
   const comparisonLeadsCount = comparisonLeads.length;
@@ -242,17 +255,18 @@ export function LeadsOverview({
   const hasCategoryData = categoryData.length > 0;
 
   return (
-    <div className="grid gap-4">
-      <Card>
-        <CardHeader className="pb-3">
+    <div className="grid gap-3 sm:gap-4">
+      <Card className="w-full min-w-0 overflow-hidden">
+        <CardHeader className="pb-3 px-3 sm:px-6">
           <CardTitle className="flex items-center gap-2">
             Leads Översikt
           </CardTitle>
           <CardDescription className="text-sm">
             Statistik och analys av leads
           </CardDescription>
-          <div className="mt-2">
+          <div className="mt-2 pr-0 pl-0 box-border">
             <DateRangePicker
+              className="max-w-full w-full"
               dateRange={dateRange}
               onDateRangeChange={handleDateRangeChange}
               comparisonDateRange={comparisonDateRange}
@@ -262,11 +276,11 @@ export function LeadsOverview({
             />
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-3 sm:px-6">
           <div className="grid gap-4">
             {/* Key Metrics */}
-            <div className="grid grid-cols-2 gap-3">
-              <div className="rounded-lg border p-3">
+            <div className="grid grid-cols-2 gap-2 sm:gap-3">
+              <div className="rounded-lg border p-2 sm:p-3">
                 <div className="flex items-center gap-2">
                   <UsersIcon className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">
@@ -278,7 +292,7 @@ export function LeadsOverview({
                   <span className="text-sm text-muted-foreground">leads</span>
                 </div>
               </div>
-              <div className="rounded-lg border p-3">
+              <div className="rounded-lg border p-2 sm:p-3">
                 <div className="flex items-center gap-2">
                   <ClockIcon className="h-4 w-4 text-muted-foreground" />
                   <span className="text-sm text-muted-foreground">
@@ -286,7 +300,7 @@ export function LeadsOverview({
                   </span>
                 </div>
                 <div className="mt-1.5">
-                  <span className="text-sm font-medium">
+                  <span className="text-sm font-medium block truncate max-w-[140px] sm:max-w-full">
                     {mostRecentLead?.email || 'Ingen data'}
                   </span>
                   {mostRecentLead && (
@@ -302,8 +316,8 @@ export function LeadsOverview({
             </div>
 
             {/* Recent Activity */}
-            <div className="rounded-lg border p-3">
-              <div className="flex items-center gap-2">
+            <div className="rounded-lg border p-2 sm:p-3">
+              <div className="flex items-center gap-1 sm:gap-2">
                 <TrendingUpIcon className="h-4 w-4 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
                   {showComparison && comparisonLeadsCount > 0

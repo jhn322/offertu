@@ -321,7 +321,7 @@ export const columns = ({
               </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                className="cursor-pointer text-red-500 focus:bg-accent focus:text-accent-foreground"
+                className="cursor-pointer text-destructive focus:bg-destructive focus:text-destructive-foreground"
                 onClick={() => onDelete([props.id])}
               >
                 Ta bort

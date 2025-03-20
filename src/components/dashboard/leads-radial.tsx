@@ -15,7 +15,7 @@ import {
   ChartContainer,
   ChartTooltip,
 } from '@/components/ui/chart';
-import { categoryTranslations } from '@/lib/constants';
+import { categoryTranslations, categoryOrder } from '@/lib/constants';
 import { LeadResponse } from '@/types';
 import { format, formatDistance } from 'date-fns';
 import { sv } from 'date-fns/locale';
@@ -27,6 +27,7 @@ interface CategoryData {
   name: string;
   value: number;
   color: string;
+  category: string;
 }
 
 interface RadialChartProps {
@@ -202,8 +203,21 @@ export function RadialChart({
       name: categoryTranslations[category] || category,
       value: count,
       color: categoryColors[category] || '#E4E4E4',
+      category,
     }))
-    .sort((a, b) => b.value - a.value);
+    .sort((a, b) => {
+      const indexA = categoryOrder.indexOf(a.category);
+      const indexB = categoryOrder.indexOf(b.category);
+
+      if (indexA !== -1 && indexB !== -1) {
+        return indexA - indexB;
+      }
+
+      if (indexA !== -1) return -1;
+      if (indexB !== -1) return 1;
+
+      return b.value - a.value;
+    });
 
   // Get comparison category distribution data
   const comparisonCategoryData: Record<string, number> = hasComparison
@@ -288,9 +302,11 @@ export function RadialChart({
   };
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
-        <CardTitle className="text-xl">Leads kategorifördelning</CardTitle>
+    <Card className="flex flex-col w-full min-w-0 overflow-hidden">
+      <CardHeader className="items-center pb-0 px-3 sm:px-6">
+        <CardTitle className="text-md sm:text-xl">
+          Leads kategorifördelning
+        </CardTitle>
         {hasComparison && (
           <div className="flex items-center gap-1.5 mt-1 text-sm text-muted-foreground">
             <span>Jämför:</span>
@@ -302,12 +318,12 @@ export function RadialChart({
           </div>
         )}
       </CardHeader>
-      <CardContent className="flex flex-1 items-center pb-0">
+      <CardContent className="flex flex-1 items-center pb-0 px-3 sm:px-6">
         <ChartContainer
           className="mx-auto aspect-auto w-full -mb-8 h-[180px] sm:h-[220px]"
           config={chartConfig}
         >
-          <PieChart margin={{ top: 30, right: 20, bottom: 30, left: 20 }}>
+          <PieChart margin={{ top: 30, right: 5, bottom: 30, left: 5 }}>
             <ChartTooltip content={<CustomTooltip />} />
             <Pie
               data={categoryData}

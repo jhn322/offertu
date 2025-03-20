@@ -6,3 +6,13 @@ export const categoryTranslations: Record<string, string> = {
   templates: 'Mallar',
   tools: 'Verktyg',
 } as const;
+
+// Consistent sorting across components
+export const categoryOrder: string[] = [
+  'service',
+  'api',
+  'careers',
+  'templates',
+  'news',
+  'tools',
+];

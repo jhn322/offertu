@@ -131,7 +131,7 @@ export function DashboardContent() {
           role="region"
           aria-label="Dashboard översikt"
         >
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4 sm:gap-6 lg:gap-8 sm:grid-cols-1 md:grid-cols-2">
             <section aria-label="Leads statistik">
               <Suspense fallback={<LeadsOverviewSkeleton />}>
                 <LeadsOverview

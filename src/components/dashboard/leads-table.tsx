@@ -268,14 +268,14 @@ export function LeadsTable({
         onConfirm={confirmDelete}
         itemCount={deleteDialog.leadIds.length}
       />
-      <Card>
-        <CardHeader>
+      <Card className="w-full min-w-0 overflow-hidden">
+        <CardHeader className="px-3 sm:px-6">
           <CardTitle>Leads</CardTitle>
           <CardDescription>
             Hantera dina leads och förfrågningar.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="px-2 sm:px-4 md:px-6">
           <LeadsToolbar
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -285,7 +285,7 @@ export function LeadsTable({
             selectedCount={selectedLeads.size}
             onDeleteSelected={deleteSelectedLeads}
           />
-          <div className="rounded-md border">
+          <div className="rounded-md border w-full overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
