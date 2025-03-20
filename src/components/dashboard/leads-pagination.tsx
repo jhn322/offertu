@@ -14,28 +14,28 @@ export function LeadsPagination({
   onPageChange,
 }: LeadsPaginationProps) {
   return (
-    <div className="flex flex-col sm:flex-row items-center justify-between px-2 py-3 gap-2">
-      <div className="text-sm text-muted-foreground">
+    <div className="flex flex-col sm:flex-row items-center justify-between px-2 py-2 sm:py-3 gap-2">
+      <div className="text-xs sm:text-sm text-muted-foreground">
         Sida {currentPage} av {totalPages}
       </div>
       <div className="flex items-center space-x-1 sm:space-x-2">
         <Button
           variant="outline"
-          size="sm"
+          size="icon"
           onClick={() => onPageChange(1)}
           disabled={currentPage <= 1}
-          className="px-2"
+          className="h-8 w-8 sm:h-9 sm:w-9"
         >
-          <ChevronsLeft className="h-4 w-4" />
+          <ChevronsLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </Button>
         <Button
           variant="outline"
           size="sm"
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage <= 1}
-          className="px-2 sm:px-3"
+          className="h-8 px-2 sm:h-9 sm:px-3 text-xs sm:text-sm"
         >
-          <ChevronLeftIcon className="h-4 w-4" />
+          <ChevronLeftIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           <span className="hidden sm:inline ml-1">Föregående</span>
         </Button>
         <Button
@@ -43,19 +43,19 @@ export function LeadsPagination({
           size="sm"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="px-2 sm:px-3"
+          className="h-8 px-2 sm:h-9 sm:px-3 text-xs sm:text-sm"
         >
           <span className="hidden sm:inline mr-1">Nästa</span>
-          <ChevronRightIcon className="h-4 w-4" />
+          <ChevronRightIcon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </Button>
         <Button
           variant="outline"
-          size="sm"
+          size="icon"
           onClick={() => onPageChange(totalPages)}
           disabled={currentPage >= totalPages}
-          className="px-2"
+          className="h-8 w-8 sm:h-9 sm:w-9"
         >
-          <ChevronsRight className="h-4 w-4" />
+          <ChevronsRight className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </Button>
       </div>
     </div>

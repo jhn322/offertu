@@ -31,7 +31,7 @@ export function LeadsTableSkeleton() {
           </div>
 
           {/* Table Rows */}
-          {[...Array(15)].map((_, i) => (
+          {[...Array(10)].map((_, i) => (
             <div key={i} className="border-b last:border-0">
               {/* Mobile View */}
               <div className="sm:hidden p-4 space-y-2">
@@ -59,13 +59,13 @@ export function LeadsTableSkeleton() {
         </div>
 
         {/* Pagination */}
-        <div className="flex flex-col sm:flex-row items-center justify-between space-y-2 sm:space-y-0 px-2 pt-2">
-          <div className="h-4 sm:h-5 w-24 sm:w-32 bg-muted animate-pulse rounded" />
-          <div className="flex space-x-2">
-            <div className="h-8 sm:h-9 w-8 sm:w-9 bg-muted animate-pulse rounded" />
-            <div className="h-8 sm:h-9 w-24 sm:w-28 bg-muted animate-pulse rounded" />
-            <div className="h-8 sm:h-9 w-24 sm:w-28 bg-muted animate-pulse rounded" />
-            <div className="h-8 sm:h-9 w-8 sm:w-9 bg-muted animate-pulse rounded" />
+        <div className="flex flex-col sm:flex-row items-center justify-between px-2 pt-2 gap-2">
+          <div className="h-4 w-20 bg-muted animate-pulse rounded" />
+          <div className="flex space-x-1 sm:space-x-2">
+            <div className="h-8 w-8 sm:h-9 sm:w-9 bg-muted animate-pulse rounded" />
+            <div className="h-8 w-8 sm:h-9 sm:w-28 bg-muted animate-pulse rounded" />
+            <div className="h-8 w-8 sm:h-9 sm:w-28 bg-muted animate-pulse rounded" />
+            <div className="h-8 w-8 sm:h-9 sm:w-9 bg-muted animate-pulse rounded" />
           </div>
         </div>
       </div>
