@@ -18,3 +18,16 @@ model Lead {
   @@map("leads") // Maps your collection
   @@index([category, createdAt]) // For better querying by category
 }
+
+// User model för admin authentication
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("USER") // Possible values: USER, ADMIN
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users") // Maps to "users" collection
+}

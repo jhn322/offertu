@@ -4,23 +4,49 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { useSession, signOut } from 'next-auth/react';
 
 interface NavItem {
   href: string;
   label: string;
 }
 
-const navItems: NavItem[] = [
+// Grundläggande navigationslänkar som alla besökare kan se
+const publicNavItems: NavItem[] = [
   { href: '/api-dokumentation', label: 'API' },
-  { href: '/dashboard', label: 'Dashboard' },
   { href: '/karriarer', label: 'Karriärer' },
   { href: '/mallar', label: 'Mallar' },
   { href: '/nyheter', label: 'Nyheter' },
   { href: '/verktyg-resurser', label: 'Verktyg' },
 ];
 
+// Rollspecifika navigationslänkar
+const roleBasedNavItems: Record<string, NavItem[]> = {
+  ADMIN: [
+    { href: '/dashboard', label: 'Dashboard' },
+    // Fler admin-specifika länkar kan läggas till här
+  ],
+  // Du kan lägga till fler roller här i framtiden
+  // USER: [{ href: '/profil', label: 'Min Profil' }],
+};
+
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  // Hämta aktuell session från NextAuth
+  const { data: session, status } = useSession();
+
+  // Kontrollera om användaren är inloggad
+  const isAuthenticated = status === 'authenticated';
+  // Hämta användarens roll om inloggad
+  const userRole = session?.user?.role;
+
+  // Bygg upp dynamisk navlista baserat på användarstatus och roll
+  const navItems = [...publicNavItems];
+
+  // Lägg till rollspecifika alternativ om användaren har en roll
+  if (isAuthenticated && userRole && roleBasedNavItems[userRole]) {
+    navItems.push(...roleBasedNavItems[userRole]);
+  }
 
   const handleToggleMenu = () => {
     setIsOpen(!isOpen);
@@ -81,6 +107,26 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
+
+              {/* Visa utloggningsknapp endast om användaren är inloggad */}
+              {isAuthenticated && (
+                <Button
+                  variant="outline"
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                  className="ml-2"
+                >
+                  Logga ut
+                </Button>
+              )}
+
+              {/* Visa inloggningsknapp om användaren inte är inloggad */}
+              {!isAuthenticated && (
+                <Link href="/admin/login">
+                  <Button variant="outline" className="ml-2">
+                    Logga in
+                  </Button>
+                </Link>
+              )}
             </div>
 
             {/* Mobile Menu Button */}
@@ -136,6 +182,29 @@ export function Navbar() {
                   {item.label}
                 </Link>
               ))}
+
+              {/* Lägg till mobilversioner av inloggnings-/utloggningsknappar */}
+              {isAuthenticated && (
+                <Button
+                  variant="outline"
+                  onClick={() => signOut({ callbackUrl: '/' })}
+                  className="mt-4 w-full"
+                >
+                  Logga ut
+                </Button>
+              )}
+
+              {!isAuthenticated && (
+                <Link
+                  href="/admin/login"
+                  className="w-full"
+                  onClick={() => setIsOpen(false)}
+                >
+                  <Button variant="outline" className="mt-4 w-full">
+                    Logga in
+                  </Button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
