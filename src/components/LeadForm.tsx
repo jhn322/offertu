@@ -40,9 +40,10 @@ export default function LeadForm({
 
   // Handle form submission
   const handleSubmit = async (formData: LeadFormData) => {
-    setIsLoading(true); // Set loading to true when submission starts
+    setIsLoading(true);
     try {
-      const response = await fetch('/api/leads', {
+      // First, submit the lead form as before
+      const leadResponse = await fetch('/api/leads', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -50,23 +51,38 @@ export default function LeadForm({
         body: JSON.stringify(formData),
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Server error:', errorData);
-        throw new Error(errorData.error || 'Failed to submit form');
+      if (!leadResponse.ok) {
+        throw new Error('Failed to submit form');
       }
 
-      const responseData = await response.json();
-      console.log('Success:', responseData);
+      const responseData = await leadResponse.json();
 
-      // Clear form after successful submission
+      // Then, send confirmation email
+      if (formData.email) {
+        const emailResponse = await fetch('/api/send-confirmation', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            to: formData.email,
+            category: formData.category,
+            // Add any other relevant data you want to include in the email
+          }),
+        });
+
+        if (!emailResponse.ok) {
+          console.error('Failed to send confirmation email');
+        }
+      }
+
+      // Clear form and redirect as before
       form.reset();
-      // Redirect to thank you page with lead ID
       router.push(`/tack?id=${responseData.id}`);
     } catch (err) {
       console.error('Form submission error:', err);
     } finally {
-      setIsLoading(false); // Reset loading state after submission attempt
+      setIsLoading(false);
     }
   };
 
