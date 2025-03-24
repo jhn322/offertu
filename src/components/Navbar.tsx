@@ -3,6 +3,7 @@
 // import * as React from 'react';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useSession, signOut } from 'next-auth/react';
 
@@ -22,16 +23,13 @@ const publicNavItems: NavItem[] = [
 
 // Rollspecifika navigationslänkar
 const roleBasedNavItems: Record<string, NavItem[]> = {
-  ADMIN: [
-    { href: '/dashboard', label: 'Dashboard' },
-    // Fler admin-specifika länkar kan läggas till här
-  ],
-  // Du kan lägga till fler roller här i framtiden
+  ADMIN: [{ href: '/dashboard', label: 'Dashboard' }],
   // USER: [{ href: '/profil', label: 'Min Profil' }],
 };
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
   // Hämta aktuell session från NextAuth
   const { data: session, status } = useSession();
 
@@ -45,7 +43,7 @@ export function Navbar() {
 
   // Lägg till rollspecifika alternativ om användaren har en roll
   if (isAuthenticated && userRole && roleBasedNavItems[userRole]) {
-    navItems.push(...roleBasedNavItems[userRole]);
+    navItems.splice(1, 0, ...roleBasedNavItems[userRole]);
   }
 
   const handleToggleMenu = () => {
@@ -77,6 +75,11 @@ export function Navbar() {
     };
   }, [isOpen]);
 
+  // Helper function to determine if a nav item is active
+  const isActiveLink = (href: string): boolean => {
+    return pathname === href || (href !== '/' && pathname?.startsWith(href));
+  };
+
   return (
     <>
       <div className="h-16" />
@@ -102,9 +105,17 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-foreground/80 hover:text-foreground transition-colors"
+                  className={`relative py-1 transition-colors ${
+                    isActiveLink(item.href)
+                      ? 'text-foreground font-medium'
+                      : 'text-foreground/70 hover:text-foreground'
+                  }`}
                 >
                   {item.label}
+                  {/* Active indicator line */}
+                  {isActiveLink(item.href) && (
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full" />
+                  )}
                 </Link>
               ))}
 
@@ -176,35 +187,49 @@ export function Navbar() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-3xl text-foreground/80 hover:text-foreground transition-colors"
+                  className={`text-3xl transition-colors relative ${
+                    isActiveLink(item.href)
+                      ? 'text-foreground font-medium'
+                      : 'text-foreground/70 hover:text-foreground'
+                  }`}
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
+                  {/* Active indicator for mobile */}
+                  {isActiveLink(item.href) && (
+                    <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary rounded-full" />
+                  )}
                 </Link>
               ))}
 
-              {/* Lägg till mobilversioner av inloggnings-/utloggningsknappar */}
-              {isAuthenticated && (
-                <Button
-                  variant="outline"
-                  onClick={() => signOut({ callbackUrl: '/' })}
-                  className="mt-4 w-full"
-                >
-                  Logga ut
-                </Button>
-              )}
-
-              {!isAuthenticated && (
-                <Link
-                  href="/admin/login"
-                  className="w-full"
-                  onClick={() => setIsOpen(false)}
-                >
-                  <Button variant="outline" className="mt-4 w-full">
-                    Logga in
+              {/* Mobile login/logout buttons */}
+              <div className="w-full max-w-[200px] mt-8">
+                {isAuthenticated ? (
+                  <Button
+                    variant="default"
+                    onClick={() => {
+                      signOut({ callbackUrl: '/' });
+                      setIsOpen(false);
+                    }}
+                    className="w-full text-lg bg-primary hover:bg-primary/90 transition-colors shadow-sm"
+                  >
+                    Logga ut
                   </Button>
-                </Link>
-              )}
+                ) : (
+                  <Link
+                    href="/admin/login"
+                    className="w-full block"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    <Button
+                      variant="default"
+                      className="w-full text-lg bg-primary hover:bg-primary/90 transition-colors shadow-sm"
+                    >
+                      Logga in
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </div>
           </div>
         </div>
