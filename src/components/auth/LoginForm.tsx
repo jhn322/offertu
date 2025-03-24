@@ -41,7 +41,7 @@ export default function LoginForm() {
       }
 
       // Successful login
-      router.push('/admin/dashboard');
+      router.push('/dashboard');
       router.refresh();
     } catch (error) {
       console.error('Login error:', error);

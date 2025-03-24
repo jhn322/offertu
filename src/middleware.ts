@@ -8,7 +8,9 @@ export async function middleware(request: NextRequest) {
   // Definiera vilka sidor som är publika (inte behöver autentisering)
   const isPublicPath =
     path === '/admin/login' ||
-    !path.startsWith('/admin');
+    (!path.startsWith('/admin') &&
+      path !== '/dashboard' &&
+      !path.startsWith('/dashboard/'));
 
   // Hämta den aktuella JWT-token från begäran
   const token = await getToken({
@@ -21,18 +23,25 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Om användaren inte är inloggad och försöker nå en admin-sida, 
+  // Om användaren inte är inloggad och försöker nå en skyddad sida, 
   // omdirigera till inloggningssidan
   if (!token) {
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
-  // Om användaren är inloggad men inte är admin, omdirigera till startsidan
-  if (token.role !== 'ADMIN') {
+  // För dashboard-specifik åtkomst
+  if (path === '/dashboard' || path.startsWith('/dashboard/')) {
+    // Kontrollera om användaren har Admin-roll för att komma åt dashboard
+    if (token.role !== 'ADMIN') {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  }
+  // Annars är användaren inloggad som admin och får tillgång till admin-sidorna
+  else if (path.startsWith('/admin') && token.role !== 'ADMIN') {
     return NextResponse.redirect(new URL('/', request.url));
   }
 
-  // Annars är användaren inloggad som admin och får tillgång till admin-sidorna
+  // Annars är användaren behörig och får tillgång till sidan
   return NextResponse.next();
 }
 
@@ -40,6 +49,8 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     '/admin/:path*',    // Alla admin-sidor
-    '/admin/login'      // Inloggningssidan
+    '/admin/login',     // Inloggningssidan
+    '/dashboard',       // Dashboard-sidan
+    '/dashboard/:path*' // Alla undersidor till dashboard
   ]
 }; 

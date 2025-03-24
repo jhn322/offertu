@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { DashboardContent } from '../../components/dashboard/dashboard-content';
+import { DashboardContent } from '@/components/dashboard/dashboard-content';
+import RoleGate from '@/components/auth/RoleGate';
 
 export const metadata: Metadata = {
   title: 'Dashboard',
@@ -15,7 +16,9 @@ export const metadata: Metadata = {
 export default function DashboardPage() {
   return (
     <main>
-      <DashboardContent />
+      <RoleGate allowedRoles={['ADMIN']}>
+        <DashboardContent />
+      </RoleGate>
     </main>
   );
 }
