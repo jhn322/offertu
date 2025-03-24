@@ -13,6 +13,11 @@ const initBrevoClient = () => {
   return client;
 };
 
+// Definiera en mer specifik typ för template parameters
+interface TemplateParams {
+  [key: string]: string | number | boolean | null;
+}
+
 // Interface for email data
 interface SendEmailProps {
   to: string;
@@ -20,7 +25,7 @@ interface SendEmailProps {
   htmlContent: string;
   textContent: string;
   templateId?: number; // Optional if using Brevo templates
-  params?: Record<string, any>; // Optional template parameters
+  params?: TemplateParams; // Använd den nya typen istället för Record<string, any>
 }
 
 /**
@@ -53,10 +58,11 @@ export async function sendEmail({
     };
 
     const response = await client.sendTransacEmail(sendSmtpEmail);
-    console.log("Email sent successfully:", response);
+    console.log("Email configuration:", sendSmtpEmail);
+    console.log("Email response:", response);
     return { success: true, data: response };
   } catch (error) {
-    console.error("Error sending email:", error);
+    console.error("Detailed email error:", error);
     return { success: false, error: error };
   }
 } 
