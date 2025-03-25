@@ -1,13 +1,23 @@
 import { sendEmail } from '@/lib/email';
 import { NextResponse } from 'next/server';
 import { categoryTranslations } from '@/lib/constants';
+import { jobs } from '@/app/karriarer/data';
 
 export async function POST(req: Request) {
   try {
-    const { to, category } = await req.json();
+    const { to, category, referenceId } = await req.json();
 
     // Översätt kategorin eller använd original om översättning saknas
     const translatedCategory = categoryTranslations[category] || category;
+
+    // Get job title if it's a career application
+    let jobTitle = '';
+    if (category === 'careers' && referenceId) {
+      const job = jobs.find((job) => job.id === referenceId);
+      if (job) {
+        jobTitle = job.title;
+      }
+    }
 
     // Category-specific messages
     const categoryMessages: Record<
@@ -15,7 +25,7 @@ export async function POST(req: Request) {
       { message: string; followUp: string }
     > = {
       careers: {
-        message: `Vi har mottagit din förfrågan gällande <strong>${translatedCategory}</strong>.`,
+        message: `Vi har mottagit din ansökan för tjänsten <strong>${jobTitle}</strong> inom <strong>${translatedCategory}</strong>.`,
         followUp:
           'Vi kommer att granska din ansökan och återkomma med feedback inom kort.',
       },
