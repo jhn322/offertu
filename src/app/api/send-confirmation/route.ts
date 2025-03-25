@@ -95,9 +95,17 @@ export async function POST(req: Request) {
                     <td align="center" style="padding-bottom: 16px;">
                       <table cellpadding="0" cellspacing="0" border="0">
                         <tr>
+                        <td style="padding: 0 8px;">
+                          <a href="https://offertu.vercel.app/api-dokumentation" style="color: #666666; text-decoration: underline; font-size: 14px;">API</a>
+                        </td>
                           <td style="padding: 0 8px;">
                             <a href="https://offertu.vercel.app/karriarer" style="color: #666666; text-decoration: underline; font-size: 14px;">${
                               categoryTranslations.careers
+                            }</a>
+                          </td>
+                          <td style="padding: 0 8px;">
+                            <a href="https://offertu.vercel.app/mallar" style="color: #666666; text-decoration: underline; font-size: 14px;">${
+                              categoryTranslations.templates
                             }</a>
                           </td>
                           <td style="padding: 0 8px;">
@@ -109,9 +117,6 @@ export async function POST(req: Request) {
                             <a href="https://offertu.vercel.app/nyheter" style="color: #666666; text-decoration: underline; font-size: 14px;">${
                               categoryTranslations.news
                             }</a>
-                          </td>
-                          <td style="padding: 0 8px;">
-                            <a href="https://offertu.vercel.app/api-dokumentation" style="color: #666666; text-decoration: underline; font-size: 14px;">API</a>
                           </td>
                         </tr>
                       </table>
