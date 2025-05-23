@@ -5,7 +5,7 @@ import { CardContent, CardTitle, CardDescription } from '@/components/ui/card';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Sidan kunde inte hittas',
+  title: 'Sidan kunde inte hittas!',
   description:
     'Tyvärr kunde vi inte hitta sidan du sökte efter. Kontrollera webbadressen eller gå tillbaka till startsidan.',
   robots: {
