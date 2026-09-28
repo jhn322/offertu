@@ -1,6 +1,6 @@
 // Used by GitHub Actions to prevent Atlas M0 pause and Brevo API key inactivity.
 
-import { MongoClient } from 'mongodb';
+// import { MongoClient } from 'mongodb';
 
 const BREVO_ACCOUNT_URL = 'https://api.brevo.com/v3/account';
 
@@ -13,16 +13,16 @@ const requireEnv = (name: string): string => {
   return value;
 };
 
-const pingMongoDb = async (databaseUrl: string): Promise<void> => {
-  const client = new MongoClient(databaseUrl);
-  try {
-    await client.connect();
-    await client.db().admin().command({ ping: 1 });
-    console.log('MongoDB: ping OK');
-  } finally {
-    await client.close();
-  }
-};
+// const pingMongoDb = async (databaseUrl: string): Promise<void> => {
+//   const client = new MongoClient(databaseUrl);
+//   try {
+//     await client.connect();
+//     await client.db().admin().command({ ping: 1 });
+//     console.log('MongoDB: ping OK');
+//   } finally {
+//     await client.close();
+//   }
+// };
 
 const pingBrevo = async (apiKey: string): Promise<void> => {
   const response = await fetch(BREVO_ACCOUNT_URL, {
@@ -44,10 +44,10 @@ const pingBrevo = async (apiKey: string): Promise<void> => {
 };
 
 const main = async (): Promise<void> => {
-  const databaseUrl = requireEnv('DATABASE_URL');
+  // const databaseUrl = requireEnv('DATABASE_URL');
   const brevoApiKey = requireEnv('BREVO_API_KEY');
 
-  await pingMongoDb(databaseUrl);
+  // await pingMongoDb(databaseUrl);
   await pingBrevo(brevoApiKey);
 };
 
